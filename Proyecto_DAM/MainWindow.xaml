@@ -3,10 +3,39 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Proyecto_DAM"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml" 
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:Proyecto_DAM" 
+        xmlns:viewmodel="clr-namespace:Proyecto_DAM.ViewModel" 
+        xmlns:view="clr-namespace:Proyecto_DAM.View"
+        d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel}"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type viewmodel:LoginViewModel}">
+            <view:LoginView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodel:RegistroViewModel}">
+            <view:RegistroView/>
+        </DataTemplate>
+        <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
+    </Window.Resources>
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Menu Bar 0-->
+        <Menu FontSize="15" Grid.Row="0" HorizontalAlignment="Center" Margin="5" Background="#2C3E50"
+                        Visibility="{Binding IsMenuVisible, Converter={StaticResource BoolToVisConverter}}">
+            <MenuItem Header="_Logout" Foreground="White"
+                  Command="{Binding SelectViewModelCommand}"
+                  CommandParameter="{Binding DataContext.LoginViewModel, RelativeSource={RelativeSource AncestorType=Window}}"/>
+
+        </Menu>
+
+        <ContentControl Grid.Row="1" Content="{Binding SelectedViewModel}"/>
 
     </Grid>
 </Window>
