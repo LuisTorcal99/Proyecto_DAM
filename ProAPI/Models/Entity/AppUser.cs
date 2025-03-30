@@ -6,5 +6,8 @@ namespace RestAPI.Models.Entity
     {
         public string Name { get; set; }
         public string Email { get; set; }
+
+        // Relación con User (uno a uno)
+        public User User { get; set; }
     }
 }

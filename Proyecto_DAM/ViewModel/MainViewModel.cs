@@ -14,16 +14,18 @@ namespace Proyecto_DAM.ViewModel
     {
         private ViewModelBase? _selectedViewModel;
 
-        public MainViewModel(LoginViewModel login, RegistroViewModel registro)
+        public MainViewModel(LoginViewModel login, RegistroViewModel registro, PrincipalViewModel principal)
         {
             SelectedViewModel = login;
 
             LoginViewModel = login;
             RegistroViewModel = registro;
+            PrincipalViewModel = principal;
         }
 
         public LoginViewModel LoginViewModel { get; set; }
         public RegistroViewModel RegistroViewModel { get; set; }
+        public PrincipalViewModel PrincipalViewModel { get; set; }
 
         public ViewModelBase? SelectedViewModel
         {
@@ -57,7 +59,7 @@ namespace Proyecto_DAM.ViewModel
             await LoadAsync();
 
             // Mostrar menú en vistas seleccionadas
-            //IsMenuVisible = SelectedViewModel is PrincipalViewModel;
+            IsMenuVisible = SelectedViewModel is PrincipalViewModel;
         }
     }
 }

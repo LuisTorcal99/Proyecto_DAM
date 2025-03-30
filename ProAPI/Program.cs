@@ -20,6 +20,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // Add services to the container.
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IAsignaturaRepository, AsignaturaRepository>();
+builder.Services.AddScoped<INotaRepository, NotasRepository>();
+builder.Services.AddScoped<IEventoRepository, EventoRepository>();
 builder.Services.AddAutoMapper(typeof(ApplicationMapper));
 //Logger setup
 builder.Logging.ClearProviders();
