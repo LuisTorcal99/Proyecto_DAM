@@ -19,6 +19,9 @@
         <DataTemplate DataType="{x:Type viewmodel:PrincipalViewModel}">
             <view:PrincipalView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodel:EventosViewModel}">
+            <view:EventosView/>
+        </DataTemplate>
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
     </Window.Resources>
 
@@ -29,7 +32,9 @@
         </Grid.RowDefinitions>
 
         <!-- Menú -->
-        <Border Grid.Row="0" Background="#FADADD" Padding="5">
+        <!-- Menú -->
+        <Border Grid.Row="0" Background="#f1cae4" Padding="5"
+        Visibility="{Binding IsMenuVisible, Converter={StaticResource BoolToVisConverter}}">
             <Grid>
                 <!-- alinear elementos -->
                 <Grid.ColumnDefinitions>
@@ -46,8 +51,13 @@
                       Visibility="{Binding IsMenuVisible, Converter={StaticResource BoolToVisConverter}}"
                       Grid.Column="0">
                     <MenuItem Header="_Inicio" Foreground="Black" FontFamily="Cascadia Code"
-                              Command="{Binding SelectViewModelCommand}"
-                              CommandParameter="{Binding DataContext.PrincipalViewModel, RelativeSource={RelativeSource AncestorType=Window}}" />
+                      Command="{Binding SelectViewModelCommand}"
+                      CommandParameter="{Binding DataContext.PrincipalViewModel, RelativeSource={RelativeSource AncestorType=Window}}" />
+                    <MenuItem Header="_Eventos" Foreground="Black" FontFamily="Cascadia Code"
+                      Command="{Binding SelectViewModelCommand}"
+                      CommandParameter="{Binding DataContext.EventosViewModel, RelativeSource={RelativeSource AncestorType=Window}}" />
+                    <MenuItem Header="_Crear Asignatura" Foreground="Black" FontFamily="Cascadia Code"
+                      Command="{Binding AddAsignaturaCommand}"/>
                 </Menu>
 
                 <!-- Logout alineado a la derecha en rojo -->
@@ -55,13 +65,14 @@
                       Visibility="{Binding IsMenuVisible, Converter={StaticResource BoolToVisConverter}}"
                       Grid.Column="2">
                     <MenuItem Header="_Logout" Foreground="Red" FontFamily="Cascadia Code"
-                              Command="{Binding SelectViewModelCommand}"
-                              CommandParameter="{Binding DataContext.LoginViewModel, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                      Command="{Binding SelectViewModelCommand}"
+                      CommandParameter="{Binding DataContext.LoginViewModel, RelativeSource={RelativeSource AncestorType=Window}}"/>
                 </Menu>
             </Grid>
         </Border>
-
+        
         <!-- Contenido dinámico -->
         <ContentControl Grid.Row="1" Content="{Binding SelectedViewModel}"/>
+
     </Grid>
 </Window>

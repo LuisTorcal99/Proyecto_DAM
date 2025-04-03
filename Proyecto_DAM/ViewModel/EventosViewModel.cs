@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Proyecto_DAM.ViewModel
 {
-    public partial class PrincipalViewModel : ViewModelBase
+    public partial class EventosViewModel : ViewModelBase
     {
-        public PrincipalViewModel()
+        public EventosViewModel()
         {
-
+            
         }
 
         public override Task LoadAsync()
