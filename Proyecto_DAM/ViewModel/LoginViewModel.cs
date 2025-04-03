@@ -53,8 +53,8 @@ namespace Proyecto_DAM.ViewModel
                     // Cambiar de vista
                     var mainViewModel = App.Current.Services.GetService<MainViewModel>();
 
-                    //var inicioViewModel = App.Current.Services.GetService<PrincipalViewModel>();
-                    //mainViewModel.SelectViewModelCommand.Execute(inicioViewModel);
+                    var inicioViewModel = App.Current.Services.GetService<PrincipalViewModel>();
+                    mainViewModel.SelectViewModelCommand.Execute(inicioViewModel);
                 }
                 else
                 {

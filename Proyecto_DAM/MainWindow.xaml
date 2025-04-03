@@ -3,14 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml" 
-        xmlns:System="clr-namespace:System;assembly=mscorlib"
-        xmlns:local="clr-namespace:Proyecto_DAM" 
-        xmlns:viewmodel="clr-namespace:Proyecto_DAM.ViewModel" 
-        xmlns:view="clr-namespace:Proyecto_DAM.View"
+        xmlns:viewmodel="clr-namespace:Proyecto_DAM.ViewModel"
+        xmlns:view="clr-namespace:Proyecto_DAM.View" 
         d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel}"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+
     <Window.Resources>
         <DataTemplate DataType="{x:Type viewmodel:LoginViewModel}">
             <view:LoginView/>
@@ -18,24 +16,52 @@
         <DataTemplate DataType="{x:Type viewmodel:RegistroViewModel}">
             <view:RegistroView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodel:PrincipalViewModel}">
+            <view:PrincipalView/>
+        </DataTemplate>
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
     </Window.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Menu Bar 0-->
-        <Menu FontSize="15" Grid.Row="0" HorizontalAlignment="Center" Margin="5" Background="#2C3E50"
-                        Visibility="{Binding IsMenuVisible, Converter={StaticResource BoolToVisConverter}}">
-            <MenuItem Header="_Logout" Foreground="White"
-                  Command="{Binding SelectViewModelCommand}"
-                  CommandParameter="{Binding DataContext.LoginViewModel, RelativeSource={RelativeSource AncestorType=Window}}"/>
+        <!-- Menú -->
+        <Border Grid.Row="0" Background="#FADADD" Padding="5">
+            <Grid>
+                <!-- alinear elementos -->
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <!-- Menú izquierda -->
+                    <ColumnDefinition Width="*" />
+                    <!-- Espaciador -->
+                    <ColumnDefinition Width="Auto"/>
+                    <!-- Menú derecha -->
+                </Grid.ColumnDefinitions>
 
-        </Menu>
+                <!-- Menú alineado a la izquierda -->
+                <Menu FontSize="15" Background="Transparent"
+                      Visibility="{Binding IsMenuVisible, Converter={StaticResource BoolToVisConverter}}"
+                      Grid.Column="0">
+                    <MenuItem Header="_Inicio" Foreground="Black" FontFamily="Cascadia Code"
+                              Command="{Binding SelectViewModelCommand}"
+                              CommandParameter="{Binding DataContext.PrincipalViewModel, RelativeSource={RelativeSource AncestorType=Window}}" />
+                </Menu>
 
+                <!-- Logout alineado a la derecha en rojo -->
+                <Menu FontSize="15" Background="Transparent"
+                      Visibility="{Binding IsMenuVisible, Converter={StaticResource BoolToVisConverter}}"
+                      Grid.Column="2">
+                    <MenuItem Header="_Logout" Foreground="Red" FontFamily="Cascadia Code"
+                              Command="{Binding SelectViewModelCommand}"
+                              CommandParameter="{Binding DataContext.LoginViewModel, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                </Menu>
+            </Grid>
+        </Border>
+
+        <!-- Contenido dinámico -->
         <ContentControl Grid.Row="1" Content="{Binding SelectedViewModel}"/>
-
     </Grid>
 </Window>
