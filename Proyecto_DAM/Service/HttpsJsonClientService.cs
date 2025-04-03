@@ -91,7 +91,7 @@ namespace Proyecto_DAM.Service
 
                     httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginDTO.Token}");
 
-                    // Serializar el objeto 'data' a JSON
+                    // Serializar el Asignatura 'data' a JSON
                     string jsonContent = JsonSerializer.Serialize(data);
 
                     // Crear el contenido HTTP con el tipo adecuado para enviar JSON
@@ -140,7 +140,7 @@ namespace Proyecto_DAM.Service
 
                     httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginDTO.Token}");
 
-                    // Serializar el objeto 'data' () a JSON
+                    // Serializar el Asignatura 'data' () a JSON
                     string jsonContent = JsonSerializer.Serialize(data);
 
                     // Crear el contenido HTTP con el tipo adecuado para enviar JSON
@@ -169,7 +169,7 @@ namespace Proyecto_DAM.Service
 
                     httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginDTO.Token}");
 
-                    // Serializar el objeto 'data' (UserRegistroDTO) a JSON
+                    // Serializar el Asignatura 'data' (UserRegistroDTO) a JSON
                     string jsonContent = JsonSerializer.Serialize(data);
 
                     // Crear el contenido HTTP con el tipo adecuado para enviar JSON
@@ -198,7 +198,7 @@ namespace Proyecto_DAM.Service
                     // Agregar encabezado Authorization si es necesario
                     httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginDTO.Token}");
 
-                    // Serializar el objeto 'data' (dto) a JSON
+                    // Serializar el Asignatura 'data' (dto) a JSON
                     string jsonContent = JsonSerializer.Serialize(data,
                      new JsonSerializerOptions
                      {

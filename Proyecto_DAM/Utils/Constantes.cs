@@ -19,9 +19,7 @@ namespace Proyecto_DAM.Utils
         public const string LOGIN_PATH = "users/login";
         public const string USERS_PATH = "users";
         public const string REGISTER_PATH = "users/register";
-        public const string OBJETO_PATH = "Objeto";
-        public const string OBJETO_DOS_PATH = "ObjetoDos";
-        public const string OBJETO_TRES_PATH = "ObjetoTres";
+        public const string ASIGNATURA_PATH = "Asignatura";
 
         public const string ERROR_TYC = "Debes aceptar los términos y condiciones";
         public const string ERROR_PASSWORDEQUALS = "Contraseñas distintas";

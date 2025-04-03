@@ -17,6 +17,8 @@ namespace Proyecto_DAM.DTO
 
         [JsonPropertyName("descripcion")]
         public string Descripcion { get; set; }
+
+        public List<NotaDTO> Notas { get; set; }
     }
 
 }
