@@ -9,74 +9,51 @@ namespace RestAPI.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // Configuración de la relación uno a muchos entre Asignatura y Notas
+            // Relación entre Asignatura y Notas (uno a muchos)
             modelBuilder.Entity<AsignaturaEntity>()
                 .HasMany(a => a.Notas)
                 .WithOne(n => n.Asignatura)
-                .HasForeignKey(n => n.IdAsignatura);
-
-            // Configuración de la relación uno a muchos entre Asignatura y Eventos
-            modelBuilder.Entity<AsignaturaEntity>()
-                .HasMany(a => a.Eventos)
-                .WithOne(e => e.Asignatura)
-                .HasForeignKey(e => e.IdAsignatura);
-
-            // Configuración de la relación uno a uno entre Evento y Nota
-            modelBuilder.Entity<EventoEntity>()
-                .HasOne(e => e.Nota)
-                .WithOne(n => n.Evento)
-                .HasForeignKey<NotaEntity>(n => n.IdEvento);
-
-            // Relación entre User y AppUser (Identity)
-            modelBuilder.Entity<User>()
-                .HasOne(u => u.AspNetUser)
-                .WithOne()
-                .HasForeignKey<User>(u => u.AspNetUserId);
-
-            // Relación de la Nota con la Asignatura
-            modelBuilder.Entity<NotaEntity>()
-                .HasOne<AsignaturaEntity>()
-                .WithMany(a => a.Notas) // Asignaturas tiene muchas notas
                 .HasForeignKey(n => n.IdAsignatura)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Relación de la Nota con el Evento
-            modelBuilder.Entity<NotaEntity>()
-                .HasOne<EventoEntity>()
-                .WithOne(e => e.Nota) // Un evento tiene una nota
-                .HasForeignKey<NotaEntity>(n => n.IdEvento)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            // Relación de la Nota con el Usuario
-            modelBuilder.Entity<NotaEntity>()
-                .HasOne<User>()
-                .WithMany(u => u.Notas) // Un usuario tiene muchas notas
-                .HasForeignKey(n => n.IdUsuario)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            // Relación de la Asignatura con el Usuario
+            // Relación entre Asignatura y Eventos (uno a muchos)
             modelBuilder.Entity<AsignaturaEntity>()
-                .HasOne<User>()
-                .WithMany(u => u.Asignaturas) // Un usuario tiene muchas asignaturas
-                .HasForeignKey(a => a.IdUsuario)
+                .HasMany(a => a.Eventos)
+                .WithOne(e => e.Asignatura)
+                .HasForeignKey(e => e.IdAsignatura)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Relación de Evento con el Usuario
+            // Relación entre Evento y Nota (uno a uno)
             modelBuilder.Entity<EventoEntity>()
-                .HasOne<User>()
-                .WithMany(u => u.Eventos) // Un usuario tiene muchos eventos
+                .HasOne(e => e.Nota)
+                .WithOne(n => n.Evento)
+                .HasForeignKey<NotaEntity>(n => n.IdEvento)
+                .OnDelete(DeleteBehavior.Restrict); // Evitar el ciclo de eliminación
+
+            // Relación entre Usuario y Asignatura (uno a muchos)
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Asignaturas)
+                .WithOne(a => a.Usuario)
+                .HasForeignKey(a => a.IdUsuario)
+                .OnDelete(DeleteBehavior.Restrict); // Evitar el ciclo de eliminación
+
+            // Relación entre Usuario y Evento (uno a muchos)
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Eventos)
+                .WithOne(e => e.Usuario)
                 .HasForeignKey(e => e.IdUsuario)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Configurar el tipo de dato `Porcentaje` en Evento (precision)
-            modelBuilder.Entity<EventoEntity>()
-                .Property(e => e.Porcentaje)
-                .HasPrecision(5, 2); // 5 dígitos en total, 2 decimales
+            // Relación entre Usuario y Nota (uno a muchos)
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Notas)
+                .WithOne(n => n.Usuario)
+                .HasForeignKey(n => n.IdUsuario)
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
         // DbSets para cada entidad

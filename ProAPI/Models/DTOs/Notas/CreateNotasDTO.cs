@@ -1,7 +1,19 @@
-﻿namespace RestAPI.Models.DTOs.Notas
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace RestAPI.Models.DTOs.Notas
 {
     public class CreateNotasDTO
     {
-        public int Nota { get; set; }
+        [Required]
+        public int NotaValor { get; set; }
+
+        [Required]
+        public int IdAsignatura { get; set; }
+
+        [Required]
+        public int IdEvento { get; set; }
+
+        [Required]
+        public string IdUsuario { get; set; }
     }
 }
