@@ -13,7 +13,6 @@ namespace RestAPI.Models.Entity
 
         public string Descripcion { get; set; }
 
-        [Required]
         public int Creditos { get; set; }
 
         // Relación con Usuario
@@ -23,5 +22,8 @@ namespace RestAPI.Models.Entity
 
         // Relación uno a muchos con Notas
         public ICollection<NotaEntity> Notas { get; set; }
+
+        // Relación uno a muchos con Eventos
+        public ICollection<EventoEntity> Eventos { get; set; }
     }
 }

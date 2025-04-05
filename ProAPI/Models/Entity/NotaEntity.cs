@@ -26,5 +26,4 @@ namespace RestAPI.Models.Entity
         public string IdUsuario { get; set; }
         public User Usuario { get; set; }
     }
-
 }

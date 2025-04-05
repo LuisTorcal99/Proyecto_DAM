@@ -11,6 +11,31 @@
              d:DesignHeight="450" d:DesignWidth="800"
              Background="White">
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+
+        <ui:DataGrid 
+            ItemsSource="{Binding PaginatedItems}" 
+            AutoGenerateColumns="True" 
+            IsReadOnly="True"
+            CanUserResizeColumns="True"
+            CanUserResizeRows="False"
+            MinRowHeight="25"
+            Margin="25"
+            ColumnWidth="*"
+            ScrollViewer.VerticalScrollBarVisibility="Auto"
+            ScrollViewer.HorizontalScrollBarVisibility="Auto"
+            Background="LightPink"
+            Foreground="Black"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch" />
+
+        <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Margin="10">
+            <Button Content="Previous" Command="{Binding MoveToPreviousPageCommand}" Width="120" Height="40" Margin="5" Background="LightPink" FontFamily="Cascadia Code"/>
+            <TextBlock Text="{Binding CurrentPage}" VerticalAlignment="Center" Margin="10" FontSize="16" FontWeight="Bold" Foreground="Black"/>
+            <Button Content="Next" Command="{Binding MoveToNextPageCommand}" Width="120" Height="40" Margin="5" Background="LightPink" FontFamily="Cascadia Code"/>
+        </StackPanel>
     </Grid>
 </UserControl>

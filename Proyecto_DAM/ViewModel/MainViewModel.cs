@@ -75,5 +75,14 @@ namespace Proyecto_DAM.ViewModel
             view.DataContext = viewModel;
             view.ShowDialog();
         }
+
+        [RelayCommand]
+        public void AddAEvento()
+        {
+            var viewModel = new AddEventoViewModel();
+            var view = new AddEventoView();
+            view.DataContext = viewModel;
+            view.ShowDialog();
+        }
     }
 }

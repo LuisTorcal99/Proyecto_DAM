@@ -12,7 +12,7 @@ namespace RestAPI.Models.Entity
         public string Nombre { get; set; }
 
         public string Descripcion { get; set; }
-
+        
         [Required]
         public double Porcentaje { get; set; }
 
@@ -23,7 +23,13 @@ namespace RestAPI.Models.Entity
         public string IdUsuario { get; set; }
         public User Usuario { get; set; }
 
-        // Relación uno a muchos con Notas
-        public ICollection<NotaEntity> Notas { get; set; }
+        // Relación con Asignatura
+        [ForeignKey("AsignaturaEntity")]
+        public int IdAsignatura { get; set; }
+        public AsignaturaEntity Asignatura { get; set; }
+
+        // Relación uno a uno con Nota
+        public NotaEntity Nota { get; set; }
     }
+}
 }

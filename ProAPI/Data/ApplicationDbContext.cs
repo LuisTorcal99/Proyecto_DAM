@@ -14,6 +14,24 @@ namespace RestAPI.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            // Configuración de la relación uno a muchos entre Asignatura y Notas
+            modelBuilder.Entity<AsignaturaEntity>()
+                .HasMany(a => a.Notas)
+                .WithOne(n => n.Asignatura)
+                .HasForeignKey(n => n.IdAsignatura);
+
+            // Configuración de la relación uno a muchos entre Asignatura y Eventos
+            modelBuilder.Entity<AsignaturaEntity>()
+                .HasMany(a => a.Eventos)
+                .WithOne(e => e.Asignatura)
+                .HasForeignKey(e => e.IdAsignatura);
+
+            // Configuración de la relación uno a uno entre Evento y Nota
+            modelBuilder.Entity<EventoEntity>()
+                .HasOne(e => e.Nota)
+                .WithOne(n => n.Evento)
+                .HasForeignKey<NotaEntity>(n => n.IdEvento);
+
             // Relación entre User y AppUser (Identity)
             modelBuilder.Entity<User>()
                 .HasOne(u => u.AspNetUser)
@@ -30,8 +48,8 @@ namespace RestAPI.Data
             // Relación de la Nota con el Evento
             modelBuilder.Entity<NotaEntity>()
                 .HasOne<EventoEntity>()
-                .WithMany(e => e.Notas) // Eventos tiene muchas notas
-                .HasForeignKey(n => n.IdEvento)
+                .WithOne(e => e.Nota) // Un evento tiene una nota
+                .HasForeignKey<NotaEntity>(n => n.IdEvento)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Relación de la Nota con el Usuario

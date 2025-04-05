@@ -43,10 +43,15 @@ namespace Proyecto_DAM
             services.AddTransient<PrincipalViewModel>();
             services.AddTransient<EventosViewModel>();
             services.AddTransient<AddAsignaturaViewModel>();
+            services.AddTransient<AddEventoViewModel>();
 
             //Services 
             services.AddSingleton<MainViewModel>();
             services.AddSingleton<LoginDTO>();
+            services.AddSingleton<IAsignaturaApiProvider, AsignaturaApiService>();
+            services.AddSingleton<INotaApiProvider, NotaApiService>();
+            services.AddSingleton<IEventoApiProvider, EventoApiService>();
+            services.AddSingleton<IAsignaturaApiProvider, AsignaturaApiService>();
             services.AddSingleton(typeof(IFileProvider<>), typeof(FileService<>));
             services.AddSingleton(typeof(IHttpsJsonClientProvider<>), typeof(HttpsJsonClientService<>));
 

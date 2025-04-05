@@ -12,98 +12,41 @@ using Microsoft.Extensions.DependencyInjection;
 using Proyecto_DAM.DTO;
 using Proyecto_DAM.Interfaces;
 using Proyecto_DAM.Models;
+using Proyecto_DAM.Utils;
 
 namespace Proyecto_DAM.ViewModel
 {
     public partial class PrincipalViewModel : ViewModelBase
     {
-        private readonly IAsignaturaApiProvider _asignaturasService;
-        private IHttpsJsonClientProvider<AsignaturaDTO> _httpsJsonClientProvider;
-
-        private int _currentPage = 1;
-        private readonly int _itemsPerPage = 5;
-
-        public PrincipalViewModel(IAsignaturaApiProvider asignaturasService)
-        {
-            _asignaturasService = asignaturasService;
-            DatosGridItem = new ObservableCollection<AsignaturaItemModel>();
-            PaginatedItems = new ObservableCollection<AsignaturaItemModel>();
-        }
+        private readonly IAsignaturaApiProvider _asignaturaService;
+        private readonly IHttpsJsonClientProvider<AsignaturaDTO> _httpService;
 
         [ObservableProperty]
-        private ObservableCollection<AsignaturaItemModel> _DatosGridItem;
+        private ObservableCollection<AsignaturaItemModel> _AsignaturaItems;
 
-        [ObservableProperty]
-        private ObservableCollection<AsignaturaItemModel> _PaginatedItems;
-
-
-        public int CurrentPage
+        public PrincipalViewModel(IAsignaturaApiProvider asignaturaService, IHttpsJsonClientProvider<AsignaturaDTO> httpService)
         {
-            get => _currentPage;
-            set
-            {
-                SetProperty(ref _currentPage, value);
-                RefreshPaginatedItems();
-            }
-        }
-
-        public int PageCount => (DatosGridItem.Count + _itemsPerPage - 1) / _itemsPerPage;
-
-        private void RefreshPaginatedItems()
-        {
-            PaginatedItems.Clear();
-            var items = DatosGridItem
-                .Skip((CurrentPage - 1) * _itemsPerPage)
-                .Take(_itemsPerPage)
-                .ToList();
-
-            foreach (var item in items)
-            {
-                PaginatedItems.Add(item);
-            }
-        }
-
-        [RelayCommand]
-        public void MoveToNextPage()
-        {
-            if (CurrentPage < PageCount)
-            {
-                CurrentPage++;
-            }
-        }
-
-        [RelayCommand]
-        public void MoveToPreviousPage()
-        {
-            if (CurrentPage > 1)
-            {
-                CurrentPage--;
-            }
+            _asignaturaService = asignaturaService;
+            _httpService = httpService;
+            AsignaturaItems = new ObservableCollection<AsignaturaItemModel>();
         }
 
         public override async Task LoadAsync()
         {
-            DatosGridItem.Clear();
-            try
-            {
-                var asignaturas = await _asignaturasService.GetAsignatura();
+            AsignaturaItems.Clear();
 
-                if (asignaturas != null)
+            var asignaturas = await _asignaturaService.GetAsignatura();
+
+            if (asignaturas != null)
+            {
+                foreach (var asignatura in asignaturas)
                 {
-                    foreach (var asignatura in asignaturas)
-                    {
-                        DatosGridItem.Add(AsignaturaItemModel.CreateModelFromDTO(asignatura));
-                    }
+                    AsignaturaItems.Add(AsignaturaItemModel.CreateModelFromDTO(asignatura));
                 }
-                RefreshPaginatedItems();
             }
-            catch (HttpRequestException ex)
+            else
             {
-                MessageBox.Show(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(Constantes.MSG_ERROR);
             }
         }
     }
