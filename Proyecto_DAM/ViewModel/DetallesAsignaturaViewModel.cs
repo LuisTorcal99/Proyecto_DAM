@@ -46,19 +46,54 @@ namespace Proyecto_DAM.ViewModel
                 {
                     if (evento.Nota != null)
                     {
-                        var nota = new NotaDTO
-                        {
-                            NotaValor = evento.Nota.NotaValor,
-                            IdAsignatura = Asignatura.Id,
-                            IdEvento = evento.Id,
-                            IdUsuario = App.Current.Services.GetService<LoginDTO>().Id
-                        };
+                        // Obtener las notas asociadas a los eventos
+                        var notas = await _notaService.GetNota();
 
-                        // Llamamos a la API para guardar la nota
-                        await _notaService.PostNota(nota);
-                        
-                        evento.Nota = nota; 
-                        await _eventoService.PatchEvento(evento);
+                        // Buscar si existe una nota asociada al evento con el idEvento
+                        var notaExistente = notas.FirstOrDefault(n => n.IdEvento == evento.Id);
+
+                        // Verificamos si la nota actual no coincide con la que está en el objeto evento
+                        if (notaExistente == null)
+                        {
+                            // Si la nota es NULL, se crea una nueva y se hace un POST
+                            var newNota = new NotaDTO
+                            {
+                                NotaValor = evento.Nota.NotaValor,
+                                IdAsignatura = Asignatura.Id,
+                                IdEvento = evento.Id,
+                                IdUsuario = App.Current.Services.GetService<LoginDTO>().Id
+                            };
+
+                            // Realizamos el POST para guardar la nueva nota
+                            await _notaService.PostNota(newNota);
+                            evento.Nota = newNota;
+                            await _eventoService.PatchEvento(evento);
+                        }
+                        else
+                        {
+                            var updatedNota = new NotaDTO
+                            {
+                                Id = notaExistente.Id,
+                                NotaValor = evento.Nota.NotaValor,
+                                IdAsignatura = Asignatura.Id,
+                                IdEvento = evento.Id,
+                                IdUsuario = App.Current.Services.GetService<LoginDTO>().Id
+                            };
+
+                            var newNota = new NotaDTO
+                            {
+                                NotaValor = evento.Nota.NotaValor,
+                                IdAsignatura = Asignatura.Id,
+                                IdEvento = evento.Id,
+                                IdUsuario = App.Current.Services.GetService<LoginDTO>().Id
+                            };
+
+                            // Realizamos el PATCH para actualizar la nota
+                            await _notaService.PatchNota(updatedNota);
+                            evento.Nota = newNota;
+                            await _eventoService.PatchEvento(evento);
+                            
+                        }
                     }
                 }
 
