@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace Proyecto_DAM.DTO
 {
@@ -14,16 +13,22 @@ namespace Proyecto_DAM.DTO
         [JsonPropertyName("descripcion")]
         public string Descripcion { get; set; }
 
+        [JsonPropertyName("porcentaje")]
+        public int Porcentaje { get; set; }
+
         [JsonPropertyName("fecha")]
         public DateTime Fecha { get; set; }
 
-        [JsonPropertyName("porcentaje")]
-        public double Porcentaje { get; set; }
+        [JsonPropertyName("fechaInicio")]
+        public DateTime FechaInicio { get; set; }
 
         [JsonPropertyName("idUsuario")]
         public string IdUsuario { get; set; }
 
         [JsonPropertyName("idAsignatura")]
         public int IdAsignatura { get; set; }
+
+        [JsonPropertyName("nota")]
+        public NotaDTO? Nota { get; set; }
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 
 namespace Proyecto_DAM.DTO
 {
@@ -12,13 +7,16 @@ namespace Proyecto_DAM.DTO
         [JsonPropertyName("id")]
         public int Id { get; set; }
 
-        [JsonPropertyName("calificacion")]
-        public double Calificacion { get; set; }
+        [JsonPropertyName("notaValor")]
+        public double NotaValor { get; set; }
 
         [JsonPropertyName("idAsignatura")]
         public int IdAsignatura { get; set; }
 
         [JsonPropertyName("idEvento")]
         public int IdEvento { get; set; }
+
+        [JsonPropertyName("idUsuario")]
+        public string IdUsuario { get; set; }
     }
 }
