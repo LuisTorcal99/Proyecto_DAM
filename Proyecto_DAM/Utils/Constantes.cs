@@ -38,6 +38,7 @@ namespace Proyecto_DAM.Utils
         public const string MSG_PERFECT = "Perfecto";
         public const string MSG_ERROR = "Ha ocurrido un error";
         public const string ID_ERRONEO = "Error, has introducido un id que no existe";
+        public const string ERROR_CAMPOSNUMERICO = "El campo de créditos solo acepta números";
 
         public const string ROLE_REGISTRER_ADMIN = "admin";
 

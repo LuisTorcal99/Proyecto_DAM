@@ -43,7 +43,7 @@
                          Height="35" 
                          FontSize="14"
                          FontFamily="Cascadia Code"
-                         Background="LightPink" 
+                         Background="#f1cae4" 
                          BorderThickness="0" 
                          Padding="5"/>
             </StackPanel>
@@ -59,7 +59,7 @@
                          FontSize="14"
                          FontFamily="Cascadia Code"
                          AcceptsReturn="True"
-                         Background="LightPink" 
+                         Background="#f1cae4" 
                          BorderThickness="0" 
                          Padding="5"/>
             </StackPanel>
@@ -74,7 +74,7 @@
                          Height="35" 
                          FontSize="14"
                          FontFamily="Cascadia Code"
-                         Background="LightPink" 
+                         Background="#f1cae4" 
                          BorderThickness="0" 
                          Padding="5"/>
             </StackPanel>
@@ -87,7 +87,7 @@
                     Width="120" 
                     Height="40"
                     FontFamily="Cascadia Code"
-                    Background="LightPink" 
+                    Background="#f1cae4" 
                     BorderBrush="Transparent"
                     Foreground="Black"
                     FontWeight="Bold"

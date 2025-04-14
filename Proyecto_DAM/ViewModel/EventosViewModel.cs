@@ -5,9 +5,11 @@ using System.Net.Http;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.DependencyInjection;
 using Proyecto_DAM.DTO;
 using Proyecto_DAM.Interfaces;
 using Proyecto_DAM.Models;
+using Proyecto_DAM.Utils;
 
 namespace Proyecto_DAM.ViewModel
 {
@@ -81,16 +83,28 @@ namespace Proyecto_DAM.ViewModel
             DatosGridItem.Clear();
             try
             {
-                var Eventos = await _EventosService.GetEvento();
+                var eventos = await _EventosService.GetEvento();
 
-                if (Eventos != null)
+                if (eventos?.Any() == true)
                 {
-                    foreach (var Evento in Eventos)
+                    var idUsuario = App.Current.Services.GetService<LoginDTO>().Id;
+
+                    var eventosFiltrados = eventos
+                        .Where(e => e.IdUsuario == idUsuario)
+                        .Select(e => EventoItemModel.CreateModelFromDTO(e))
+                        .ToList();
+
+                    foreach (var evento in eventosFiltrados)
                     {
-                        DatosGridItem.Add(EventoItemModel.CreateModelFromDTO(Evento));
+                        DatosGridItem.Add(evento);
                     }
+
+                    RefreshPaginatedItems();
                 }
-                RefreshPaginatedItems();
+                else
+                {
+                    MessageBox.Show(Constantes.MSG_ERROR);
+                }
             }
             catch (HttpRequestException ex)
             {

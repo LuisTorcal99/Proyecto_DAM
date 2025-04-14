@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace Proyecto_DAM.DTO
 {
@@ -23,5 +19,11 @@ namespace Proyecto_DAM.DTO
 
         [JsonPropertyName("porcentaje")]
         public double Porcentaje { get; set; }
+
+        [JsonPropertyName("idUsuario")]
+        public string IdUsuario { get; set; }
+
+        [JsonPropertyName("idAsignatura")]
+        public int IdAsignatura { get; set; }
     }
 }

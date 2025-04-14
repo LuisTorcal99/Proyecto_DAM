@@ -36,62 +36,80 @@
             <!-- Nombre -->
             <StackPanel>
                 <TextBlock Text="Nombre:" 
-                           FontFamily="Cascadia Code" 
-                           FontSize="14" 
-                           Foreground="Black"/>
+                   FontFamily="Cascadia Code" 
+                   FontSize="14" 
+                   Foreground="Black"/>
                 <TextBox Text="{Binding Nombre, UpdateSourceTrigger=PropertyChanged}" 
-                         Height="35" 
-                         FontSize="14"
-                         FontFamily="Cascadia Code"
-                         Background="LightPink" 
-                         BorderThickness="0" 
-                         Padding="5"/>
+                 Height="35" 
+                 FontSize="14"
+                 FontFamily="Cascadia Code"
+                 Background="#f1cae4" 
+                 BorderThickness="0" 
+                 Padding="5"/>
             </StackPanel>
+
+            <!-- Asignatura -->
+            <StackPanel>
+                <TextBlock Text="Asignatura:" 
+               FontFamily="Cascadia Code" 
+               FontSize="14" 
+               Foreground="Black"/>
+                <ComboBox ItemsSource="{Binding Asignaturas}"
+              SelectedItem="{Binding AsignaturaSeleccionada, Mode=TwoWay}"
+              DisplayMemberPath="Nombre"
+              Height="35" 
+              FontSize="14"
+              FontFamily="Cascadia Code"
+              Background="#f1cae4" 
+              BorderThickness="0" 
+              Padding="5"/>
+            </StackPanel>
+
 
             <!-- Descripción -->
             <StackPanel>
                 <TextBlock Text="Descripción:" 
-                           FontFamily="Cascadia Code" 
-                           FontSize="14" 
-                           Foreground="Black"/>
+                   FontFamily="Cascadia Code" 
+                   FontSize="14" 
+                   Foreground="Black"/>
                 <TextBox Text="{Binding Descripcion, UpdateSourceTrigger=PropertyChanged}" 
-                         Height="80" 
-                         FontSize="14"
-                         FontFamily="Cascadia Code"
-                         AcceptsReturn="True"
-                         Background="LightPink" 
-                         BorderThickness="0" 
-                         Padding="5"/>
+                 Height="80" 
+                 FontSize="14"
+                 FontFamily="Cascadia Code"
+                 AcceptsReturn="True"
+                 Background="#f1cae4" 
+                 BorderThickness="0" 
+                 Padding="5"/>
             </StackPanel>
 
             <!-- Porcentaje -->
             <StackPanel>
                 <TextBlock Text="Porcentaje (%):" 
-                           FontFamily="Cascadia Code" 
-                           FontSize="14" 
-                           Foreground="Black"/>
+                   FontFamily="Cascadia Code" 
+                   FontSize="14" 
+                   Foreground="Black"/>
                 <TextBox Text="{Binding Porcentaje, UpdateSourceTrigger=PropertyChanged}" 
-                         Height="35" 
-                         FontSize="14"
-                         FontFamily="Cascadia Code"
-                         Background="LightPink" 
-                         BorderThickness="0" 
-                         Padding="5"/>
+                 Height="35" 
+                 FontSize="14"
+                 FontFamily="Cascadia Code"
+                 Background="#f1cae4" 
+                 BorderThickness="0" 
+                 Padding="5"/>
             </StackPanel>
 
             <!-- Fecha -->
             <StackPanel>
                 <TextBlock Text="Fecha:" 
-                           FontFamily="Cascadia Code" 
-                           FontSize="14" 
-                           Foreground="Black"/>
+                   FontFamily="Cascadia Code" 
+                   FontSize="14" 
+                   Foreground="Black"/>
                 <DatePicker SelectedDate="{Binding Fecha, UpdateSourceTrigger=PropertyChanged}" 
-                            Height="35"
-                            FontSize="14"
-                            FontFamily="Cascadia Code"
-                            Background="LightPink"
-                            BorderThickness="0"
-                            Padding="5"/>
+                    Height="35"
+                    FontSize="14"
+                    FontFamily="Cascadia Code"
+                    Background="#f1cae4"
+                    BorderThickness="0"
+                    Padding="5"/>
             </StackPanel>
         </StackPanel>
 
@@ -102,7 +120,7 @@
                     Width="120" 
                     Height="40"
                     FontFamily="Cascadia Code"
-                    Background="LightPink" 
+                    Background="#f1cae4" 
                     BorderBrush="Transparent"
                     Foreground="Black"
                     FontWeight="Bold"

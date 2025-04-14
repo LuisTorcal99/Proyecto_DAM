@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
+using Proyecto_DAM.DTO;
+using Proyecto_DAM.Interfaces;
 using Proyecto_DAM.Service;
 using Proyecto_DAM.View;
 using Proyecto_DAM.ViewModel;
@@ -70,7 +72,10 @@ namespace Proyecto_DAM.ViewModel
         [RelayCommand]
         public void AddAsignatura()
         {
-            var viewModel = new AddAsignaturaViewModel();
+            var clientProvider = new HttpsJsonClientService<AsignaturaDTO>();
+            var apiProvider = new AsignaturaApiService(clientProvider);
+            var viewModel = new AddAsignaturaViewModel(apiProvider);
+
             var view = new AddAsignaturaView();
             view.DataContext = viewModel;
             view.ShowDialog();
@@ -79,7 +84,10 @@ namespace Proyecto_DAM.ViewModel
         [RelayCommand]
         public void AddEvento()
         {
-            var viewModel = new AddEventoViewModel();
+            var clientProvider = new HttpsJsonClientService<EventoDTO>();
+            var apiProvider = new EventoApiService(clientProvider);
+            var viewModel = new AddEventoViewModel(apiProvider);
+
             var view = new AddEventoView();
             view.DataContext = viewModel;
             view.ShowDialog();

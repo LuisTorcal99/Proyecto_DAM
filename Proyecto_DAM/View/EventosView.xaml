@@ -13,7 +13,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
-            <RowDefinition Height="8*"/>
+            <RowDefinition Height="7*"/>
             <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
         
@@ -35,15 +35,15 @@
             ColumnWidth="*"
             ScrollViewer.VerticalScrollBarVisibility="Auto"
             ScrollViewer.HorizontalScrollBarVisibility="Auto"
-            Background="LightPink"
+            Background="#f1cae4"
             Foreground="Black"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch" />
 
         <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
-            <Button Content="Previous" Command="{Binding MoveToPreviousPageCommand}" Width="120" Height="40" Margin="5" Background="LightPink" FontFamily="Cascadia Code"/>
+            <Button Content="Previous" Command="{Binding MoveToPreviousPageCommand}" Width="120" Height="40" Margin="5" Background="#f1cae4" FontFamily="Cascadia Code"/>
             <TextBlock Text="{Binding CurrentPage}" VerticalAlignment="Center" Margin="10" FontSize="16" FontWeight="Bold" Foreground="Black"/>
-            <Button Content="Next" Command="{Binding MoveToNextPageCommand}" Width="120" Height="40" Margin="5" Background="LightPink" FontFamily="Cascadia Code"/>
+            <Button Content="Next" Command="{Binding MoveToNextPageCommand}" Width="120" Height="40" Margin="5" Background="#f1cae4" FontFamily="Cascadia Code"/>
         </StackPanel>
     </Grid>
 </UserControl>
