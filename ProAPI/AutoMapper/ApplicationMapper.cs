@@ -19,6 +19,7 @@ namespace RestAPI.AutoMapper
             CreateMap<CreateAsignaturaDTO, AsignaturaEntity>().ReverseMap();
             CreateMap<EventoEntity, EventoDTO>().ReverseMap();
             CreateMap<CreateEventoDTO, EventoEntity>().ReverseMap();
+            CreateMap<User, User>().ReverseMap();
         }
     }
 }

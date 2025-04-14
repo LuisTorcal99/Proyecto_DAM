@@ -14,7 +14,7 @@ namespace RestAPI.Models.Entity
 
         public int Creditos { get; set; }
 
-        public int IdUsuario { get; set; }
+        public string IdUsuario { get; set; }
         public User Usuario { get; set; }
 
         public ICollection<NotaEntity> Notas { get; set; }

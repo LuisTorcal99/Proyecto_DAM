@@ -59,7 +59,7 @@ namespace Proyecto_DAM.ViewModel
             try
             {
                 RegistroDTO UsuarioRegistrado = new RegistroDTO(
-                    Username, Username, Email, Password, Constantes.ROLE_REGISTRER_WPF
+                    Username, Username, Email, Password, Constantes.ROLE_REGISTRER_ADMIN
                 );
 
                 UserDTO user = await _httpJsonProvider.RegisterPostAsync(Constantes.REGISTER_PATH, UsuarioRegistrado);

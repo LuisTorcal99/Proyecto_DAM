@@ -12,11 +12,19 @@
              Background="White">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
             <RowDefinition Height="8*"/>
             <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
+        
+        <Label Content="Eventos:" 
+               FontFamily="Cascadia Code" 
+               FontSize="18" 
+               Foreground="#2C3E50" 
+               Margin="25,10,0,5" />
 
         <ui:DataGrid 
+            Grid.Row="1"
             ItemsSource="{Binding PaginatedItems}" 
             AutoGenerateColumns="True" 
             IsReadOnly="True"
@@ -32,7 +40,7 @@
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch" />
 
-        <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Margin="10">
+        <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
             <Button Content="Previous" Command="{Binding MoveToPreviousPageCommand}" Width="120" Height="40" Margin="5" Background="LightPink" FontFamily="Cascadia Code"/>
             <TextBlock Text="{Binding CurrentPage}" VerticalAlignment="Center" Margin="10" FontSize="16" FontWeight="Bold" Foreground="Black"/>
             <Button Content="Next" Command="{Binding MoveToNextPageCommand}" Width="120" Height="40" Margin="5" Background="LightPink" FontFamily="Cascadia Code"/>

@@ -52,6 +52,7 @@ namespace Proyecto_DAM
             services.AddSingleton<INotaApiProvider, NotaApiService>();
             services.AddSingleton<IEventoApiProvider, EventoApiService>();
             services.AddSingleton<IAsignaturaApiProvider, AsignaturaApiService>();
+            services.AddSingleton<IUserApiProvider, UserApiService>();
             services.AddSingleton(typeof(IFileProvider<>), typeof(FileService<>));
             services.AddSingleton(typeof(IHttpsJsonClientProvider<>), typeof(HttpsJsonClientService<>));
 

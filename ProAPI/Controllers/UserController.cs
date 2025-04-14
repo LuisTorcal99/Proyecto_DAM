@@ -5,6 +5,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using RestAPI.Models.Entity;
 
 namespace RestAPI.Controllers
 {
@@ -20,6 +21,16 @@ namespace RestAPI.Controllers
             _userRepository = userRepository;
             _reponseApi = new ResponseApi();
             _mapper = mapper;
+        }
+
+        [Authorize(Roles = "admin")]
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        {
+            var users = await _userRepository.GetUsers();
+            return Ok(users);
         }
 
         [AllowAnonymous]

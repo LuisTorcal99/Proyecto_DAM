@@ -13,7 +13,7 @@ namespace RestAPI.Models.Entity
         public DateTime FechaInicio { get; set; }
 
         // Relación con el usuario
-        public int IdUsuario { get; set; }
+        public string IdUsuario { get; set; }
         public User Usuario { get; set; }
 
         // Relación con la asignatura

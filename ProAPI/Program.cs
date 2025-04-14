@@ -23,6 +23,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAsignaturaRepository, AsignaturaRepository>();
 builder.Services.AddScoped<INotaRepository, NotasRepository>();
 builder.Services.AddScoped<IEventoRepository, EventoRepository>();
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddAutoMapper(typeof(ApplicationMapper));
 //Logger setup
 builder.Logging.ClearProviders();

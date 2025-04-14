@@ -63,10 +63,6 @@ namespace RestAPI.Data
               .WithOne()
               .HasForeignKey<User>(u => u.AspNetUserId)
               .OnDelete(DeleteBehavior.Restrict);
-
-            // ALTER TABLE ProyectoDAM.dbo.AspNetUsers DROP CONSTRAINT FK_AspNetUsers_Users_UserId;
-            // DROP TABLE ProyectoDAM.dbo.AspNetUsers;
-            // DROP TABLE ProyectoDAM.dbo.Users;
         }
 
         // DbSets para cada entidad

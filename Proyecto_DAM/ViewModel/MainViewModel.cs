@@ -77,7 +77,7 @@ namespace Proyecto_DAM.ViewModel
         }
 
         [RelayCommand]
-        public void AddAEvento()
+        public void AddEvento()
         {
             var viewModel = new AddEventoViewModel();
             var view = new AddEventoView();

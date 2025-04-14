@@ -161,8 +161,7 @@ namespace RestAPI.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -189,7 +188,7 @@ namespace RestAPI.Migrations
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Creditos = table.Column<int>(type: "int", nullable: false),
-                    IdUsuario = table.Column<int>(type: "int", nullable: false)
+                    IdUsuario = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -213,7 +212,7 @@ namespace RestAPI.Migrations
                     Porcentaje = table.Column<double>(type: "float", nullable: false),
                     Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
                     FechaInicio = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IdUsuario = table.Column<int>(type: "int", nullable: false),
+                    IdUsuario = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     IdAsignatura = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -242,7 +241,7 @@ namespace RestAPI.Migrations
                     NotaValor = table.Column<int>(type: "int", nullable: false),
                     IdAsignatura = table.Column<int>(type: "int", nullable: false),
                     IdEvento = table.Column<int>(type: "int", nullable: false),
-                    IdUsuario = table.Column<int>(type: "int", nullable: false)
+                    IdUsuario = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {

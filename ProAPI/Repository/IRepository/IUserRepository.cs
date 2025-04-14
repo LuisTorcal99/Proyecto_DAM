@@ -5,8 +5,7 @@ namespace RestAPI.Repository.IRepository
 {
     public interface IUserRepository
     {
-        ICollection<AppUser> GetUsers();
-        AppUser GetUser(string id);
+        Task<ICollection<UserDto>> GetUsers();
         bool IsUniqueUser(string userName);
         Task<UserLoginResponseDto> Login(UserLoginDto userLoginDto);
         Task<UserLoginResponseDto> Register(UserRegistrationDto userRegistrationDto);

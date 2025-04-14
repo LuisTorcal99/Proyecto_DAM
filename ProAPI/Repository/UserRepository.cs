@@ -31,14 +31,25 @@ namespace RestAPI.Repository
             _mapper = mapper;
         }
 
-        public AppUser GetUser(string id)
+        public async Task<ICollection<UserDto>> GetUsers()
         {
-            return _context.AppUsers.FirstOrDefault(user => user.Id == id);
-        }
+            var users = _context.AppUsers.OrderBy(user => user.Email).ToList();
+            var userDtos = new List<UserDto>();
 
-        public ICollection<AppUser> GetUsers()
-        {
-            return _context.AppUsers.OrderBy(user => user.Email).ToList();
+            foreach (var user in users)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                userDtos.Add(new UserDto
+                {
+                    Id = user.Id,
+                    Name = user.Name,
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    Role = roles.FirstOrDefault()
+                });
+            }
+
+            return userDtos;
         }
 
         public bool IsUniqueUser(string email)

@@ -17,7 +17,8 @@ namespace Proyecto_DAM.Utils
 
         public const string BASE_URL = "http://localhost:7000/api/";
         public const string LOGIN_PATH = "users/login";
-        public const string USERS_PATH = "users";
+        public const string USERS_PATH = "users"; 
+        public const string USUARIO_PATH = "Usuario";
         public const string REGISTER_PATH = "users/register";
         public const string ASIGNATURA_PATH = "Asignatura";
         public const string EVENTO_PATH = "Evento";
@@ -39,8 +40,6 @@ namespace Proyecto_DAM.Utils
         public const string ID_ERRONEO = "Error, has introducido un id que no existe";
 
         public const string ROLE_REGISTRER_ADMIN = "admin";
-        public const string ROLE_REGISTRER_USER = "user";
-        public const string ROLE_REGISTRER_WPF = "WPF_User";
 
         public const string USERNAME = "admin";
         public const string EMAIL = "admin@gmail.com";
@@ -49,10 +48,5 @@ namespace Proyecto_DAM.Utils
         public const string RESOURCES_PATH = "/Resources/";
         public const string IMAGES_EXTENSION = ".jpg";
         public const string PATH_IMAGE_NOT_FOUND = "Not_found.png";
-        public static List<string> PLANETAS_POSIBLES = new List<string>()
-        {
-            "Planet_1.jpg",
-            "Planet_2.jpg"
-        };
     }
 }
