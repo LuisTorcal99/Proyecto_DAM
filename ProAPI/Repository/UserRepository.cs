@@ -38,12 +38,12 @@ namespace RestAPI.Repository
 
         public ICollection<AppUser> GetUsers()
         {
-            return _context.AppUsers.OrderBy(user => user.UserName).ToList();
+            return _context.AppUsers.OrderBy(user => user.Email).ToList();
         }
 
-        public bool IsUniqueUser(string userName)
+        public bool IsUniqueUser(string email)
         {
-            return !_context.AppUsers.Any(user => user.UserName == userName);
+            return !_context.AppUsers.Any(user => user.Email == email);
         }
 
         public async Task<UserLoginResponseDto> Login(UserLoginDto userLoginDto)
@@ -112,11 +112,24 @@ namespace RestAPI.Repository
                 await _roleManager.CreateAsync(new IdentityRole("register"));
             }
             await _userManager.AddToRoleAsync(user, "admin");
-            AppUser? newUser = _context.AppUsers.FirstOrDefault(u => u.UserName == userRegistrationDto.UserName);
+
+            //AppUser? newUser = _context.AppUsers.FirstOrDefault(u => u.UserName == userRegistrationDto.UserName);
+
+            var newUser = new User
+            {
+                Name = userRegistrationDto.Name,
+                Email = userRegistrationDto.Email,
+                Password = userRegistrationDto.Password, 
+                Rol = userRegistrationDto.Role,
+                AspNetUserId = user.Id 
+            };
+
+            _context.Users.Add(newUser);
+            await _context.SaveChangesAsync();
 
             return new UserLoginResponseDto
             {
-                User = newUser
+                User = user
             };
         }
     }

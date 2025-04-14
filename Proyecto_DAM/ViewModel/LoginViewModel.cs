@@ -21,7 +21,7 @@ namespace Proyecto_DAM.ViewModel
     public partial class LoginViewModel : ViewModelBase
     {
         [ObservableProperty]
-        public string _Username;
+        public string _Email;
 
         [ObservableProperty]
         public string _Password;
@@ -32,14 +32,14 @@ namespace Proyecto_DAM.ViewModel
         {
             _httpJsonProvider = httpJsonProvider;
             CrearAdmin();
-            Username = Constantes.USERNAME;
+            Email = Constantes.EMAIL;
             Password = Constantes.PASSWORD;
         }
 
         [RelayCommand]
         private async Task Login()
         {
-            App.Current.Services.GetService<LoginDTO>().Username = Username;
+            App.Current.Services.GetService<LoginDTO>().Email = Email;
             App.Current.Services.GetService<LoginDTO>().Password = Password;
 
             try
@@ -87,7 +87,7 @@ namespace Proyecto_DAM.ViewModel
                 Constantes.PASSWORD,
                 Constantes.ROLE_REGISTRER_ADMIN
             );
-            await _httpJsonProvider.RegisterPostAsync(Constantes.REGISTER_PATH,admin);
+            await _httpJsonProvider.RegisterPostAsync(Constantes.REGISTER_PATH, admin);
         }
 
         public override Task LoadAsync()

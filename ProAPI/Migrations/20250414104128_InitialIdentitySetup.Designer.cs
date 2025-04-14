@@ -12,7 +12,7 @@ using RestAPI.Data;
 namespace RestAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250405182044_InitialIdentitySetup")]
+    [Migration("20250414104128_InitialIdentitySetup")]
     partial class InitialIdentitySetup
     {
         /// <inheritdoc />
@@ -353,6 +353,10 @@ namespace RestAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Rol")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AspNetUserId")
@@ -472,18 +476,12 @@ namespace RestAPI.Migrations
             modelBuilder.Entity("RestAPI.Models.Entity.User", b =>
                 {
                     b.HasOne("RestAPI.Models.Entity.AppUser", "AspNetUser")
-                        .WithOne("User")
+                        .WithOne()
                         .HasForeignKey("RestAPI.Models.Entity.User", "AspNetUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("AspNetUser");
-                });
-
-            modelBuilder.Entity("RestAPI.Models.Entity.AppUser", b =>
-                {
-                    b.Navigation("User")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("RestAPI.Models.Entity.AsignaturaEntity", b =>

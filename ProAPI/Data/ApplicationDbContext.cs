@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using System.Data;
+using System.Diagnostics.Metrics;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using RestAPI.Models.Entity;
 
@@ -32,14 +34,14 @@ namespace RestAPI.Data
                 .HasOne(e => e.Nota)
                 .WithOne(n => n.Evento)
                 .HasForeignKey<NotaEntity>(n => n.IdEvento)
-                .OnDelete(DeleteBehavior.Restrict); // Evitar el ciclo de eliminación
+                .OnDelete(DeleteBehavior.Restrict); 
 
             // Relación entre Usuario y Asignatura (uno a muchos)
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Asignaturas)
                 .WithOne(a => a.Usuario)
                 .HasForeignKey(a => a.IdUsuario)
-                .OnDelete(DeleteBehavior.Restrict); // Evitar el ciclo de eliminación
+                .OnDelete(DeleteBehavior.Restrict); 
 
             // Relación entre Usuario y Evento (uno a muchos)
             modelBuilder.Entity<User>()
@@ -54,6 +56,17 @@ namespace RestAPI.Data
                 .WithOne(n => n.Usuario)
                 .HasForeignKey(n => n.IdUsuario)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // Relación entre Usuario y AppUser (uno a uno)
+            modelBuilder.Entity<User>()
+              .HasOne(u => u.AspNetUser)
+              .WithOne()
+              .HasForeignKey<User>(u => u.AspNetUserId)
+              .OnDelete(DeleteBehavior.Restrict);
+
+            // ALTER TABLE ProyectoDAM.dbo.AspNetUsers DROP CONSTRAINT FK_AspNetUsers_Users_UserId;
+            // DROP TABLE ProyectoDAM.dbo.AspNetUsers;
+            // DROP TABLE ProyectoDAM.dbo.Users;
         }
 
         // DbSets para cada entidad
