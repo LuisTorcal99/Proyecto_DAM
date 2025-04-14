@@ -92,7 +92,7 @@ namespace Proyecto_DAM.ViewModel
                             await _notaService.PatchNota(updatedNota);
                             evento.Nota = newNota;
                             await _eventoService.PatchEvento(evento);
-                            
+
                         }
                     }
                 }
@@ -106,7 +106,31 @@ namespace Proyecto_DAM.ViewModel
         }
 
         [RelayCommand]
-        public async Task Borrar()
+        public async Task Borrar(EventoDTO evento)
+        {
+            if (evento == null) return;
+
+            var result = MessageBox.Show($"¿Estás seguro de que quieres borrar el evento \"{evento.Nombre}\"?",
+                                         "Confirmar eliminación", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    await _eventoService.DeleteEvento(evento.Id.ToString());
+                    Asignatura?.Eventos?.Remove(evento);
+                    MessageBox.Show("Evento eliminado correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error al eliminar el evento: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+
+        [RelayCommand]
+        public async Task EliminarAsignatura()
         {
             if (Asignatura == null) return;
 
@@ -141,20 +165,30 @@ namespace Proyecto_DAM.ViewModel
                 if (Asignatura != null)
                 {
                     var eventos = await _eventoService.GetEvento();
-                    var eventosAsignatura = eventos.Where(e => e.IdAsignatura == Asignatura.Id).ToList();
+                    var notas = await _notaService.GetNota();
 
-                    // Asegurar que cada evento tenga su nota asociada
+                    var idUsuario = App.Current.Services.GetService<LoginDTO>().Id;
+
+                    var eventosAsignatura = eventos
+                        .Where(e => e.IdAsignatura == Asignatura.Id)
+                        .ToList();
+
                     foreach (var evento in eventosAsignatura)
                     {
-                        // Si el evento no tiene una nota, se crea una nueva con valor 0
-                        if (evento.Nota == null)
+                        var nota = notas.FirstOrDefault(n => n.IdEvento == evento.Id && n.IdUsuario == idUsuario);
+
+                        if (nota != null)
+                        {
+                            evento.Nota = nota;
+                        }
+                        else
                         {
                             evento.Nota = new NotaDTO
                             {
                                 NotaValor = 0,
                                 IdEvento = evento.Id,
                                 IdAsignatura = Asignatura.Id,
-                                IdUsuario = App.Current.Services.GetService<LoginDTO>().Id
+                                IdUsuario = idUsuario
                             };
                         }
                     }

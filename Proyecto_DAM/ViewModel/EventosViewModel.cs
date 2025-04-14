@@ -90,8 +90,9 @@ namespace Proyecto_DAM.ViewModel
                     var idUsuario = App.Current.Services.GetService<LoginDTO>().Id;
 
                     var eventosFiltrados = eventos
-                        .Where(e => e.IdUsuario == idUsuario)
+                        .Where(e => e.IdUsuario == idUsuario && e.Fecha > DateTime.Now) 
                         .Select(e => EventoItemModel.CreateModelFromDTO(e))
+                        .OrderBy(e => e.Fecha)
                         .ToList();
 
                     foreach (var evento in eventosFiltrados)

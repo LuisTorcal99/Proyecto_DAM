@@ -65,7 +65,7 @@
                 <Menu FontSize="15" Background="Transparent"
                       Visibility="{Binding IsMenuVisible, Converter={StaticResource BoolToVisConverter}}"
                       Grid.Column="2">
-                    <MenuItem Header="_Logout" Foreground="Red" FontFamily="Cascadia Code"
+                    <MenuItem Header="_Logout" Foreground="#f44336" FontFamily="Cascadia Code"
                               Command="{Binding SelectViewModelCommand}"
                               CommandParameter="{Binding DataContext.LoginViewModel, RelativeSource={RelativeSource AncestorType=Window}}"/>
                 </Menu>

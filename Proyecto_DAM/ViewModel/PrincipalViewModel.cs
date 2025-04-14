@@ -20,6 +20,8 @@ namespace Proyecto_DAM.ViewModel
     public partial class PrincipalViewModel : ViewModelBase
     {
         private readonly IAsignaturaApiProvider _asignaturaService;
+        private readonly IEventoApiProvider _eventoService;
+        private readonly INotaApiProvider _notaService;
         private readonly IHttpsJsonClientProvider<AsignaturaDTO> _httpService;
         private readonly IServiceProvider _serviceProvider;
 
@@ -27,12 +29,14 @@ namespace Proyecto_DAM.ViewModel
         private ObservableCollection<AsignaturaItemModel> _AsignaturaItem;
 
         public PrincipalViewModel(IAsignaturaApiProvider asignaturaService, IHttpsJsonClientProvider<AsignaturaDTO> httpService,
-                        IServiceProvider serviceProvider)
+                        IServiceProvider serviceProvider, IEventoApiProvider eventoApiProvider, INotaApiProvider notaApiProvider)
         {
             _asignaturaService = asignaturaService;
             _httpService = httpService;
             AsignaturaItem = new ObservableCollection<AsignaturaItemModel>();
             _serviceProvider = serviceProvider;
+            _eventoService = eventoApiProvider;
+            _notaService = notaApiProvider;
         }
 
         [RelayCommand]
@@ -59,12 +63,19 @@ namespace Proyecto_DAM.ViewModel
                 {
                     var asignaturasFiltradas = asignaturas
                         .Where(a => a.IdUsuario.Equals(App.Current.Services.GetService<LoginDTO>().Id))
-                        .Select(a => AsignaturaItemModel.CreateModelFromDTO(a))
                         .ToList();
 
-                    foreach (var asignatura in asignaturasFiltradas)
+                    foreach (var dto in asignaturasFiltradas)
                     {
-                        AsignaturaItem.Add(asignatura);
+                        var model = AsignaturaItemModel.CreateModelFromDTO(dto);
+
+                        var eventos = await _eventoService.GetEvento();
+                        var notas = await _notaService.GetNota();
+
+                        model.TotalEventos = eventos.Count(e => e.IdAsignatura == model.Id);
+                        model.TotalNotas = notas.Count(n => n.IdAsignatura == model.Id);
+
+                        AsignaturaItem.Add(model);
                     }
                 }
                 else

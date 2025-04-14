@@ -15,7 +15,6 @@
             <Label Content="Asignaturas:" 
                    FontFamily="Cascadia Code" 
                    FontSize="18" 
-                   Foreground="#2C3E50" 
                    Margin="0,0,0,10" />
             <ItemsControl ItemsSource="{Binding AsignaturaItem}">
                 <ItemsControl.ItemsPanel>
@@ -26,13 +25,10 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Button Command="{Binding DataContext.ItemClickCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                        CommandParameter="{Binding Id}">
-                            <Border Margin="5" Padding="10" BorderThickness="1" BorderBrush="#BDC3C7" Background="#ECF0F1" CornerRadius="8">
+                                CommandParameter="{Binding Id}" FontFamily="Cascadia Code"
+                                Background="Transparent" BorderThickness="0">
+                            <Border Margin="5" Padding="10" BorderThickness="1" BorderBrush="#BDC3C7" Background="#F1CAE4" CornerRadius="8">
                                 <StackPanel>
-                                    <StackPanel Orientation="Horizontal" Margin="5">
-                                        <Label Content="ID:" VerticalAlignment="Center" Width="60" HorizontalAlignment="Right" FontSize="10" Foreground="#34495E"/>
-                                        <TextBlock Text="{Binding Id}" FontSize="16" VerticalAlignment="Center" Foreground="Black" Margin="10,0"/>
-                                    </StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="5">
                                         <Label Content="Nombre:" VerticalAlignment="Center" Width="60" HorizontalAlignment="Right" FontSize="10" Foreground="#34495E"/>
                                         <TextBlock Text="{Binding Nombre}" FontSize="16" VerticalAlignment="Center" Foreground="Black" Margin="10,0"/>
@@ -44,6 +40,10 @@
                                     <StackPanel Orientation="Horizontal" Margin="5">
                                         <Label Content="Créditos:" VerticalAlignment="Center" Width="90" HorizontalAlignment="Right" FontSize="10" Foreground="#34495E"/>
                                         <TextBlock Text="{Binding Creditos}" FontSize="16" VerticalAlignment="Center" Foreground="Black" Margin="10,0"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="5">
+                                        <Label Content="Total Eventos:" VerticalAlignment="Center" Width="90" HorizontalAlignment="Right" FontSize="10" Foreground="#34495E"/>
+                                        <TextBlock Text="{Binding TotalEventos}" FontSize="16" VerticalAlignment="Center" Foreground="Black" Margin="10,0"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="5">
                                         <Label Content="Total Notas:" VerticalAlignment="Center" Width="90" HorizontalAlignment="Right" FontSize="10" Foreground="#34495E"/>

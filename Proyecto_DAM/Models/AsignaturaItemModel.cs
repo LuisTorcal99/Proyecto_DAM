@@ -14,6 +14,7 @@ namespace Proyecto_DAM.Models
         public int Id { get; set; }
         public string Descripcion { get; set; }
         public int Creditos { get; set; }
+        public int TotalEventos { get; set; }
         public int TotalNotas { get; set; }
 
         public static AsignaturaItemModel CreateModelFromDTO(AsignaturaDTO asignaturaDTO)
@@ -24,7 +25,8 @@ namespace Proyecto_DAM.Models
                 Id = asignaturaDTO.Id,
                 Descripcion = asignaturaDTO.Descripcion,
                 Creditos = asignaturaDTO.Creditos,
-                TotalNotas = asignaturaDTO.Notas?.Count ?? 0,
+                TotalEventos = 0,
+                TotalNotas = 0
             };
         }
     }

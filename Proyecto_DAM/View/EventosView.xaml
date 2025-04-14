@@ -16,19 +16,18 @@
             <RowDefinition Height="7*"/>
             <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
-        
+
         <Label Content="Eventos:" 
                FontFamily="Cascadia Code" 
                FontSize="18" 
-               Foreground="#2C3E50" 
                Margin="25,10,0,5" />
 
         <ui:DataGrid 
             Grid.Row="1"
             ItemsSource="{Binding PaginatedItems}" 
-            AutoGenerateColumns="True" 
             IsReadOnly="True"
             CanUserResizeColumns="True"
+            AutoGenerateColumns="False"
             CanUserResizeRows="False"
             MinRowHeight="25"
             Margin="25"
@@ -38,7 +37,23 @@
             Background="#f1cae4"
             Foreground="Black"
             HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch" />
+            VerticalAlignment="Stretch" 
+            FontFamily="Cascadia Code">
+            
+            <ui:DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Background" Value="{Binding BackgroundColor}"/>
+                </Style>
+            </ui:DataGrid.RowStyle>
+
+            <ui:DataGrid.Columns>
+                <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" Width="*" />
+                <DataGridTextColumn Header="Descripcion" Binding="{Binding Descripcion}" Width="*" />
+                <DataGridTextColumn Header="Fecha" Binding="{Binding Fecha}" Width="*" />
+                <DataGridTextColumn Header="Porcentaje" Binding="{Binding Porcentaje}" Width="*" />
+            </ui:DataGrid.Columns>
+
+        </ui:DataGrid>
 
         <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
             <Button Content="Previous" Command="{Binding MoveToPreviousPageCommand}" Width="120" Height="40" Margin="5" Background="#f1cae4" FontFamily="Cascadia Code"/>
