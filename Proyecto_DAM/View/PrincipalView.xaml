@@ -30,7 +30,7 @@
                             <Border Margin="5" Padding="10" BorderThickness="1" BorderBrush="#BDC3C7" Background="#ECF0F1" CornerRadius="8">
                                 <StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="5">
-                                        <Label Content="Id:" VerticalAlignment="Center" Width="60" HorizontalAlignment="Right" FontSize="10" Foreground="#34495E"/>
+                                        <Label Content="ID:" VerticalAlignment="Center" Width="60" HorizontalAlignment="Right" FontSize="10" Foreground="#34495E"/>
                                         <TextBlock Text="{Binding Id}" FontSize="16" VerticalAlignment="Center" Foreground="Black" Margin="10,0"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="5">
@@ -40,6 +40,10 @@
                                     <StackPanel Orientation="Horizontal" Margin="5">
                                         <Label Content="Descripción:" VerticalAlignment="Center" Width="90" HorizontalAlignment="Right" FontSize="10" Foreground="#34495E"/>
                                         <TextBlock Text="{Binding Descripcion}" FontSize="16" VerticalAlignment="Center" Foreground="Black" Margin="10,0"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="5">
+                                        <Label Content="Créditos:" VerticalAlignment="Center" Width="90" HorizontalAlignment="Right" FontSize="10" Foreground="#34495E"/>
+                                        <TextBlock Text="{Binding Creditos}" FontSize="16" VerticalAlignment="Center" Foreground="Black" Margin="10,0"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="5">
                                         <Label Content="Total Notas:" VerticalAlignment="Center" Width="90" HorizontalAlignment="Right" FontSize="10" Foreground="#34495E"/>

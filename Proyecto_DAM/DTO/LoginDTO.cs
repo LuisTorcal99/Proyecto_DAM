@@ -17,6 +17,7 @@ namespace Proyecto_DAM.DTO
         [JsonPropertyName("password")]
         public string Password { get; set; }
         public string Token { get; set; }
+        public string Id { get; set; }
 
         public LoginDTO(string user, string password)
         {

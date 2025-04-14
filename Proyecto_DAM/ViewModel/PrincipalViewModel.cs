@@ -22,31 +22,43 @@ namespace Proyecto_DAM.ViewModel
         private readonly IHttpsJsonClientProvider<AsignaturaDTO> _httpService;
 
         [ObservableProperty]
-        private ObservableCollection<AsignaturaItemModel> _AsignaturaItems;
+        private ObservableCollection<AsignaturaItemModel> _AsignaturaItem;
 
         public PrincipalViewModel(IAsignaturaApiProvider asignaturaService, IHttpsJsonClientProvider<AsignaturaDTO> httpService)
         {
             _asignaturaService = asignaturaService;
             _httpService = httpService;
-            AsignaturaItems = new ObservableCollection<AsignaturaItemModel>();
+            AsignaturaItem = new ObservableCollection<AsignaturaItemModel>();
         }
 
         public override async Task LoadAsync()
         {
-            AsignaturaItems.Clear();
+            AsignaturaItem.Clear();
 
-            var asignaturas = await _asignaturaService.GetAsignatura();
-
-            if (asignaturas != null)
+            try
             {
-                foreach (var asignatura in asignaturas)
+                var asignaturas = await _asignaturaService.GetAsignatura();
+
+                if (asignaturas?.Any() == true)
                 {
-                    AsignaturaItems.Add(AsignaturaItemModel.CreateModelFromDTO(asignatura));
+                    var asignaturasFiltradas = asignaturas
+                        .Where(a => a.IdUsuario.Equals(App.Current.Services.GetService<LoginDTO>().Id))
+                        .Select(a => AsignaturaItemModel.CreateModelFromDTO(a))
+                        .ToList();
+
+                    foreach (var asignatura in asignaturasFiltradas)
+                    {
+                        AsignaturaItem.Add(asignatura);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(Constantes.MSG_ERROR);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show(Constantes.MSG_ERROR);
+                MessageBox.Show($"Error al cargar asignaturas: {ex.Message}");
             }
         }
     }

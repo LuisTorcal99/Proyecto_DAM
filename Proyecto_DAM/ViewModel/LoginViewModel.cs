@@ -27,10 +27,12 @@ namespace Proyecto_DAM.ViewModel
         public string _Password;
 
         private readonly IHttpsJsonClientProvider<UserDTO> _httpJsonProvider;
+        private readonly IUserApiProvider _UsuarioService;
 
-        public LoginViewModel(IHttpsJsonClientProvider<UserDTO> httpJsonProvider)
+        public LoginViewModel(IHttpsJsonClientProvider<UserDTO> httpJsonProvider, IUserApiProvider userApi)
         {
             _httpJsonProvider = httpJsonProvider;
+            _UsuarioService = userApi;
             CrearAdmin();
             Email = Constantes.EMAIL;
             Password = Constantes.PASSWORD;
@@ -48,7 +50,18 @@ namespace Proyecto_DAM.ViewModel
 
                 if (user != null && user.Result != null && !string.IsNullOrEmpty(user.Result.Token))
                 {
+                    // Guardar el token en el servicio de LoginDTO
                     App.Current.Services.GetService<LoginDTO>().Token = user.Result.Token;
+
+                    // Guardar el Id del usuario en el servicio de LoginDTO
+                    IEnumerable<UsuarioDTO> Users = await _UsuarioService.GetUser();
+
+                    var usuario = Users.FirstOrDefault(u => u.Email.Equals(Email, StringComparison.OrdinalIgnoreCase));
+
+                    if (usuario != null)
+                    {
+                        App.Current.Services.GetService<LoginDTO>().Id = usuario.Id;
+                    }
 
                     // Cambiar de vista
                     var mainViewModel = App.Current.Services.GetService<MainViewModel>();
