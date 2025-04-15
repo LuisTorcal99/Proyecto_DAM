@@ -54,6 +54,7 @@ namespace Proyecto_DAM
             services.AddSingleton<IEventoApiProvider, EventoApiService>();
             services.AddSingleton<IAsignaturaApiProvider, AsignaturaApiService>();
             services.AddSingleton<IUserApiProvider, UserApiService>();
+            services.AddSingleton<ICalcularMediaProvider, CalcularMediaService>();
             services.AddSingleton(typeof(IFileProvider<>), typeof(FileService<>));
             services.AddSingleton(typeof(IHttpsJsonClientProvider<>), typeof(HttpsJsonClientService<>));
 

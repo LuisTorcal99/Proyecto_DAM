@@ -9,11 +9,41 @@
              d:DataContext="{d:DesignInstance Type=viewmodel:LoginViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
     <UserControl.Background>
         <ImageBrush ImageSource="/Resources/background.jpg"/>
     </UserControl.Background>
+
     <Grid>
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="300">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock Text="Gestión"
+               FontSize="48"
+               FontWeight="Bold"
+               Foreground="White"
+               FontFamily="Cascadia Code"
+               TextAlignment="Center"
+               Margin="0,0,0,10"/>
+            <TextBlock Text="de"
+               FontSize="48"
+               FontWeight="Bold"
+               Foreground="White"
+               FontFamily="Cascadia Code"
+               TextAlignment="Center"
+               Margin="0,0,0,10"/>
+            <TextBlock Text="estudio"
+               FontSize="48"
+               FontWeight="Bold"
+               Foreground="White"
+               FontFamily="Cascadia Code"
+               TextAlignment="Center"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="300">
             <ui:TextBlock Text="Inicio de sesión" FontSize="24" FontWeight="Bold" Margin="0,0,0,20" TextAlignment="Center" FontFamily="Cascadia Code"/>
             <ui:TextBlock Text="Email:" Margin="0,0,0,5" FontFamily="Cascadia Code"/>
             <ui:TextBox Name="UsernameTextBox" Height="30" Text="{Binding Email, Mode=TwoWay}"/>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
 using Proyecto_DAM.DTO;
 using Proyecto_DAM.Interfaces;
+using Proyecto_DAM.Utils;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Proyecto_DAM.ViewModel
@@ -18,17 +20,23 @@ namespace Proyecto_DAM.ViewModel
         private readonly IAsignaturaApiProvider _asignaturaService;
         private readonly IEventoApiProvider _eventoService;
         private readonly INotaApiProvider _notaService;
+        private readonly ICalcularMediaProvider _calcularMediaService;
 
         [ObservableProperty]
         private AsignaturaDTO? _Asignatura;
 
+        [ObservableProperty]
+        public string _MediaResultado;
+
         public DetallesAsignaturaViewModel(IAsignaturaApiProvider asignaturaApiProvider, 
                                             IEventoApiProvider eventoService, 
-                                            INotaApiProvider notaService)
+                                            INotaApiProvider notaService,
+                                            ICalcularMediaProvider calcularMediaService)
         {
             _asignaturaService = asignaturaApiProvider;
             _eventoService = eventoService;
             _notaService = notaService;
+            _calcularMediaService = calcularMediaService;
         }
         public async Task SetIdAsignatura(int id)
         {
@@ -36,72 +44,68 @@ namespace Proyecto_DAM.ViewModel
         }
 
         [RelayCommand]
-        public async Task Guardar()
+        public async Task Guardar(EventoDTO evento)
         {
-            if (Asignatura == null || Asignatura.Eventos == null) return;
+            if (evento == null || evento.Nota == null) return;
 
             try
             {
-                foreach (var evento in Asignatura.Eventos)
+                var notaValor = evento.Nota.NotaValor;
+
+                // Si la nota no está en el rango de 0 a 10, se ignora
+                if (notaValor < 0 || notaValor > 10)
                 {
-                    if (evento.Nota != null)
-                    {
-                        // Obtener las notas asociadas a los eventos
-                        var notas = await _notaService.GetNota();
-
-                        // Buscar si existe una nota asociada al evento con el idEvento
-                        var notaExistente = notas.FirstOrDefault(n => n.IdEvento == evento.Id);
-
-                        // Verificamos si la nota actual no coincide con la que está en el objeto evento
-                        if (notaExistente == null)
-                        {
-                            // Si la nota es NULL, se crea una nueva y se hace un POST
-                            var newNota = new NotaDTO
-                            {
-                                NotaValor = evento.Nota.NotaValor,
-                                IdAsignatura = Asignatura.Id,
-                                IdEvento = evento.Id,
-                                IdUsuario = App.Current.Services.GetService<LoginDTO>().Id
-                            };
-
-                            // Realizamos el POST para guardar la nueva nota
-                            await _notaService.PostNota(newNota);
-                            evento.Nota = newNota;
-                            await _eventoService.PatchEvento(evento);
-                        }
-                        else
-                        {
-                            var updatedNota = new NotaDTO
-                            {
-                                Id = notaExistente.Id,
-                                NotaValor = evento.Nota.NotaValor,
-                                IdAsignatura = Asignatura.Id,
-                                IdEvento = evento.Id,
-                                IdUsuario = App.Current.Services.GetService<LoginDTO>().Id
-                            };
-
-                            var newNota = new NotaDTO
-                            {
-                                NotaValor = evento.Nota.NotaValor,
-                                IdAsignatura = Asignatura.Id,
-                                IdEvento = evento.Id,
-                                IdUsuario = App.Current.Services.GetService<LoginDTO>().Id
-                            };
-
-                            // Realizamos el PATCH para actualizar la nota
-                            await _notaService.PatchNota(updatedNota);
-                            evento.Nota = newNota;
-                            await _eventoService.PatchEvento(evento);
-
-                        }
-                    }
+                    // Ignorar la actualización de la nota si no está en el rango
+                    MessageBox.Show("La nota debe estar entre 0 y 10.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
                 }
 
-                MessageBox.Show("Notas guardadas correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                // Obtener las notas asociadas a los eventos
+                var notas = await _notaService.GetNota();
+
+                // Buscar si existe una nota asociada al evento con el idEvento
+                var notaExistente = notas.FirstOrDefault(n => n.IdEvento == evento.Id);
+
+                // Verificamos si la nota actual no coincide con la que está en el objeto evento
+                if (notaExistente == null)
+                {
+                    // Si la nota es NULL, se crea una nueva y se hace un POST
+                    var newNota = new NotaDTO
+                    {
+                        NotaValor = evento.Nota.NotaValor,
+                        IdAsignatura = evento.IdAsignatura,
+                        IdEvento = evento.Id,
+                        IdUsuario = App.Current.Services.GetService<LoginDTO>().Id
+                    };
+
+                    // Realizamos el POST para guardar la nueva nota
+                    await _notaService.PostNota(newNota);
+                    evento.Nota = newNota;
+                    await _eventoService.PatchEvento(evento);
+                }
+                else
+                {
+                    // Si la nota existe, la actualizamos
+                    var updatedNota = new NotaDTO
+                    {
+                        Id = notaExistente.Id,
+                        NotaValor = evento.Nota.NotaValor,
+                        IdAsignatura = evento.IdAsignatura,
+                        IdEvento = evento.Id,
+                        IdUsuario = App.Current.Services.GetService<LoginDTO>().Id
+                    };
+
+                    // Realizamos el PATCH para actualizar la nota
+                    await _notaService.PatchNota(updatedNota);
+                    evento.Nota = updatedNota;
+                    await _eventoService.PatchEvento(evento);
+                }
+
+                MessageBox.Show("Nota guardada correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al guardar las notas: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Error al guardar la nota: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -117,8 +121,22 @@ namespace Proyecto_DAM.ViewModel
             {
                 try
                 {
+                    var notas = await _notaService.GetNota();
+
+                    var notaAsociada = notas.FirstOrDefault(n => n.IdEvento == evento.Id);
+
+                    if (notaAsociada != null)
+                    {
+                        await _notaService.DeleteNota(notaAsociada.Id.ToString());
+
+                        evento.Nota = null;
+
+                        await _eventoService.PatchEvento(evento);
+                    }
+
                     await _eventoService.DeleteEvento(evento.Id.ToString());
                     Asignatura?.Eventos?.Remove(evento);
+
                     MessageBox.Show("Evento eliminado correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 catch (Exception ex)
@@ -127,7 +145,6 @@ namespace Proyecto_DAM.ViewModel
                 }
             }
         }
-
 
         [RelayCommand]
         public async Task EliminarAsignatura()
@@ -161,6 +178,7 @@ namespace Proyecto_DAM.ViewModel
             try
             {
                 Asignatura = await _asignaturaService.GetOneAsignatura(id);
+                MediaResultado = await _calcularMediaService.CalcularMedia(StringUtils.ConvertToNumberNoPanic(id));
 
                 if (Asignatura != null)
                 {
@@ -185,7 +203,7 @@ namespace Proyecto_DAM.ViewModel
                         {
                             evento.Nota = new NotaDTO
                             {
-                                NotaValor = 0,
+                                NotaValor = -1,
                                 IdEvento = evento.Id,
                                 IdAsignatura = Asignatura.Id,
                                 IdUsuario = idUsuario
