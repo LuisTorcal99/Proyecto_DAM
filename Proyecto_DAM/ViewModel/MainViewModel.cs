@@ -26,7 +26,8 @@ namespace Proyecto_DAM.ViewModel
             SelectedViewModel = login;
             IsMenuVisible = false;
 
-            SelectedTheme = "Claro";
+            var settings = SettingsManager.LoadSettings();
+            SelectedTheme = settings.SelectedTheme;
         }
 
         public LoginViewModel LoginViewModel { get; }
@@ -106,8 +107,16 @@ namespace Proyecto_DAM.ViewModel
                     _selectedTheme = value;
                     OnPropertyChanged();
                     ApplyTheme(_selectedTheme);  // Llamamos a ApplyTheme para cambiar el tema
+                    SaveThemePreference();  // Guardar el tema seleccionado
                 }
             }
+        }
+
+        // Guardar el tema seleccionado en el archivo de configuración
+        private void SaveThemePreference()
+        {
+            var settings = new SettingsManager { SelectedTheme = _selectedTheme };
+            settings.SaveSettings();  // Guardar en el archivo
         }
 
         // Método para cambiar los colores del tema
