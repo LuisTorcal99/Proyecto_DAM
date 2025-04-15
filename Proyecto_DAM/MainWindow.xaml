@@ -1,84 +1,94 @@
 ﻿<Window x:Class="Proyecto_DAM.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:viewmodel="clr-namespace:Proyecto_DAM.ViewModel"
-        xmlns:view="clr-namespace:Proyecto_DAM.View" 
-        d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel}"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+       xmlns:viewmodel="clr-namespace:Proyecto_DAM.ViewModel"
+       xmlns:view="clr-namespace:Proyecto_DAM.View" 
+       d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel}"
+       mc:Ignorable="d"
+       Title="MainWindow" Height="450" Width="800">
 
-    <Window.Resources>
-        <DataTemplate DataType="{x:Type viewmodel:LoginViewModel}">
-            <view:LoginView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type viewmodel:RegistroViewModel}">
-            <view:RegistroView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type viewmodel:PrincipalViewModel}">
-            <view:PrincipalView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type viewmodel:EventosViewModel}">
-            <view:EventosView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type viewmodel:PomodoroViewModel}">
-            <view:PomodoroView/>
-        </DataTemplate>
-        <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
-    </Window.Resources>
+   <Window.Resources>
+       <DataTemplate DataType="{x:Type viewmodel:LoginViewModel}">
+           <view:LoginView/>
+       </DataTemplate>
+       <DataTemplate DataType="{x:Type viewmodel:RegistroViewModel}">
+           <view:RegistroView/>
+       </DataTemplate>
+       <DataTemplate DataType="{x:Type viewmodel:PrincipalViewModel}">
+           <view:PrincipalView/>
+       </DataTemplate>
+       <DataTemplate DataType="{x:Type viewmodel:EventosViewModel}">
+           <view:EventosView/>
+       </DataTemplate>
+       <DataTemplate DataType="{x:Type viewmodel:PomodoroViewModel}">
+           <view:PomodoroView/>
+       </DataTemplate>
+       <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
+   </Window.Resources>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+   <Grid>
+       <Grid.RowDefinitions>
+           <RowDefinition Height="Auto"/>
+           <RowDefinition Height="*"/>
+       </Grid.RowDefinitions>
 
-        <!-- Menú -->
-        <Border Grid.Row="0" Background="#f1cae4" Padding="5"
-                Visibility="{Binding IsMenuVisible, Converter={StaticResource BoolToVisConverter}}">
-            <Grid>
-                <!-- alinear elementos -->
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <!-- Menú izquierda -->
-                    <ColumnDefinition Width="*" />
-                    <!-- Espaciador -->
-                    <ColumnDefinition Width="Auto"/>
-                    <!-- Menú derecha -->
-                </Grid.ColumnDefinitions>
+       <!-- Menú -->
+       <Border Grid.Row="0" Background="{DynamicResource BackgroundColor}" Padding="5"
+               Visibility="{Binding IsMenuVisible, Converter={StaticResource BoolToVisConverter}}">
+           <Grid>
+               <!-- alinear elementos -->
+               <Grid.ColumnDefinitions>
+                   <ColumnDefinition Width="Auto"/>
+                   <!-- Menú izquierda -->
+                   <ColumnDefinition Width="*" />
+                   <!-- Espaciador -->
+                   <ColumnDefinition Width="Auto"/>
+                   <!-- Menú derecha -->
+               </Grid.ColumnDefinitions>
 
-                <!-- Menú alineado a la izquierda -->
-                <Menu FontSize="15" Background="Transparent"
-                      Visibility="{Binding IsMenuVisible, Converter={StaticResource BoolToVisConverter}}"
-                      Grid.Column="0">
-                    <MenuItem Header="_Inicio" Foreground="Black" FontFamily="Cascadia Code"
-                              Command="{Binding SelectViewModelCommand}"
-                              CommandParameter="{Binding DataContext.PrincipalViewModel, RelativeSource={RelativeSource AncestorType=Window}}" />
-                    <MenuItem Header="_Eventos" Foreground="Black" FontFamily="Cascadia Code"
-                              Command="{Binding SelectViewModelCommand}"
-                              CommandParameter="{Binding DataContext.EventosViewModel, RelativeSource={RelativeSource AncestorType=Window}}" />
-                    <MenuItem Header="_Crear" Foreground="Black" FontFamily="Cascadia Code">
-                        <MenuItem Header="Crear Asignatura" Command="{Binding AddAsignaturaCommand}" FontFamily="Cascadia Code"/>
-                        <MenuItem Header="Crear Evento" Command="{Binding AddEventoCommand}" FontFamily="Cascadia Code"/>
-                    </MenuItem>
-                    <MenuItem Header="_Concentracion" Foreground="Black" FontFamily="Cascadia Code"
-                          Command="{Binding SelectViewModelCommand}"
-                          CommandParameter="{Binding DataContext.PomodoroViewModel, RelativeSource={RelativeSource AncestorType=Window}}" />
-                </Menu>
+               <!-- Menú alineado a la izquierda -->
+               <Menu FontSize="15" Background="Transparent"
+                     Visibility="{Binding IsMenuVisible, Converter={StaticResource BoolToVisConverter}}"
+                     Grid.Column="0">
+                   <MenuItem Header="_Inicio" Foreground="{DynamicResource TextColor}" FontFamily="Cascadia Code"
+                             Command="{Binding SelectViewModelCommand}"
+                             CommandParameter="{Binding DataContext.PrincipalViewModel, RelativeSource={RelativeSource AncestorType=Window}}" />
+                   <MenuItem Header="_Eventos" Foreground="{DynamicResource TextColor}" FontFamily="Cascadia Code"
+                             Command="{Binding SelectViewModelCommand}"
+                             CommandParameter="{Binding DataContext.EventosViewModel, RelativeSource={RelativeSource AncestorType=Window}}" />
+                   <MenuItem Header="_Crear" Foreground="{DynamicResource TextColor}" FontFamily="Cascadia Code">
+                       <MenuItem Header="Crear Asignatura" Command="{Binding AddAsignaturaCommand}" FontFamily="Cascadia Code" Foreground="Black"/>
+                        <MenuItem Header="Crear Evento" Command="{Binding AddEventoCommand}" FontFamily="Cascadia Code" Foreground="Black"/>
+                   </MenuItem>
+                   <MenuItem Header="_Concentracion" Foreground="{DynamicResource TextColor}" FontFamily="Cascadia Code"
+                         Command="{Binding SelectViewModelCommand}"
+                         CommandParameter="{Binding DataContext.PomodoroViewModel, RelativeSource={RelativeSource AncestorType=Window}}" />
+               </Menu>
 
-                <!-- Logout alineado a la derecha en rojo -->
-                <Menu FontSize="15" Background="Transparent"
-                      Visibility="{Binding IsMenuVisible, Converter={StaticResource BoolToVisConverter}}"
-                      Grid.Column="2">
+               <!-- Logout alineado a la derecha en rojo -->
+               <Menu FontSize="15" Background="Transparent"
+                     Visibility="{Binding IsMenuVisible, Converter={StaticResource BoolToVisConverter}}"
+                     Grid.Column="2">
+                    <StackPanel Orientation="Horizontal" Grid.Column="2" VerticalAlignment="Center" Margin="0,0,10,0">
+                        <TextBlock Text="Tema:" Foreground="{DynamicResource TextColor}" 
+                             VerticalAlignment="Center" FontFamily="Cascadia Code" Margin="0,0,5,0"/>
+                        <ComboBox Width="100" 
+                              ItemsSource="{Binding Themes}"
+                              SelectedItem="{Binding SelectedTheme, Mode=TwoWay}"
+                              Background="White" Foreground="Black"
+                              Padding="2" FontFamily="Cascadia Code" /> 
+                    </StackPanel>
+
                     <MenuItem Header="_Logout" Foreground="#f44336" FontFamily="Cascadia Code"
-                              Command="{Binding SelectViewModelCommand}"
-                              CommandParameter="{Binding DataContext.LoginViewModel, RelativeSource={RelativeSource AncestorType=Window}}"/>
-                </Menu>
-            </Grid>
-        </Border>
-        
-        <ContentControl Grid.Row="1" Content="{Binding SelectedViewModel}"/>
-        
-    </Grid>
+                             Command="{Binding SelectViewModelCommand}"
+                             CommandParameter="{Binding DataContext.LoginViewModel, RelativeSource={RelativeSource AncestorType=Window}}"/>
+               </Menu>
+           </Grid>
+       </Border>
+       
+       <ContentControl Grid.Row="1" Content="{Binding SelectedViewModel}"/>
+       
+   </Grid>
 </Window>

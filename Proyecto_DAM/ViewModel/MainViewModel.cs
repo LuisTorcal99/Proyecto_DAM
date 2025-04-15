@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.Extensions.DependencyInjection;
 using Proyecto_DAM.DTO;
-using Proyecto_DAM.Interfaces;
 using Proyecto_DAM.Service;
 using Proyecto_DAM.View;
-using Proyecto_DAM.ViewModel;
 
 namespace Proyecto_DAM.ViewModel
 {
@@ -18,24 +13,27 @@ namespace Proyecto_DAM.ViewModel
     {
         private ViewModelBase? _selectedViewModel;
 
-        public MainViewModel(LoginViewModel login, RegistroViewModel registro, 
-            PrincipalViewModel principal, EventosViewModel eventos, 
+        public MainViewModel(LoginViewModel login, RegistroViewModel registro,
+            PrincipalViewModel principal, EventosViewModel eventos,
             PomodoroViewModel pomodoro)
         {
-            SelectedViewModel = login;
-
             LoginViewModel = login;
             RegistroViewModel = registro;
             PrincipalViewModel = principal;
             EventosViewModel = eventos;
             PomodoroViewModel = pomodoro;
+
+            SelectedViewModel = login;
+            IsMenuVisible = false;
+
+            SelectedTheme = "Claro";
         }
 
-        public LoginViewModel LoginViewModel { get; set; }
-        public RegistroViewModel RegistroViewModel { get; set; }
-        public PrincipalViewModel PrincipalViewModel { get; set; }
-        public EventosViewModel EventosViewModel { get; set; }
-        public PomodoroViewModel PomodoroViewModel { get; set; }
+        public LoginViewModel LoginViewModel { get; }
+        public RegistroViewModel RegistroViewModel { get; }
+        public PrincipalViewModel PrincipalViewModel { get; }
+        public EventosViewModel EventosViewModel { get; }
+        public PomodoroViewModel PomodoroViewModel { get; }
 
         public ViewModelBase? SelectedViewModel
         {
@@ -43,18 +41,17 @@ namespace Proyecto_DAM.ViewModel
             set
             {
                 SetProperty(ref _selectedViewModel, value);
+                IsMenuVisible = value is PrincipalViewModel || value is EventosViewModel || value is PomodoroViewModel;
             }
         }
 
         public async override Task LoadAsync()
         {
             if (SelectedViewModel is not null)
-            {
                 await SelectedViewModel.LoadAsync();
-            }
         }
 
-        private bool _isMenuVisible = false; 
+        private bool _isMenuVisible;
 
         public bool IsMenuVisible
         {
@@ -62,40 +59,72 @@ namespace Proyecto_DAM.ViewModel
             set => SetProperty(ref _isMenuVisible, value);
         }
 
+        // ----- Comandos -----
+
         [RelayCommand]
         private async void SelectViewModel(object? parameter)
         {
-            SelectedViewModel = parameter as ViewModelBase;
-            await LoadAsync();
-
-            // Mostrar menú en vistas seleccionadas
-            IsMenuVisible = SelectedViewModel is PrincipalViewModel
-                         || SelectedViewModel is EventosViewModel
-                         || SelectedViewModel is PomodoroViewModel;
+            if (parameter is ViewModelBase viewModel)
+            {
+                SelectedViewModel = viewModel;
+                await LoadAsync();
+            }
         }
 
         [RelayCommand]
         public void AddAsignatura()
         {
-            var clientProvider = new HttpsJsonClientService<AsignaturaDTO>();
-            var apiProvider = new AsignaturaApiService(clientProvider);
+            var apiProvider = new AsignaturaApiService(new HttpsJsonClientService<AsignaturaDTO>());
             var viewModel = new AddAsignaturaViewModel(apiProvider);
-
-            var view = new AddAsignaturaView();
-            view.DataContext = viewModel;
+            var view = new AddAsignaturaView { DataContext = viewModel };
             view.ShowDialog();
         }
 
         [RelayCommand]
         public void AddEvento()
         {
-            var clientProvider = new HttpsJsonClientService<EventoDTO>();
-            var apiProvider = new EventoApiService(clientProvider);
+            var apiProvider = new EventoApiService(new HttpsJsonClientService<EventoDTO>());
             var viewModel = new AddEventoViewModel(apiProvider);
-
-            var view = new AddEventoView();
-            view.DataContext = viewModel;
+            var view = new AddEventoView { DataContext = viewModel };
             view.ShowDialog();
+        }
+
+        // ----- Tema -----
+
+        // Lista con los temas
+        public List<string> Themes { get; } = new() { "Claro", "Oscuro" };
+
+        // Propiedad seleccionada para el tema
+        private string _selectedTheme;
+        public string SelectedTheme
+        {
+            get => _selectedTheme;
+            set
+            {
+                if (_selectedTheme != value)
+                {
+                    _selectedTheme = value;
+                    OnPropertyChanged();
+                    ApplyTheme(_selectedTheme);  // Llamamos a ApplyTheme para cambiar el tema
+                }
+            }
+        }
+
+        // Método para cambiar los colores del tema
+        private void ApplyTheme(string theme)
+        {
+            var resources = Application.Current.Resources;
+
+            if (theme == "Claro")
+            {
+                resources["BackgroundColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFF1CAE4"));
+                resources["TextColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#34495E"));
+            }
+            else if (theme == "Oscuro")
+            {
+                resources["BackgroundColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#0E351B"));
+                resources["TextColor"] = new SolidColorBrush(Colors.White);
+            }
         }
     }
 }

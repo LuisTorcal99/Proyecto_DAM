@@ -27,27 +27,28 @@
                         <Button Command="{Binding DataContext.ItemClickCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                 CommandParameter="{Binding Id}" FontFamily="Cascadia Code"
                                 Background="Transparent" BorderThickness="0">
-                            <Border Margin="5" Padding="10" BorderThickness="1" BorderBrush="#BDC3C7" Background="#F1CAE4" CornerRadius="8">
+                            <Border Margin="5" Padding="10" BorderThickness="1" BorderBrush="#BDC3C7" Background="{DynamicResource BackgroundColor}" 
+                                    CornerRadius="8">
                                 <StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="5">
-                                        <Label Content="Nombre:" VerticalAlignment="Center" Width="60" HorizontalAlignment="Right" FontSize="10" Foreground="#34495E"/>
-                                        <TextBlock Text="{Binding Nombre}" FontSize="16" VerticalAlignment="Center" Foreground="Black" Margin="10,0"/>
+                                        <Label Content="Nombre:" VerticalAlignment="Center" Width="60" HorizontalAlignment="Right" FontSize="10" Foreground="{DynamicResource TextColor}"/>
+                                        <TextBlock Text="{Binding Nombre}" FontSize="16" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" Margin="10,0"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="5">
-                                        <Label Content="Descripción:" VerticalAlignment="Center" Width="90" HorizontalAlignment="Right" FontSize="10" Foreground="#34495E"/>
-                                        <TextBlock Text="{Binding Descripcion}" FontSize="16" VerticalAlignment="Center" Foreground="Black" Margin="10,0"/>
+                                        <Label Content="Descripción:" VerticalAlignment="Center" Width="90" HorizontalAlignment="Right" FontSize="10" Foreground="{DynamicResource TextColor}"/>
+                                        <TextBlock Text="{Binding Descripcion}" FontSize="16" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" Margin="10,0"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="5">
-                                        <Label Content="Créditos/Horas:" VerticalAlignment="Center" Width="90" HorizontalAlignment="Right" FontSize="10" Foreground="#34495E"/>
-                                        <TextBlock Text="{Binding Creditos}" FontSize="16" VerticalAlignment="Center" Foreground="Black" Margin="10,0"/>
+                                        <Label Content="Créditos/Horas:" VerticalAlignment="Center" Width="90" HorizontalAlignment="Right" FontSize="10" Foreground="{DynamicResource TextColor}"/>
+                                        <TextBlock Text="{Binding Creditos}" FontSize="16" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" Margin="10,0"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="5">
-                                        <Label Content="Total Eventos:" VerticalAlignment="Center" Width="90" HorizontalAlignment="Right" FontSize="10" Foreground="#34495E"/>
-                                        <TextBlock Text="{Binding TotalEventos}" FontSize="16" VerticalAlignment="Center" Foreground="Black" Margin="10,0"/>
+                                        <Label Content="Total Eventos:" VerticalAlignment="Center" Width="90" HorizontalAlignment="Right" FontSize="10" Foreground="{DynamicResource TextColor}"/>
+                                        <TextBlock Text="{Binding TotalEventos}" FontSize="16" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" Margin="10,0"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="5">
-                                        <Label Content="Total Notas:" VerticalAlignment="Center" Width="90" HorizontalAlignment="Right" FontSize="10" Foreground="#34495E"/>
-                                        <TextBlock Text="{Binding TotalNotas}" FontSize="16" VerticalAlignment="Center" Foreground="Black" Margin="10,0"/>
+                                        <Label Content="Total Notas:" VerticalAlignment="Center" Width="90" HorizontalAlignment="Right" FontSize="10" Foreground="{DynamicResource TextColor}"/>
+                                        <TextBlock Text="{Binding TotalNotas}" FontSize="16" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" Margin="10,0"/>
                                     </StackPanel>
                                 </StackPanel>
                             </Border>

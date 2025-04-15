@@ -34,7 +34,7 @@
             ColumnWidth="*"
             ScrollViewer.VerticalScrollBarVisibility="Auto"
             ScrollViewer.HorizontalScrollBarVisibility="Auto"
-            Background="#f1cae4"
+            Background="{DynamicResource BackgroundColor}"
             Foreground="Black"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch" 
@@ -56,9 +56,11 @@
         </ui:DataGrid>
 
         <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
-            <Button Content="Previous" Command="{Binding MoveToPreviousPageCommand}" Width="120" Height="40" Margin="5" Background="#f1cae4" FontFamily="Cascadia Code"/>
+            <Button Content="Previous" Command="{Binding MoveToPreviousPageCommand}" Width="120" Height="40" Margin="5" 
+                    Background="{DynamicResource BackgroundColor}" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}"/>
             <TextBlock Text="{Binding CurrentPage}" VerticalAlignment="Center" Margin="10" FontSize="16" FontWeight="Bold" Foreground="Black"/>
-            <Button Content="Next" Command="{Binding MoveToNextPageCommand}" Width="120" Height="40" Margin="5" Background="#f1cae4" FontFamily="Cascadia Code"/>
+            <Button Content="Next" Command="{Binding MoveToNextPageCommand}" Width="120" Height="40" Margin="5" 
+                    Background="{DynamicResource BackgroundColor}" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}"/>
         </StackPanel>
     </Grid>
 </UserControl>
