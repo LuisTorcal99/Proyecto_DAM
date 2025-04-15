@@ -18,7 +18,9 @@ namespace Proyecto_DAM.ViewModel
     {
         private ViewModelBase? _selectedViewModel;
 
-        public MainViewModel(LoginViewModel login, RegistroViewModel registro, PrincipalViewModel principal, EventosViewModel eventos)
+        public MainViewModel(LoginViewModel login, RegistroViewModel registro, 
+            PrincipalViewModel principal, EventosViewModel eventos, 
+            PomodoroViewModel pomodoro)
         {
             SelectedViewModel = login;
 
@@ -26,12 +28,14 @@ namespace Proyecto_DAM.ViewModel
             RegistroViewModel = registro;
             PrincipalViewModel = principal;
             EventosViewModel = eventos;
+            PomodoroViewModel = pomodoro;
         }
 
         public LoginViewModel LoginViewModel { get; set; }
         public RegistroViewModel RegistroViewModel { get; set; }
         public PrincipalViewModel PrincipalViewModel { get; set; }
         public EventosViewModel EventosViewModel { get; set; }
+        public PomodoroViewModel PomodoroViewModel { get; set; }
 
         public ViewModelBase? SelectedViewModel
         {
@@ -66,7 +70,8 @@ namespace Proyecto_DAM.ViewModel
 
             // Mostrar menú en vistas seleccionadas
             IsMenuVisible = SelectedViewModel is PrincipalViewModel
-                         || SelectedViewModel is EventosViewModel;
+                         || SelectedViewModel is EventosViewModel
+                         || SelectedViewModel is PomodoroViewModel;
         }
 
         [RelayCommand]

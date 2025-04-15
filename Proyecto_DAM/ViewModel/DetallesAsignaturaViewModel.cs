@@ -73,7 +73,7 @@ namespace Proyecto_DAM.ViewModel
                     var newNota = new NotaDTO
                     {
                         NotaValor = evento.Nota.NotaValor,
-                        IdAsignatura = evento.IdAsignatura,
+                        IdAsignatura = evento.IdAsignatura, 
                         IdEvento = evento.Id,
                         IdUsuario = App.Current.Services.GetService<LoginDTO>().Id
                     };

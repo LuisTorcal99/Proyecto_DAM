@@ -38,7 +38,7 @@
                                         <TextBlock Text="{Binding Descripcion}" FontSize="16" VerticalAlignment="Center" Foreground="Black" Margin="10,0"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="5">
-                                        <Label Content="Créditos:" VerticalAlignment="Center" Width="90" HorizontalAlignment="Right" FontSize="10" Foreground="#34495E"/>
+                                        <Label Content="Créditos/Horas:" VerticalAlignment="Center" Width="90" HorizontalAlignment="Right" FontSize="10" Foreground="#34495E"/>
                                         <TextBlock Text="{Binding Creditos}" FontSize="16" VerticalAlignment="Center" Foreground="Black" Margin="10,0"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="5">
