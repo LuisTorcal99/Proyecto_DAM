@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Linq;
 using System.Text;
@@ -28,6 +29,9 @@ namespace Proyecto_DAM.ViewModel
         [ObservableProperty]
         public string _MediaResultado;
 
+        public ObservableCollection<string> TiposEvento { get; set; }
+        public ObservableCollection<string> EstadosEvento { get; set; }
+
         public DetallesAsignaturaViewModel(IAsignaturaApiProvider asignaturaApiProvider, 
                                             IEventoApiProvider eventoService, 
                                             INotaApiProvider notaService,
@@ -37,6 +41,9 @@ namespace Proyecto_DAM.ViewModel
             _eventoService = eventoService;
             _notaService = notaService;
             _calcularMediaService = calcularMediaService;
+
+            TiposEvento = new ObservableCollection<string>() { "Tarea", "Examen" };
+            EstadosEvento = new ObservableCollection<string>() { "Pendiente", "EnProceso", "Estudiado" };
         }
         public async Task SetIdAsignatura(int id)
         {
@@ -55,8 +62,7 @@ namespace Proyecto_DAM.ViewModel
                 // Si la nota no está en el rango de 0 a 10, se ignora
                 if (notaValor < 0 || notaValor > 10)
                 {
-                    // Ignorar la actualización de la nota si no está en el rango
-                    MessageBox.Show("La nota debe estar entre 0 y 10.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    await _eventoService.PatchEvento(evento);
                     return;
                 }
 

@@ -25,6 +25,9 @@ namespace Proyecto_DAM.ViewModel
         public string _Descripcion;
 
         [ObservableProperty]
+        public string _TipoSeleccionado;
+
+        [ObservableProperty]
         public DateTime? _Fecha;
 
         [ObservableProperty]
@@ -32,6 +35,7 @@ namespace Proyecto_DAM.ViewModel
 
         [ObservableProperty]
         public AsignaturaItemModel _AsignaturaSeleccionada;
+        public ObservableCollection<string> Tipos { get; set; }
 
         [ObservableProperty]
         public string _Porcentaje;
@@ -41,6 +45,7 @@ namespace Proyecto_DAM.ViewModel
         {
             _eventoApiService = eventoApiProvider;
             Asignaturas = new ObservableCollection<AsignaturaItemModel>();
+            Tipos = new ObservableCollection<string>() { "Tarea", "Examen" };
             _ = LoadAsync();
         }
 
@@ -70,7 +75,9 @@ namespace Proyecto_DAM.ViewModel
                 Porcentaje = porcentaje,
                 Fecha = Fecha.Value,
                 IdAsignatura = AsignaturaSeleccionada.Id,
-                IdUsuario = App.Current.Services.GetService<LoginDTO>().Id
+                IdUsuario = App.Current.Services.GetService<LoginDTO>().Id,
+                Tipo = TipoSeleccionado,
+                Estado = "Pendiente"
             };
 
             try

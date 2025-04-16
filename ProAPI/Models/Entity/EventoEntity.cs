@@ -11,6 +11,8 @@ namespace RestAPI.Models.Entity
         public double Porcentaje { get; set; }
         public DateTime Fecha { get; set; }
         public DateTime FechaInicio { get; set; }
+        public string Tipo { get; set; }   // "Tarea" o "Examen"
+        public string Estado { get; set; } // "Pendiente", "EnProceso", "Realizado"
 
         // Relación con el usuario
         public string IdUsuario { get; set; }

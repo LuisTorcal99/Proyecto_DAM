@@ -9,7 +9,7 @@
         d:DataContext="{d:DesignInstance Type=viewmodel:AddEventoViewModel}"
         mc:Ignorable="d"
         Title="Añadir Evento"
-        Height="500"
+        Height="600"
         Width="600"
         Background="White"
         WindowStartupLocation="CenterScreen">
@@ -31,7 +31,7 @@
                Margin="0,0,0,20"/>
 
         <!-- Formulario -->
-        <StackPanel Grid.Row="1" VerticalAlignment="Center">
+        <StackPanel Grid.Row="1" VerticalAlignment="Center" >
 
             <!-- Nombre -->
             <StackPanel>
@@ -51,20 +51,35 @@
             <!-- Asignatura -->
             <StackPanel>
                 <TextBlock Text="Asignatura:" 
-               FontFamily="Cascadia Code" 
-               FontSize="14" 
-               Foreground="Black"/>
+                   FontFamily="Cascadia Code" 
+                   FontSize="14" 
+                   Foreground="Black"/>
                 <ComboBox ItemsSource="{Binding Asignaturas}"
-              SelectedItem="{Binding AsignaturaSeleccionada, Mode=TwoWay}"
-              DisplayMemberPath="Nombre"
-              Height="35" 
-              FontSize="14"
-              FontFamily="Cascadia Code"
-              Background="#f7f2f5" 
-              BorderThickness="0" 
-              Padding="5"/>
+                          SelectedItem="{Binding AsignaturaSeleccionada, Mode=TwoWay}"
+                          DisplayMemberPath="Nombre"
+                          Height="35" 
+                          FontSize="14"
+                          FontFamily="Cascadia Code"
+                          Background="#f7f2f5" 
+                          BorderThickness="0" 
+                          Padding="5"/>
             </StackPanel>
 
+            <!-- Tipo -->
+            <StackPanel>
+                <TextBlock Text="Tipo:" 
+                   FontFamily="Cascadia Code" 
+                   FontSize="14" 
+                   Foreground="Black"/>
+                <ComboBox ItemsSource="{Binding Tipos}"
+                          SelectedItem="{Binding TipoSeleccionado, Mode=TwoWay}"
+                          Height="35" 
+                          FontSize="14"
+                          FontFamily="Cascadia Code"
+                          Background="#f7f2f5" 
+                          BorderThickness="0" 
+                          Padding="5"/>
+            </StackPanel>
 
             <!-- Descripción -->
             <StackPanel>
@@ -73,13 +88,13 @@
                    FontSize="14" 
                    Foreground="Black"/>
                 <TextBox Text="{Binding Descripcion, UpdateSourceTrigger=PropertyChanged}" 
-                 Height="80" 
-                 FontSize="14"
-                 FontFamily="Cascadia Code"
-                 AcceptsReturn="True"
-                 Background="#f7f2f5" 
-                 BorderThickness="0" 
-                 Padding="5"/>
+                         Height="80" 
+                         FontSize="14"
+                         FontFamily="Cascadia Code"
+                         AcceptsReturn="True"
+                         Background="#f7f2f5" 
+                         BorderThickness="0" 
+                         Padding="5"/>
             </StackPanel>
 
             <!-- Porcentaje -->
@@ -89,12 +104,12 @@
                    FontSize="14" 
                    Foreground="Black"/>
                 <TextBox Text="{Binding Porcentaje, UpdateSourceTrigger=PropertyChanged}" 
-                 Height="35" 
-                 FontSize="14"
-                 FontFamily="Cascadia Code"
-                 Background="#f7f2f5" 
-                 BorderThickness="0" 
-                 Padding="5"/>
+                         Height="35" 
+                         FontSize="14"
+                         FontFamily="Cascadia Code"
+                         Background="#f7f2f5" 
+                         BorderThickness="0" 
+                         Padding="5"/>
             </StackPanel>
 
             <!-- Fecha -->
@@ -104,12 +119,12 @@
                    FontSize="14" 
                    Foreground="Black"/>
                 <DatePicker SelectedDate="{Binding Fecha, UpdateSourceTrigger=PropertyChanged}" 
-                    Height="35"
-                    FontSize="14"
-                    FontFamily="Cascadia Code"
-                    Background="#f7f2f5"
-                    BorderThickness="0"
-                    Padding="5"/>
+                            Height="35"
+                            FontSize="14"
+                            FontFamily="Cascadia Code"
+                            Background="#f7f2f5"
+                            BorderThickness="0"
+                            Padding="5"/>
             </StackPanel>
         </StackPanel>
 

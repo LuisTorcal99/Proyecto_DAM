@@ -7,7 +7,7 @@
         xmlns:viewmodel="clr-namespace:Proyecto_DAM.ViewModel" 
         DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
         mc:Ignorable="d"
-        Title="Detalles Asignatura" Height="500" Width="900"
+        Title="Detalles Asignatura" Height="600" Width="1000"
         Background="White"
         WindowStartupLocation="CenterScreen">
 
@@ -36,7 +36,7 @@
               FontFamily="Cascadia Code"
               Padding="10" 
               Background="White">
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                 <ListView ItemsSource="{Binding Asignatura.Eventos}" 
                       SelectionMode="Single" 
                       Height="350"
@@ -47,28 +47,58 @@
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Evento" DisplayMemberBinding="{Binding Nombre}" Width="150"/>
-                            <GridViewColumn Header="Fecha" DisplayMemberBinding="{Binding Fecha}" Width="200"/>
+
+                            <GridViewColumn Header="Tipo" Width="150">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ComboBox SelectedItem="{Binding Tipo}" 
+                                  ItemsSource="{Binding DataContext.TiposEvento, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                  FontFamily="Cascadia Code" 
+                                  VerticalAlignment="Center" 
+                                  HorizontalAlignment="Stretch"
+                                  Margin="5"
+                                  Height="30">
+                                        </ComboBox>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+
+                            <GridViewColumn Header="Estado" Width="150">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ComboBox SelectedItem="{Binding Estado}" 
+                                  ItemsSource="{Binding DataContext.EstadosEvento, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                  FontFamily="Cascadia Code" 
+                                  VerticalAlignment="Center" 
+                                  HorizontalAlignment="Stretch"
+                                  Margin="5"
+                                  Height="30">
+                                        </ComboBox>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+
                             <GridViewColumn Header="Porcentaje" DisplayMemberBinding="{Binding Porcentaje}" Width="100"/>
 
                             <GridViewColumn Header="Nota" Width="100">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBox Width="80"
-                                             Margin="5"
-                                             Padding="4"
-                                             Background="#f5f5f5"
-                                             BorderBrush="#ccc"
-                                             FontFamily="Cascadia Code"
-                                             BorderThickness="1"
-                                             VerticalContentAlignment="Center"
-                                             ToolTipService.ShowDuration="3000">
+                                 Margin="5"
+                                 Padding="4"
+                                 Background="#f5f5f5"
+                                 BorderBrush="#ccc"
+                                 FontFamily="Cascadia Code"
+                                 BorderThickness="1"
+                                 VerticalContentAlignment="Center"
+                                 ToolTipService.ShowDuration="3000">
                                             <TextBox.ToolTip>
-                                                <ToolTip Background="Yellow" Foreground="#f44336" FontWeight="Bold" Content="Introduce una nota entre 0 y 10. El valor -1 indica que la nota no esta puesta y no cuenta para el calculo de la media" />
+                                                <ToolTip Background="Yellow" Foreground="#f44336" FontWeight="Bold" Content="Introduce una nota entre 0 y 10. El valor -1 indica que la nota no está puesta y no cuenta para el cálculo de la media" />
                                             </TextBox.ToolTip>
                                             <TextBox.Text>
                                                 <Binding Path="Nota.NotaValor"
-                                                         UpdateSourceTrigger="PropertyChanged"
-                                                         Mode="TwoWay"> 
+                                         UpdateSourceTrigger="PropertyChanged"
+                                         Mode="TwoWay">
                                                     <Binding.TargetNullValue>0</Binding.TargetNullValue>
                                                     <Binding.FallbackValue>0</Binding.FallbackValue>
                                                 </Binding>
@@ -77,50 +107,49 @@
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
-                            
-                            <!-- Botón Guardar -->
+
                             <GridViewColumn Header="Guardar" Width="120">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <Button Content="💾 Guardar" 
-                                            Command="{Binding DataContext.GuardarCommand, RelativeSource={RelativeSource AncestorType=Window}}" 
-                                            CommandParameter="{Binding}" 
-                                            Background="#4CAF50" 
-                                            Foreground="White" 
-                                            FontWeight="Bold" 
-                                            Cursor="Hand"
-                                            Padding="4"
-                                            BorderThickness="0"
-                                            FontFamily="Cascadia Code"
-                                            Margin="5"
-                                            HorizontalAlignment="Center"
-                                            Width="120"
-                                            Height="30"/>
+                                Command="{Binding DataContext.GuardarCommand, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                CommandParameter="{Binding}" 
+                                Background="#4CAF50" 
+                                Foreground="White" 
+                                FontWeight="Bold" 
+                                Cursor="Hand"
+                                Padding="4"
+                                BorderThickness="0"
+                                FontFamily="Cascadia Code"
+                                Margin="5"
+                                HorizontalAlignment="Center"
+                                Width="120"
+                                Height="30"/>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
 
-                            <!-- Botón Borrar -->
                             <GridViewColumn Header="Borrar" Width="120">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <Button Content="🗑 Borrar" 
-                                            Command="{Binding DataContext.BorrarCommand, RelativeSource={RelativeSource AncestorType=Window}}" 
-                                            CommandParameter="{Binding}" 
-                                            Background="#f44336" 
-                                            Foreground="White" 
-                                            FontWeight="Bold" 
-                                            Cursor="Hand"
-                                            FontFamily="Cascadia Code"
-                                            Padding="4"
-                                            BorderThickness="0"
-                                            Margin="5"
-                                            HorizontalAlignment="Center"
-                                            Width="120"
-                                            Height="30"/>
+                                Command="{Binding DataContext.BorrarCommand, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                CommandParameter="{Binding}" 
+                                Background="#f44336" 
+                                Foreground="White" 
+                                FontWeight="Bold" 
+                                Cursor="Hand"
+                                FontFamily="Cascadia Code"
+                                Padding="4"
+                                BorderThickness="0"
+                                Margin="5"
+                                HorizontalAlignment="Center"
+                                Width="120"
+                                Height="30"/>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
+
                         </GridView>
                     </ListView.View>
                 </ListView>
