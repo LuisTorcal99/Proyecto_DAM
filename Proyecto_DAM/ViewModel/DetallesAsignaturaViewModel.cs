@@ -63,6 +63,7 @@ namespace Proyecto_DAM.ViewModel
                 if (notaValor < 0 || notaValor > 10)
                 {
                     await _eventoService.PatchEvento(evento);
+                    MessageBox.Show("Estado o Tipo guardados correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
                     return;
                 }
 
@@ -107,7 +108,7 @@ namespace Proyecto_DAM.ViewModel
                     await _eventoService.PatchEvento(evento);
                 }
 
-                MessageBox.Show("Nota guardada correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Nota, Estado o Tipo guardados correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {

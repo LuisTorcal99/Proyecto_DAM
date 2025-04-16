@@ -78,7 +78,13 @@
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
 
-                            <GridViewColumn Header="Porcentaje" DisplayMemberBinding="{Binding Porcentaje}" Width="100"/>
+                            <GridViewColumn Header="Porcentaje" Width="100">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Porcentaje, StringFormat={}{0}%}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
 
                             <GridViewColumn Header="Nota" Width="100">
                                 <GridViewColumn.CellTemplate>

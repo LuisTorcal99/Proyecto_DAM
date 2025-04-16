@@ -50,8 +50,8 @@
                 <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" Width="*" />
                 <DataGridTextColumn Header="Tipo" Binding="{Binding Tipo}" Width="*" />
                 <DataGridTextColumn Header="Estado" Binding="{Binding Estado}" Width="*" />
-                <DataGridTextColumn Header="Fecha" Binding="{Binding Fecha}" Width="*" />
-                <DataGridTextColumn Header="Porcentaje" Binding="{Binding Porcentaje}" Width="*" />
+                <DataGridTextColumn Header="Fecha" Binding="{Binding Fecha}" Width="200" />
+                <DataGridTextColumn Header="Porcentaje" Binding="{Binding Porcentaje, StringFormat={}{0}%}" Width="*" />
             </ui:DataGrid.Columns>
 
         </ui:DataGrid>

@@ -9,8 +9,8 @@
         d:DataContext="{d:DesignInstance Type=viewmodel:AddEventoViewModel}"
         mc:Ignorable="d"
         Title="Añadir Evento"
-        Height="600"
-        Width="600"
+        Height="650"
+        Width="650"
         Background="White"
         WindowStartupLocation="CenterScreen">
 
@@ -99,7 +99,7 @@
 
             <!-- Porcentaje -->
             <StackPanel>
-                <TextBlock Text="Porcentaje (%):" 
+                <TextBlock Text="Porcentaje (0-100 %):" 
                    FontFamily="Cascadia Code" 
                    FontSize="14" 
                    Foreground="Black"/>
@@ -114,19 +114,38 @@
 
             <!-- Fecha -->
             <StackPanel>
-                <TextBlock Text="Fecha:" 
-                   FontFamily="Cascadia Code" 
-                   FontSize="14" 
-                   Foreground="Black"/>
+                <TextBlock Text="Fecha y hora:" 
+               FontFamily="Cascadia Code" 
+               FontSize="14" 
+               Foreground="Black"/>
+
+                <!-- Fecha -->
                 <DatePicker SelectedDate="{Binding Fecha, UpdateSourceTrigger=PropertyChanged}" 
-                            Height="35"
-                            FontSize="14"
-                            FontFamily="Cascadia Code"
-                            Background="#f7f2f5"
-                            BorderThickness="0"
-                            Padding="5"/>
+                Height="35"
+                FontSize="14"
+                FontFamily="Cascadia Code"
+                Background="#f7f2f5"
+                BorderThickness="0"
+                Padding="5"/>
+
+                <!-- Label para hora -->
+                <TextBlock Text="Hora (formato hh:mm):" 
+               FontFamily="Cascadia Code" 
+               FontSize="14" 
+               Foreground="Black" 
+               Margin="0,10,0,5"/>
+
+                <!-- Hora -->
+                <TextBox Text="{Binding HoraTexto, UpdateSourceTrigger=PropertyChanged}" 
+             Height="35"
+             FontSize="14"
+             FontFamily="Cascadia Code"
+             Background="#f7f2f5"
+             BorderThickness="0"
+             Padding="5"/>
             </StackPanel>
         </StackPanel>
+
 
         <!-- Botón Guardar -->
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">

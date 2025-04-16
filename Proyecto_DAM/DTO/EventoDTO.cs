@@ -14,7 +14,7 @@ namespace Proyecto_DAM.DTO
         public string Descripcion { get; set; }
 
         [JsonPropertyName("porcentaje")]
-        public int Porcentaje { get; set; }
+        public double Porcentaje { get; set; }
 
         [JsonPropertyName("fecha")]
         public DateTime Fecha { get; set; }

@@ -31,6 +31,9 @@ namespace Proyecto_DAM.ViewModel
         public DateTime? _Fecha;
 
         [ObservableProperty]
+        public string _HoraTexto;
+
+        [ObservableProperty]
         public ObservableCollection<AsignaturaItemModel> _Asignaturas;
 
         [ObservableProperty]
@@ -53,17 +56,34 @@ namespace Proyecto_DAM.ViewModel
         public async Task Guardar()
         {
             // Validaciones básicas
-            if (string.IsNullOrWhiteSpace(Nombre) || string.IsNullOrWhiteSpace(Descripcion) ||
-                string.IsNullOrWhiteSpace(Porcentaje) || Fecha == null)
+            if (string.IsNullOrWhiteSpace(Nombre) || string.IsNullOrWhiteSpace(Porcentaje) || string.IsNullOrWhiteSpace(AsignaturaSeleccionada.ToString())
+                || Fecha == null || string.IsNullOrWhiteSpace(TipoSeleccionado) || string.IsNullOrWhiteSpace(HoraTexto))
             {
                 MessageBox.Show(Constantes.ERROR_CAMPOSNULL);
                 return;
             }
 
-            // Validar Porcentaje como número entero
-            if (!int.TryParse(Porcentaje, out int porcentaje))
+            if (!double.TryParse(Porcentaje, out double porcentaje))
             {
                 MessageBox.Show("El porcentaje debe ser un valor numérico.");
+                return;
+            }
+
+            if (porcentaje < 0 || porcentaje > 100)
+            {
+                MessageBox.Show("El porcentaje debe estar entre 0 y 100.");
+                return;
+            }
+
+            DateTime fechaHoraFinal;
+            try
+            {
+                var hora = DateTime.ParseExact(HoraTexto, "HH:mm", null);
+                fechaHoraFinal = new DateTime(Fecha.Value.Year, Fecha.Value.Month, Fecha.Value.Day, hora.Hour, hora.Minute, 0);
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("La hora debe estar en el formato HH:mm.");
                 return;
             }
 
@@ -73,7 +93,7 @@ namespace Proyecto_DAM.ViewModel
                 Nombre = Nombre,
                 Descripcion = Descripcion,
                 Porcentaje = porcentaje,
-                Fecha = Fecha.Value,
+                Fecha = fechaHoraFinal,
                 IdAsignatura = AsignaturaSeleccionada.Id,
                 IdUsuario = App.Current.Services.GetService<LoginDTO>().Id,
                 Tipo = TipoSeleccionado,
