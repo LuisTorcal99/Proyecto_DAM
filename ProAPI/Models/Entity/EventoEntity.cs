@@ -24,6 +24,8 @@ namespace RestAPI.Models.Entity
 
         // Relación uno a uno con Nota
         public NotaEntity Nota { get; set; }
+
+        public bool EmailEnviado { get; set; }
     }
 
 }

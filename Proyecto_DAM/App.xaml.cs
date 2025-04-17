@@ -62,6 +62,12 @@ namespace Proyecto_DAM
             //Services 
             services.AddSingleton<MainViewModel>();
             services.AddSingleton<LoginDTO>();
+            services.AddSingleton<EventoNotificacion>(provider =>
+            {
+                var rabbitMQProducer = provider.GetRequiredService<IRabbitMQProducer>();
+                var eventoService = provider.GetRequiredService<IEventoApiProvider>();
+                return new EventoNotificacion(rabbitMQProducer, eventoService);
+            });
             services.AddSingleton<IAsignaturaApiProvider, AsignaturaApiService>();
             services.AddSingleton<INotaApiProvider, NotaApiService>();
             services.AddSingleton<IEventoApiProvider, EventoApiService>();

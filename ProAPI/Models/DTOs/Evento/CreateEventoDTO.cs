@@ -26,5 +26,6 @@ namespace RestAPI.Models.DTOs.Evento
 
         [Required]
         public string Estado { get; set; } // "Pendiente", "EnProceso", "Realizado"
+        public bool EmailEnviado { get; set; }
     }
 }

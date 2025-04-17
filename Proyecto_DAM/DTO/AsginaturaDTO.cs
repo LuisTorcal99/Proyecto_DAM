@@ -26,6 +26,7 @@ namespace Proyecto_DAM.DTO
 
         public List<NotaDTO> Notas { get; set; }
         public List<EventoDTO> Eventos { get; set; }
-    }
 
+
+    }
 }

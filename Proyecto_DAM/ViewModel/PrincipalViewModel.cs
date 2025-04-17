@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Proyecto_DAM.DTO;
 using Proyecto_DAM.Interfaces;
 using Proyecto_DAM.Models;
+using Proyecto_DAM.RabbitMQ;
 using Proyecto_DAM.Utils;
 using Proyecto_DAM.View;
 
@@ -24,12 +25,15 @@ namespace Proyecto_DAM.ViewModel
         private readonly INotaApiProvider _notaService;
         private readonly IHttpsJsonClientProvider<AsignaturaDTO> _httpService;
         private readonly IServiceProvider _serviceProvider;
+        private readonly IRabbitMQProducer _rabbitMQProducer;
+        private readonly EventoNotificacion _eventoNotificacion;
 
         [ObservableProperty]
         private ObservableCollection<AsignaturaItemModel> _AsignaturaItem;
 
         public PrincipalViewModel(IAsignaturaApiProvider asignaturaService, IHttpsJsonClientProvider<AsignaturaDTO> httpService,
-                        IServiceProvider serviceProvider, IEventoApiProvider eventoApiProvider, INotaApiProvider notaApiProvider)
+                        IServiceProvider serviceProvider, IEventoApiProvider eventoApiProvider, INotaApiProvider notaApiProvider,
+                        IRabbitMQProducer rabbitMQProducer, EventoNotificacion eventoNotificacion)
         {
             _asignaturaService = asignaturaService;
             _httpService = httpService;
@@ -37,6 +41,8 @@ namespace Proyecto_DAM.ViewModel
             _serviceProvider = serviceProvider;
             _eventoService = eventoApiProvider;
             _notaService = notaApiProvider;
+            _rabbitMQProducer = rabbitMQProducer;
+            _eventoNotificacion = eventoNotificacion;
         }
 
         [RelayCommand]
@@ -65,12 +71,14 @@ namespace Proyecto_DAM.ViewModel
                         .Where(a => a.IdUsuario.Equals(App.Current.Services.GetService<LoginDTO>().Id))
                         .ToList();
 
+                    await _eventoNotificacion.VerificarYEnviarCorreos(asignaturasFiltradas);
+
+                    var eventos = await _eventoService.GetEvento();
+                    var notas = await _notaService.GetNota();
+
                     foreach (var dto in asignaturasFiltradas)
                     {
                         var model = AsignaturaItemModel.CreateModelFromDTO(dto);
-
-                        var eventos = await _eventoService.GetEvento();
-                        var notas = await _notaService.GetNota();
 
                         model.TotalEventos = eventos.Count(e => e.IdAsignatura == model.Id);
                         model.TotalNotas = notas.Count(n => n.IdAsignatura == model.Id);

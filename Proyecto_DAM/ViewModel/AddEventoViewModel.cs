@@ -99,7 +99,8 @@ namespace Proyecto_DAM.ViewModel
                 IdAsignatura = AsignaturaSeleccionada.Id,
                 IdUsuario = App.Current.Services.GetService<LoginDTO>().Id,
                 Tipo = TipoSeleccionado,
-                Estado = "Pendiente"
+                Estado = "Pendiente",
+                EmailEnviado = false
             };
 
             try
