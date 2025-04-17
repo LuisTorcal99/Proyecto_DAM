@@ -16,23 +16,39 @@ namespace Proyecto_DAM.ViewModel
     public partial class EventosViewModel : ViewModelBase
     {
         private readonly IEventoApiProvider _EventosService;
-        private IHttpsJsonClientProvider<EventoDTO> _httpsJsonClientProvider;
+        private readonly IAsignaturaApiProvider _AsignaturaApiService;
 
         private int _currentPage = 1;
         private readonly int _itemsPerPage = 5;
 
-        public EventosViewModel(IEventoApiProvider EventosService)
-        {
-            _EventosService = EventosService;
-            DatosGridItem = new ObservableCollection<EventoItemModel>();
-            PaginatedItems = new ObservableCollection<EventoItemModel>();
-        }
+        public ObservableCollection<string> TiposEvento { get; } = new() { "Tarea", "Examen" };
+        public ObservableCollection<string> EstadosEvento { get; } = new() { "Pendiente", "EnProceso", "Completado" };
+
+        [ObservableProperty]
+        private ObservableCollection<string> _asignaturas = new();
+
+        [ObservableProperty]
+        private string _FiltroTipo;
+
+        [ObservableProperty]
+        private string _FiltroEstado;
+
+        [ObservableProperty]
+        private string _FiltroAsignatura;
 
         [ObservableProperty]
         private ObservableCollection<EventoItemModel> _DatosGridItem;
 
         [ObservableProperty]
         private ObservableCollection<EventoItemModel> _PaginatedItems;
+
+        public EventosViewModel(IEventoApiProvider EventosService, IAsignaturaApiProvider asignaturaApiService)
+        {
+            _EventosService = EventosService;
+            DatosGridItem = new ObservableCollection<EventoItemModel>();
+            PaginatedItems = new ObservableCollection<EventoItemModel>();
+            _AsignaturaApiService = asignaturaApiService;
+        }
 
         public int CurrentPage
         {
@@ -81,19 +97,31 @@ namespace Proyecto_DAM.ViewModel
         public override async Task LoadAsync()
         {
             DatosGridItem.Clear();
+            Asignaturas.Clear();
+
             try
             {
                 var eventos = await _EventosService.GetEvento();
+                var asignaturas = await _AsignaturaApiService.GetAsignatura();
 
                 if (eventos?.Any() == true)
                 {
                     var idUsuario = App.Current.Services.GetService<LoginDTO>().Id;
 
                     var eventosFiltrados = eventos
-                        .Where(e => e.IdUsuario == idUsuario && e.Fecha > DateTime.Now) 
+                        .Where(e => e.IdUsuario == idUsuario && e.Fecha > DateTime.Now)
                         .Select(e => EventoItemModel.CreateModelFromDTO(e))
                         .OrderBy(e => e.Fecha)
                         .ToList();
+
+                    var asignaturasFiltradas = asignaturas
+                        .Where(a => a.IdUsuario.Equals(App.Current.Services.GetService<LoginDTO>().Id))
+                        .ToList();
+
+                    foreach (var Asignatura in asignaturasFiltradas)
+                    {
+                        Asignaturas.Add(Asignatura.Nombre);
+                    }
 
                     foreach (var evento in eventosFiltrados)
                     {
@@ -116,5 +144,33 @@ namespace Proyecto_DAM.ViewModel
                 MessageBox.Show(ex.Message);
             }
         }
+
+        [RelayCommand]
+        public void ResetearFiltros()
+        {
+            FiltroTipo = null;
+            FiltroEstado = null;
+            FiltroAsignatura = null;
+            RefreshPaginatedItems(); 
+        }
+
+
+        [RelayCommand]
+        public void AplicarFiltros()
+        {
+            var eventosFiltrados = DatosGridItem
+                .Where(e =>
+                    (string.IsNullOrEmpty(FiltroTipo) || e.Tipo.Contains(FiltroTipo, StringComparison.OrdinalIgnoreCase)) &&
+                    (string.IsNullOrEmpty(FiltroEstado) || e.Estado.Contains(FiltroEstado, StringComparison.OrdinalIgnoreCase)) 
+                )
+                .ToList();
+
+            PaginatedItems.Clear();
+            foreach (var evento in eventosFiltrados.Skip((CurrentPage - 1) * _itemsPerPage).Take(_itemsPerPage))
+            {
+                PaginatedItems.Add(evento);
+            }
+        }
+
     }
 }

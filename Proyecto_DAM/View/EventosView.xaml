@@ -13,7 +13,8 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
-            <RowDefinition Height="7*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="8*"/>
             <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
 
@@ -22,8 +23,32 @@
                FontSize="18" 
                Margin="25,10,0,5" />
 
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="25,0,25,10" HorizontalAlignment="Right" VerticalAlignment="Center">
+            <StackPanel Margin="10,0" Orientation="Vertical">
+                <TextBlock Text="Tipo:" FontWeight="Bold" />
+                <ComboBox ItemsSource="{Binding TiposEvento}" 
+                  SelectedItem="{Binding FiltroTipo, Mode=TwoWay}" 
+                  Width="150" />
+            </StackPanel>
+            <StackPanel Margin="10,0" Orientation="Vertical">
+                <TextBlock Text="Estado:" FontWeight="Bold" />
+                <ComboBox ItemsSource="{Binding EstadosEvento}" 
+                  SelectedItem="{Binding FiltroEstado, Mode=TwoWay}" 
+                  Width="150" />
+            </StackPanel>
+            <StackPanel Margin="10,0" Orientation="Vertical">
+                <TextBlock Text="Asignatura:" FontWeight="Bold" />
+                <ComboBox ItemsSource="{Binding Asignaturas}" SelectedItem="{Binding FiltroAsignatura, Mode=TwoWay}" Width="150" />
+            </StackPanel>
+            <Button Content="Filtrar" Command="{Binding AplicarFiltrosCommand}" Width="100" Height="30" Margin="20,12,0,0"
+            Background="{DynamicResource BackgroundColor}" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}"/>
+            <Button Content="Resetear" Command="{Binding ResetearFiltrosCommand}" Width="100" Height="30" Margin="10,12,0,0"
+            Background="{DynamicResource BackgroundColor}" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}"/>
+
+        </StackPanel>
+
         <ui:DataGrid 
-            Grid.Row="1"
+            Grid.Row="2"
             ItemsSource="{Binding PaginatedItems}" 
             IsReadOnly="True"
             CanUserResizeColumns="True"
@@ -56,11 +81,11 @@
 
         </ui:DataGrid>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
-            <Button Content="Previous" Command="{Binding MoveToPreviousPageCommand}" Width="120" Height="40" Margin="5" 
+        <StackPanel Orientation="Horizontal" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
+            <Button Content="Atras" Command="{Binding MoveToPreviousPageCommand}" Width="90" Height="20" Margin="5" 
                     Background="{DynamicResource BackgroundColor}" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}"/>
             <TextBlock Text="{Binding CurrentPage}" VerticalAlignment="Center" Margin="10" FontSize="16" FontWeight="Bold" Foreground="Black"/>
-            <Button Content="Next" Command="{Binding MoveToNextPageCommand}" Width="120" Height="40" Margin="5" 
+            <Button Content="Siguiente" Command="{Binding MoveToNextPageCommand}" Width="90" Height="20" Margin="5" 
                     Background="{DynamicResource BackgroundColor}" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}"/>
         </StackPanel>
     </Grid>

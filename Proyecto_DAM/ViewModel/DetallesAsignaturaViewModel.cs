@@ -43,7 +43,7 @@ namespace Proyecto_DAM.ViewModel
             _calcularMediaService = calcularMediaService;
 
             TiposEvento = new ObservableCollection<string>() { "Tarea", "Examen" };
-            EstadosEvento = new ObservableCollection<string>() { "Pendiente", "EnProceso", "Estudiado" };
+            EstadosEvento = new ObservableCollection<string>() { "Pendiente", "EnProceso", "Completado" };
         }
         public async Task SetIdAsignatura(int id)
         {
