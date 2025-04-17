@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Proyecto_DAM.DTO;
 using Proyecto_DAM.Interfaces;
 using Proyecto_DAM.Utils;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using Proyecto_DAM.RabbitMQ;  
 
 namespace Proyecto_DAM.ViewModel
 {
@@ -22,6 +21,7 @@ namespace Proyecto_DAM.ViewModel
         private readonly IEventoApiProvider _eventoService;
         private readonly INotaApiProvider _notaService;
         private readonly ICalcularMediaProvider _calcularMediaService;
+        private readonly IRabbitMQProducer _rabbitMQProducer;  
 
         [ObservableProperty]
         private AsignaturaDTO? _Asignatura;
@@ -32,19 +32,22 @@ namespace Proyecto_DAM.ViewModel
         public ObservableCollection<string> TiposEvento { get; set; }
         public ObservableCollection<string> EstadosEvento { get; set; }
 
-        public DetallesAsignaturaViewModel(IAsignaturaApiProvider asignaturaApiProvider, 
-                                            IEventoApiProvider eventoService, 
+        public DetallesAsignaturaViewModel(IAsignaturaApiProvider asignaturaApiProvider,
+                                            IEventoApiProvider eventoService,
                                             INotaApiProvider notaService,
-                                            ICalcularMediaProvider calcularMediaService)
+                                            ICalcularMediaProvider calcularMediaService,
+                                            IRabbitMQProducer rabbitMQProducer)  
         {
             _asignaturaService = asignaturaApiProvider;
             _eventoService = eventoService;
             _notaService = notaService;
             _calcularMediaService = calcularMediaService;
+            _rabbitMQProducer = rabbitMQProducer; 
 
             TiposEvento = new ObservableCollection<string>() { "Tarea", "Examen" };
             EstadosEvento = new ObservableCollection<string>() { "Pendiente", "EnProceso", "Completado" };
         }
+
         public async Task SetIdAsignatura(int id)
         {
             await CargarDetalles(id.ToString());
@@ -64,6 +67,9 @@ namespace Proyecto_DAM.ViewModel
                 {
                     await _eventoService.PatchEvento(evento);
                     MessageBox.Show("Estado o Tipo guardados correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    string mensaje = $"Evento actualizado: {evento.Nombre} (Tipo: {evento.Tipo}, Estado: {evento.Estado})";
+                    _rabbitMQProducer.EnviarMensaje(mensaje);
                     return;
                 }
 
@@ -80,7 +86,7 @@ namespace Proyecto_DAM.ViewModel
                     var newNota = new NotaDTO
                     {
                         NotaValor = evento.Nota.NotaValor,
-                        IdAsignatura = evento.IdAsignatura, 
+                        IdAsignatura = evento.IdAsignatura,
                         IdEvento = evento.Id,
                         IdUsuario = App.Current.Services.GetService<LoginDTO>().Id
                     };
@@ -89,6 +95,9 @@ namespace Proyecto_DAM.ViewModel
                     await _notaService.PostNota(newNota);
                     evento.Nota = newNota;
                     await _eventoService.PatchEvento(evento);
+
+                    string mensaje = $"Nota añadida: {evento.Nombre} (Nota: {evento.Nota.NotaValor})";
+                    _rabbitMQProducer.EnviarMensaje(mensaje);
                 }
                 else
                 {
@@ -106,6 +115,9 @@ namespace Proyecto_DAM.ViewModel
                     await _notaService.PatchNota(updatedNota);
                     evento.Nota = updatedNota;
                     await _eventoService.PatchEvento(evento);
+
+                    string mensaje = $"Nota actualizada: {evento.Nombre} (Nota: {evento.Nota.NotaValor})";
+                    _rabbitMQProducer.EnviarMensaje(mensaje);
                 }
 
                 MessageBox.Show("Nota, Estado o Tipo guardados correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -144,6 +156,10 @@ namespace Proyecto_DAM.ViewModel
                     await _eventoService.DeleteEvento(evento.Id.ToString());
                     Asignatura?.Eventos?.Remove(evento);
 
+                    string mensaje = $"Evento borrado: {evento.Nombre} (Tipo: {evento.Tipo})";
+                    _rabbitMQProducer.EnviarMensaje(mensaje);
+
+
                     MessageBox.Show("Evento eliminado correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 catch (Exception ex)
@@ -167,6 +183,9 @@ namespace Proyecto_DAM.ViewModel
                 {
                     await _asignaturaService.DeleteAsignatura(Asignatura.Id.ToString());
                     MessageBox.Show("Asignatura eliminada correctamente.", "Eliminada", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    string mensaje = $"Asignatura eliminada: {Asignatura.Nombre}";
+                    _rabbitMQProducer.EnviarMensaje(mensaje);
 
                     Application.Current.Windows
                         .OfType<Window>()

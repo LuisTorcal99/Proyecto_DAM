@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Proyecto_DAM.DTO;
 using Proyecto_DAM.Interfaces;
 using Proyecto_DAM.Models;
-using Proyecto_DAM.Service;
+using Proyecto_DAM.RabbitMQ;  // Asegúrate de que la clase IRabbitMQProducer esté aquí
 using Proyecto_DAM.Utils;
 
 namespace Proyecto_DAM.ViewModel
@@ -43,10 +43,13 @@ namespace Proyecto_DAM.ViewModel
         [ObservableProperty]
         public string _Porcentaje;
 
-        public IEventoApiProvider _eventoApiService;
-        public AddEventoViewModel(IEventoApiProvider eventoApiProvider)
+        private readonly IEventoApiProvider _eventoApiService;
+        private readonly IRabbitMQProducer _rabbitMQProducer; 
+
+        public AddEventoViewModel(IEventoApiProvider eventoApiProvider, IRabbitMQProducer rabbitMQProducer)
         {
             _eventoApiService = eventoApiProvider;
+            _rabbitMQProducer = rabbitMQProducer; 
             Asignaturas = new ObservableCollection<AsignaturaItemModel>();
             Tipos = new ObservableCollection<string>() { "Tarea", "Examen" };
             _ = LoadAsync();
@@ -55,7 +58,6 @@ namespace Proyecto_DAM.ViewModel
         [RelayCommand]
         public async Task Guardar()
         {
-            // Validaciones básicas
             if (string.IsNullOrWhiteSpace(Nombre) || string.IsNullOrWhiteSpace(Porcentaje) || string.IsNullOrWhiteSpace(AsignaturaSeleccionada.ToString())
                 || Fecha == null || string.IsNullOrWhiteSpace(TipoSeleccionado) || string.IsNullOrWhiteSpace(HoraTexto))
             {
@@ -104,13 +106,17 @@ namespace Proyecto_DAM.ViewModel
             {
                 await _eventoApiService.PostEvento(evento);
                 MessageBox.Show(Constantes.MSG_PERFECT);
+
+                string mensaje = $"Evento creado: {evento.Nombre} (Tipo: {evento.Tipo}, Asignatura: {evento.IdAsignatura}, Fecha: {evento.Fecha})";
+                _rabbitMQProducer.EnviarMensaje(mensaje);
+
+                MessageBox.Show("Evento enviado a RabbitMQ.");
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error al guardar el evento: {ex.Message}");
             }
         }
-
 
         public override async Task LoadAsync()
         {
@@ -130,7 +136,7 @@ namespace Proyecto_DAM.ViewModel
                 {
                     Asignaturas.Add(a);
                 }
-                    
+
             }
             catch (Exception ex)
             {

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
@@ -9,13 +7,12 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Proyecto_DAM.DTO;
 using Proyecto_DAM.Interfaces;
+using Proyecto_DAM.RabbitMQ;
 using Proyecto_DAM.Utils;
 using Microsoft.Extensions.DependencyInjection;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Proyecto_DAM.ViewModel
 {
-
     public partial class RegistroViewModel : ViewModelBase
     {
         [ObservableProperty]
@@ -31,9 +28,12 @@ namespace Proyecto_DAM.ViewModel
         public string _ConfirmPassword;
 
         private readonly IHttpsJsonClientProvider<UserDTO> _httpJsonProvider;
-        public RegistroViewModel(IHttpsJsonClientProvider<UserDTO> httpJsonProvider)
+        private readonly IRabbitMQProducer _rabbitMQProducer;
+
+        public RegistroViewModel(IHttpsJsonClientProvider<UserDTO> httpJsonProvider, IRabbitMQProducer rabbitMQProducer)
         {
             _httpJsonProvider = httpJsonProvider;
+            _rabbitMQProducer = rabbitMQProducer;
         }
 
         [RelayCommand]
@@ -64,7 +64,12 @@ namespace Proyecto_DAM.ViewModel
 
                 UserDTO user = await _httpJsonProvider.RegisterPostAsync(Constantes.REGISTER_PATH, UsuarioRegistrado);
 
+                string mensaje = $"Nuevo usuario registrado: {Username} (Email: {Email})";
+                _rabbitMQProducer.EnviarMensaje(mensaje);
+
                 MessageBox.Show(Constantes.REGISTRO_EXITOSO);
+
+                // Cambiar la vista a Login
                 App.Current.Services.GetService<MainViewModel>().SelectedViewModel = App.Current.Services.GetService<MainViewModel>().LoginViewModel;
             }
             catch (Exception ex)

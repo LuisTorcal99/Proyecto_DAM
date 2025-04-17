@@ -14,7 +14,7 @@
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
-		<PackageReference Include="RabbitMQ.Client" Version="7.1.2" />
+		<PackageReference Include="RabbitMQ.Client" Version="6.6.0" />
 		<PackageReference Include="WPF-UI" Version="4.0.2" />
 	</ItemGroup>
 	<ItemGroup>

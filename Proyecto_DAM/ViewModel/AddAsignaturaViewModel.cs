@@ -9,6 +9,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
 using Proyecto_DAM.DTO;
 using Proyecto_DAM.Interfaces;
+using Proyecto_DAM.RabbitMQ;
 using Proyecto_DAM.Utils;
 
 namespace Proyecto_DAM.ViewModel
@@ -24,10 +25,13 @@ namespace Proyecto_DAM.ViewModel
         [ObservableProperty]
         public string _Creditos;
 
-        public IAsignaturaApiProvider _asignaturaApiService;
-        public AddAsignaturaViewModel(IAsignaturaApiProvider asignaturaApi)
+        private readonly IAsignaturaApiProvider _asignaturaApiService;
+        private readonly IRabbitMQProducer _rabbitMQProducer;
+
+        public AddAsignaturaViewModel(IAsignaturaApiProvider asignaturaApi, IRabbitMQProducer rabbitMQProducer)
         {
             _asignaturaApiService = asignaturaApi;
+            _rabbitMQProducer = rabbitMQProducer;
         }
 
         [RelayCommand]
@@ -56,6 +60,10 @@ namespace Proyecto_DAM.ViewModel
             try
             {
                 await _asignaturaApiService.PostAsignatura(asignatura);
+
+                string mensaje = $"Asignatura creada: {asignatura.Nombre} (Creditos: {asignatura.Creditos})";
+                _rabbitMQProducer.EnviarMensaje(mensaje);
+
                 MessageBox.Show(Constantes.MSG_PERFECT);
             }
             catch (Exception ex)

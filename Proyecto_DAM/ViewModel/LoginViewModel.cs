@@ -1,20 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Xml.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.DependencyInjection;
 using Proyecto_DAM.DTO;
 using Proyecto_DAM.Interfaces;
+using Proyecto_DAM.RabbitMQ;
 using Proyecto_DAM.Utils;
-using Microsoft.Extensions.DependencyInjection;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Proyecto_DAM.ViewModel
 {
@@ -28,11 +23,13 @@ namespace Proyecto_DAM.ViewModel
 
         private readonly IHttpsJsonClientProvider<UserDTO> _httpJsonProvider;
         private readonly IUserApiProvider _UsuarioService;
+        private readonly IRabbitMQProducer _rabbitMQProducer;
 
-        public LoginViewModel(IHttpsJsonClientProvider<UserDTO> httpJsonProvider, IUserApiProvider userApi)
+        public LoginViewModel(IHttpsJsonClientProvider<UserDTO> httpJsonProvider, IUserApiProvider userApi, IRabbitMQProducer rabbitMQProducer)
         {
             _httpJsonProvider = httpJsonProvider;
             _UsuarioService = userApi;
+            _rabbitMQProducer = rabbitMQProducer;
             CrearAdmin();
             Email = Constantes.EMAIL;
             Password = Constantes.PASSWORD;
@@ -63,9 +60,12 @@ namespace Proyecto_DAM.ViewModel
                         App.Current.Services.GetService<LoginDTO>().Id = usuario.Id;
                     }
 
+                    // Enviar mensaje a RabbitMQ
+                    string mensaje = $"Login exitoso para el usuario: {usuario?.Email}";
+                    _rabbitMQProducer.EnviarMensaje(mensaje);
+
                     // Cambiar de vista
                     var mainViewModel = App.Current.Services.GetService<MainViewModel>();
-
                     var inicioViewModel = App.Current.Services.GetService<PrincipalViewModel>();
                     mainViewModel.SelectViewModelCommand.Execute(inicioViewModel);
                 }
@@ -78,7 +78,6 @@ namespace Proyecto_DAM.ViewModel
             {
                 MessageBox.Show(ex.Message);
             }
-
         }
 
         [RelayCommand]

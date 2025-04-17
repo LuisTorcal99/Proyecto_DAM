@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.DependencyInjection;
 using Proyecto_DAM.DTO;
 using Proyecto_DAM.Service;
 using Proyecto_DAM.View;
@@ -75,18 +76,38 @@ namespace Proyecto_DAM.ViewModel
         [RelayCommand]
         public void AddAsignatura()
         {
-            var apiProvider = new AsignaturaApiService(new HttpsJsonClientService<AsignaturaDTO>());
-            var viewModel = new AddAsignaturaViewModel(apiProvider);
-            var view = new AddAsignaturaView { DataContext = viewModel };
+            var viewModel = App.Current.Services.GetService<AddAsignaturaViewModel>();
+
+            if (viewModel is null)
+            {
+                MessageBox.Show("No se pudo cargar el ViewModel.");
+                return;
+            }
+
+            var view = new AddAsignaturaView
+            {
+                DataContext = viewModel
+            };
+
             view.ShowDialog();
         }
 
         [RelayCommand]
         public void AddEvento()
         {
-            var apiProvider = new EventoApiService(new HttpsJsonClientService<EventoDTO>());
-            var viewModel = new AddEventoViewModel(apiProvider);
-            var view = new AddEventoView { DataContext = viewModel };
+            var viewModel = App.Current.Services.GetService<AddEventoViewModel>();
+
+            if (viewModel is null)
+            {
+                MessageBox.Show("No se pudo cargar el ViewModel.");
+                return;
+            }
+
+            var view = new AddAsignaturaView
+            {
+                DataContext = viewModel
+            };
+
             view.ShowDialog();
         }
 
