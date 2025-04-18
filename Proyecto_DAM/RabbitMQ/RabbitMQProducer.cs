@@ -3,6 +3,7 @@ using System.Net;
 using System.Text;
 using Proyecto_DAM.DTO;
 using RabbitMQ.Client;
+using Proyecto_DAM.Interfaces;
 
 namespace Proyecto_DAM.RabbitMQ
 {
@@ -16,11 +17,18 @@ namespace Proyecto_DAM.RabbitMQ
     {
         private readonly string _queueName;
         private readonly string _hostname;
+        private readonly IEmailSenderProvider _emailSender;
 
-        public RabbitMQProducer(string queueName = "NuevaCola", string hostname = "localhost")
+        public RabbitMQProducer(IEmailSenderProvider emailSender, string queueName = "NuevaCola", string hostname = "localhost")
         {
+            _emailSender = emailSender;
             _queueName = queueName;
             _hostname = hostname;
+        }
+
+        public async Task EnviarEmail(Email email)
+        {
+            await _emailSender.EnviarEmail(email);
         }
 
         public async Task EnviarMensaje(string message)
@@ -43,39 +51,6 @@ namespace Proyecto_DAM.RabbitMQ
             catch (Exception ex)
             {
                 Console.WriteLine($"[✗] Error al enviar mensaje: {ex.Message}");
-            }
-        }
-
-        public async Task EnviarEmail(Email email)
-        {
-            try
-            {
-                var fromAddress = new MailAddress("correo@gmail.com", "NombreRemitente");
-                var toAddress = new MailAddress(email.To);
-                const string fromPassword = "contraseña";
-
-                var smtp = new SmtpClient
-                {
-                    Host = "smtp.gmail.com",
-                    Port = 587,
-                    EnableSsl = true,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
-                };
-
-                using var message = new MailMessage(fromAddress, toAddress)
-                {
-                    Subject = email.Subject,
-                    Body = email.Body
-                };
-
-                smtp.Send(message);
-                Console.WriteLine($" [✓] Correo enviado a: {email.To}");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[✗] Error al enviar correo: {ex.Message}");
             }
         }
     }

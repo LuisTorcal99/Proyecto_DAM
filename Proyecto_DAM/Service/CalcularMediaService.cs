@@ -38,6 +38,9 @@ namespace Proyecto_DAM.Service
 
             foreach (var nota in notasAsignatura)
             {
+                if (nota.NotaValor == -1)
+                    continue;
+
                 var evento = eventosAsignatura.FirstOrDefault(e => e.Id == nota.IdEvento);
                 if (evento != null)
                 {

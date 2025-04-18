@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -11,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Proyecto_DAM.DTO;
 using Proyecto_DAM.Interfaces;
 using Proyecto_DAM.Models;
-using Proyecto_DAM.RabbitMQ;  // Asegúrate de que la clase IRabbitMQProducer esté aquí
+using Proyecto_DAM.RabbitMQ;
 using Proyecto_DAM.Utils;
 
 namespace Proyecto_DAM.ViewModel
@@ -108,8 +109,12 @@ namespace Proyecto_DAM.ViewModel
                 await _eventoApiService.PostEvento(evento);
                 MessageBox.Show(Constantes.MSG_PERFECT);
 
-                string mensaje = $"Evento creado: {evento.Nombre} (Tipo: {evento.Tipo}, Asignatura: {evento.IdAsignatura}, Fecha: {evento.Fecha})";
-                _rabbitMQProducer.EnviarMensaje(mensaje);
+                var mensaje = new MensajeRabbit
+                {
+                    Tipo = "Evento",
+                    Contenido = $"Evento creado: {evento.Nombre} (Tipo: {evento.Tipo}, Asignatura: {evento.IdAsignatura}, Fecha: {evento.Fecha})"
+                };
+                await _rabbitMQProducer.EnviarMensaje(JsonSerializer.Serialize(mensaje));
 
                 MessageBox.Show("Evento enviado a RabbitMQ.");
             }

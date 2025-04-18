@@ -11,7 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Proyecto_DAM.DTO;
 using Proyecto_DAM.Interfaces;
 using Proyecto_DAM.Utils;
-using Proyecto_DAM.RabbitMQ;  
+using Proyecto_DAM.RabbitMQ;
+using System.Text.Json;
 
 namespace Proyecto_DAM.ViewModel
 {
@@ -68,8 +69,12 @@ namespace Proyecto_DAM.ViewModel
                     await _eventoService.PatchEvento(evento);
                     MessageBox.Show("Estado o Tipo guardados correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                    string mensaje = $"Evento actualizado: {evento.Nombre} (Tipo: {evento.Tipo}, Estado: {evento.Estado})";
-                    _rabbitMQProducer.EnviarMensaje(mensaje);
+                    var mensaje = new MensajeRabbit
+                    {
+                        Tipo = "Evento",
+                        Contenido = $"Evento actualizado: {evento.Nombre} (Tipo: {evento.Tipo}, Estado: {evento.Estado})"
+                    };
+                    await _rabbitMQProducer.EnviarMensaje(JsonSerializer.Serialize(mensaje));
                     return;
                 }
 
@@ -96,8 +101,12 @@ namespace Proyecto_DAM.ViewModel
                     evento.Nota = newNota;
                     await _eventoService.PatchEvento(evento);
 
-                    string mensaje = $"Nota añadida: {evento.Nombre} (Nota: {evento.Nota.NotaValor})";
-                    _rabbitMQProducer.EnviarMensaje(mensaje);
+                    var mensaje = new MensajeRabbit
+                    {
+                        Tipo = "Evento",
+                        Contenido = $"Evento actualizado: {evento.Nombre} Nota: {evento.Nota.NotaValor})"
+                    };
+                    await _rabbitMQProducer.EnviarMensaje(JsonSerializer.Serialize(mensaje));
                 }
                 else
                 {
@@ -116,8 +125,12 @@ namespace Proyecto_DAM.ViewModel
                     evento.Nota = updatedNota;
                     await _eventoService.PatchEvento(evento);
 
-                    string mensaje = $"Nota actualizada: {evento.Nombre} (Nota: {evento.Nota.NotaValor})";
-                    _rabbitMQProducer.EnviarMensaje(mensaje);
+                    var mensaje = new MensajeRabbit
+                    {
+                        Tipo = "Evento",
+                        Contenido = $"Evento actualizado: {evento.Nombre} Nota: {evento.Nota.NotaValor})"
+                    };
+                    await _rabbitMQProducer.EnviarMensaje(JsonSerializer.Serialize(mensaje));
                 }
 
                 MessageBox.Show("Nota, Estado o Tipo guardados correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -156,8 +169,12 @@ namespace Proyecto_DAM.ViewModel
                     await _eventoService.DeleteEvento(evento.Id.ToString());
                     Asignatura?.Eventos?.Remove(evento);
 
-                    string mensaje = $"Evento borrado: {evento.Nombre} (Tipo: {evento.Tipo})";
-                    _rabbitMQProducer.EnviarMensaje(mensaje);
+                    var mensaje = new MensajeRabbit
+                    {
+                        Tipo = "Evento",
+                        Contenido = $"Evento Borrado: {evento.Nombre} Tipo: {evento.Tipo})"
+                    };
+                    await _rabbitMQProducer.EnviarMensaje(JsonSerializer.Serialize(mensaje));
 
 
                     MessageBox.Show("Evento eliminado correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -184,8 +201,12 @@ namespace Proyecto_DAM.ViewModel
                     await _asignaturaService.DeleteAsignatura(Asignatura.Id.ToString());
                     MessageBox.Show("Asignatura eliminada correctamente.", "Eliminada", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                    string mensaje = $"Asignatura eliminada: {Asignatura.Nombre}";
-                    _rabbitMQProducer.EnviarMensaje(mensaje);
+                    var mensaje = new MensajeRabbit
+                    {
+                        Tipo = "Evento",
+                        Contenido = $"Asignatura eliminada: {Asignatura.Nombre})"
+                    };
+                    await _rabbitMQProducer.EnviarMensaje(JsonSerializer.Serialize(mensaje));
 
                     Application.Current.Windows
                         .OfType<Window>()

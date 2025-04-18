@@ -37,6 +37,7 @@ namespace Proyecto_DAM.DTO
         [JsonPropertyName("estado")]
         public string Estado { get; set; } // "Pendiente", "EnProceso", "Realizado"
 
+        [JsonPropertyName("emailEnviado")]
         public bool EmailEnviado { get; set; }
     }
 }

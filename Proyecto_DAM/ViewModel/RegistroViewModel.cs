@@ -10,6 +10,7 @@ using Proyecto_DAM.Interfaces;
 using Proyecto_DAM.RabbitMQ;
 using Proyecto_DAM.Utils;
 using Microsoft.Extensions.DependencyInjection;
+using System.Text.Json;
 
 namespace Proyecto_DAM.ViewModel
 {
@@ -64,8 +65,12 @@ namespace Proyecto_DAM.ViewModel
 
                 UserDTO user = await _httpJsonProvider.RegisterPostAsync(Constantes.REGISTER_PATH, UsuarioRegistrado);
 
-                string mensaje = $"Nuevo usuario registrado: {Username} (Email: {Email})";
-                _rabbitMQProducer.EnviarMensaje(mensaje);
+                var mensaje = new MensajeRabbit
+                {
+                    Tipo = "Evento",
+                    Contenido = $"Nuevo usuario registrado: {Username} (Email: {Email})"
+                };
+                await _rabbitMQProducer.EnviarMensaje(JsonSerializer.Serialize(mensaje));
 
                 MessageBox.Show(Constantes.REGISTRO_EXITOSO);
 

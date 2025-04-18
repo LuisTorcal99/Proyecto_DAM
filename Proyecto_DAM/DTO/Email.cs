@@ -11,6 +11,5 @@ namespace Proyecto_DAM.DTO
         public string To { get; set; }
         public string Subject { get; set; }
         public string Body { get; set; }
-        public DateTime EventDate { get; set; }
     }
 }

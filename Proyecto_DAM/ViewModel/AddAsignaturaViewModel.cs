@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -61,8 +62,12 @@ namespace Proyecto_DAM.ViewModel
             {
                 await _asignaturaApiService.PostAsignatura(asignatura);
 
-                string mensaje = $"Asignatura creada: {asignatura.Nombre} (Creditos: {asignatura.Creditos})";
-                _rabbitMQProducer.EnviarMensaje(mensaje);
+                var mensaje = new MensajeRabbit
+                {
+                    Tipo = "Evento",
+                    Contenido = $"Asignatura creada: {asignatura.Nombre} (Creditos: {asignatura.Creditos})"
+                };
+                await _rabbitMQProducer.EnviarMensaje(JsonSerializer.Serialize(mensaje));
 
                 MessageBox.Show(Constantes.MSG_PERFECT);
             }

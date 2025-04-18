@@ -49,5 +49,8 @@ namespace Proyecto_DAM.Utils
         public const string RESOURCES_PATH = "/Resources/";
         public const string IMAGES_EXTENSION = ".jpg";
         public const string PATH_IMAGE_NOT_FOUND = "Not_found.png";
+
+        public const string USER_MAIL = "";
+        public const string USER_PASS = "";
     }
 }

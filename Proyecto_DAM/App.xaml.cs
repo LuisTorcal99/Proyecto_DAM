@@ -6,6 +6,7 @@ using Proyecto_DAM.DTO;
 using Proyecto_DAM.Interfaces;
 using Proyecto_DAM.RabbitMQ;
 using Proyecto_DAM.Service;
+using Proyecto_DAM.Services;
 using Proyecto_DAM.ViewModel;
 
 namespace Proyecto_DAM
@@ -62,13 +63,8 @@ namespace Proyecto_DAM
             //Services 
             services.AddSingleton<MainViewModel>();
             services.AddSingleton<LoginDTO>();
-            services.AddSingleton<EventoNotificacion>(provider =>
-            {
-                var rabbitMQProducer = provider.GetRequiredService<IRabbitMQProducer>();
-                var eventoService = provider.GetRequiredService<IEventoApiProvider>();
-                return new EventoNotificacion(rabbitMQProducer, eventoService);
-            });
-            services.AddSingleton<IAsignaturaApiProvider, AsignaturaApiService>();
+            services.AddSingleton<IEventoNotificacionProvider, EventoNotificacionService>();
+            services.AddSingleton<IEmailSenderProvider, EmailSenderService>();
             services.AddSingleton<INotaApiProvider, NotaApiService>();
             services.AddSingleton<IEventoApiProvider, EventoApiService>();
             services.AddSingleton<IAsignaturaApiProvider, AsignaturaApiService>();

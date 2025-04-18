@@ -13,6 +13,7 @@ using Proyecto_DAM.DTO;
 using Proyecto_DAM.Interfaces;
 using Proyecto_DAM.Models;
 using Proyecto_DAM.RabbitMQ;
+using Proyecto_DAM.Service;
 using Proyecto_DAM.Utils;
 using Proyecto_DAM.View;
 
@@ -26,14 +27,14 @@ namespace Proyecto_DAM.ViewModel
         private readonly IHttpsJsonClientProvider<AsignaturaDTO> _httpService;
         private readonly IServiceProvider _serviceProvider;
         private readonly IRabbitMQProducer _rabbitMQProducer;
-        private readonly EventoNotificacion _eventoNotificacion;
+        private readonly IEventoNotificacionProvider _eventoNotificacion;
 
         [ObservableProperty]
         private ObservableCollection<AsignaturaItemModel> _AsignaturaItem;
 
         public PrincipalViewModel(IAsignaturaApiProvider asignaturaService, IHttpsJsonClientProvider<AsignaturaDTO> httpService,
                         IServiceProvider serviceProvider, IEventoApiProvider eventoApiProvider, INotaApiProvider notaApiProvider,
-                        IRabbitMQProducer rabbitMQProducer, EventoNotificacion eventoNotificacion)
+                        IRabbitMQProducer rabbitMQProducer, IEventoNotificacionProvider eventoNotificacion)
         {
             _asignaturaService = asignaturaService;
             _httpService = httpService;
@@ -60,10 +61,12 @@ namespace Proyecto_DAM.ViewModel
         public override async Task LoadAsync()
         {
             AsignaturaItem.Clear();
-
             try
             {
                 var asignaturas = await _asignaturaService.GetAsignatura();
+                var eventos = await _eventoService.GetEvento();
+                var notas = await _notaService.GetNota();
+                var idUsuario = App.Current.Services.GetService<LoginDTO>().Id;
 
                 if (asignaturas?.Any() == true)
                 {
@@ -71,17 +74,22 @@ namespace Proyecto_DAM.ViewModel
                         .Where(a => a.IdUsuario.Equals(App.Current.Services.GetService<LoginDTO>().Id))
                         .ToList();
 
-                    await _eventoNotificacion.VerificarYEnviarCorreos(asignaturasFiltradas);
+                    var eventosFiltrados = eventos
+                        .Where(e => e.IdUsuario.Equals(App.Current.Services.GetService<LoginDTO>().Id))
+                        .ToList();
 
-                    var eventos = await _eventoService.GetEvento();
-                    var notas = await _notaService.GetNota();
+                    var notasFiltrados = notas
+                        .Where(e => e.IdUsuario.Equals(App.Current.Services.GetService<LoginDTO>().Id))
+                        .ToList();
+
+                    await _eventoNotificacion.VerificarYEnviarCorreos(eventosFiltrados, notasFiltrados, idUsuario);
 
                     foreach (var dto in asignaturasFiltradas)
                     {
                         var model = AsignaturaItemModel.CreateModelFromDTO(dto);
 
-                        model.TotalEventos = eventos.Count(e => e.IdAsignatura == model.Id);
-                        model.TotalNotas = notas.Count(n => n.IdAsignatura == model.Id);
+                        model.TotalEventos = eventosFiltrados.Count(e => e.IdAsignatura == model.Id);
+                        model.TotalNotas = notas.Count(n => n.IdAsignatura == model.Id && n.NotaValor > -1);
 
                         AsignaturaItem.Add(model);
                     }

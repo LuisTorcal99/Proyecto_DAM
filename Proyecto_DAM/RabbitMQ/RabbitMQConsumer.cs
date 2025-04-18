@@ -1,8 +1,7 @@
 ﻿using Proyecto_DAM.DTO;
+using Proyecto_DAM.Interfaces;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using System.Net.Mail;
-using System.Net;
 using System.Text;
 using System.Text.Json;
 
@@ -20,11 +19,13 @@ namespace Proyecto_DAM.RabbitMQ
         private readonly string _hostname;
         private IConnection _connection;
         private IModel _channel;
+        private readonly IEmailSenderProvider _emailSender;
 
-        public RabbitMQConsumer(string queueName = "NuevaCola", string hostname = "localhost")
+        public RabbitMQConsumer(IEmailSenderProvider emailSender, string queueName = "NuevaCola", string hostname = "localhost")
         {
             _queueName = queueName;
             _hostname = hostname;
+            _emailSender = emailSender;
         }
 
         public async Task IniciarConsumo()
@@ -36,16 +37,32 @@ namespace Proyecto_DAM.RabbitMQ
             _channel.QueueDeclare(queue: _queueName, durable: false, exclusive: false, autoDelete: false);
 
             var consumer = new EventingBasicConsumer(_channel);
-            consumer.Received += (model, ea) =>
+            consumer.Received += async (model, ea) =>
             {
                 var body = ea.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
 
                 try
                 {
-                    var email = JsonSerializer.Deserialize<Email>(message);
-                    if (email != null)
-                        EnviarCorreo(email);
+                    var mensajeRabbit = JsonSerializer.Deserialize<MensajeRabbit>(message);
+
+                    if (mensajeRabbit != null)
+                    {
+                        if (mensajeRabbit.Tipo == "Email")
+                        {
+                            var email = JsonSerializer.Deserialize<Email>(mensajeRabbit.Contenido);
+                            if (email != null)
+                                await ProcesarEmail(email);
+                        }
+                        else if (mensajeRabbit.Tipo == "Evento")
+                        {
+                            await ProcesarEvento(mensajeRabbit.Contenido);
+                        }
+                        else
+                        {
+                            Console.WriteLine($"[!] Tipo de mensaje desconocido: {mensajeRabbit.Tipo}");
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -62,37 +79,22 @@ namespace Proyecto_DAM.RabbitMQ
             _connection?.Close();
         }
 
-        private async Task EnviarCorreo(Email email)
+        private async Task ProcesarEmail(Email email)
         {
-            try
-            {
-                var fromAddress = new MailAddress("correo@gmail.com", "NombreRemitente");
-                var toAddress = new MailAddress(email.To);
-                const string fromPassword = "contraseña";
-
-                var smtp = new SmtpClient
-                {
-                    Host = "smtp.gmail.com",
-                    Port = 587,
-                    EnableSsl = true,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
-                };
-
-                using var message = new MailMessage(fromAddress, toAddress)
-                {
-                    Subject = email.Subject,
-                    Body = email.Body
-                };
-
-                smtp.Send(message);
-                Console.WriteLine($"[✓] Correo enviado a: {email.To}");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[✗] Error al enviar correo: {ex.Message}");
-            }
+            await _emailSender.EnviarEmail(email);
+            Console.WriteLine($"[✓] Email procesado para: {email.To}");
         }
+
+        private async Task ProcesarEvento(string evento)
+        {
+            Console.WriteLine($"[🛈] Evento recibido: {evento}");
+            await Task.CompletedTask;
+        }
+    }
+
+    public class MensajeRabbit
+    {
+        public string Tipo { get; set; }
+        public string Contenido { get; set; }
     }
 }
