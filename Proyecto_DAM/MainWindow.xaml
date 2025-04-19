@@ -37,30 +37,25 @@
        <!-- Menú -->
        <Border Grid.Row="0" Background="{DynamicResource BackgroundColor}" Padding="5"
                Visibility="{Binding IsMenuVisible, Converter={StaticResource BoolToVisConverter}}">
-           <Grid>
-               <!-- alinear elementos -->
-               <Grid.ColumnDefinitions>
-                   <ColumnDefinition Width="Auto"/>
-                   <!-- Menú izquierda -->
-                   <ColumnDefinition Width="*" />
-                   <!-- Espaciador -->
-                   <ColumnDefinition Width="Auto"/>
-                   <!-- Menú derecha -->
-               </Grid.ColumnDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-               <!-- Menú alineado a la izquierda -->
                <Menu FontSize="15" Background="Transparent"
                      Visibility="{Binding IsMenuVisible, Converter={StaticResource BoolToVisConverter}}"
                      Grid.Column="0">
                    <MenuItem Header="_Inicio" Foreground="{DynamicResource TextColor}" FontFamily="Cascadia Code"
                              Command="{Binding SelectViewModelCommand}"
                              CommandParameter="{Binding DataContext.PrincipalViewModel, RelativeSource={RelativeSource AncestorType=Window}}" />
-                    <MenuItem Header="_Concentracion" Foreground="{DynamicResource TextColor}" FontFamily="Cascadia Code"
-                              Command="{Binding SelectViewModelCommand}"
-                              CommandParameter="{Binding DataContext.PomodoroViewModel, RelativeSource={RelativeSource AncestorType=Window}}" />
                     <MenuItem Header="_Eventos" Foreground="{DynamicResource TextColor}" FontFamily="Cascadia Code"
                              Command="{Binding SelectViewModelCommand}"
                              CommandParameter="{Binding DataContext.EventosViewModel, RelativeSource={RelativeSource AncestorType=Window}}" />
+                    <MenuItem Header="_Concentracion" Foreground="{DynamicResource TextColor}" FontFamily="Cascadia Code"
+                              Command="{Binding SelectViewModelCommand}"
+                              CommandParameter="{Binding DataContext.PomodoroViewModel, RelativeSource={RelativeSource AncestorType=Window}}" />
                     <MenuItem Header="_Crear" Foreground="{DynamicResource TextColor}" FontFamily="Cascadia Code">
                         <MenuItem Header="Crear Asignatura" Command="{Binding AddAsignaturaCommand}" FontFamily="Cascadia Code" Foreground="Black"/>
                         <MenuItem Header="Crear Evento" Command="{Binding AddEventoCommand}" FontFamily="Cascadia Code" Foreground="Black"/>
@@ -68,10 +63,10 @@
                     <MenuItem Header="_Exportar" Foreground="{DynamicResource TextColor}" FontFamily="Cascadia Code">
                         <MenuItem Header="Excel" Command="{Binding ExportarExcelCommand}" FontFamily="Cascadia Code" Foreground="Black"/>
                         <MenuItem Header="PDF" Command="{Binding ExportarPDFCommand}" FontFamily="Cascadia Code" Foreground="Black"/>
+                        <MenuItem Header="JSON" Command="{Binding ExportarJSONCommand}" FontFamily="Cascadia Code" Foreground="Black"/>
                     </MenuItem>
                 </Menu>
 
-               <!-- Logout alineado a la derecha en rojo -->
                <Menu FontSize="15" Background="Transparent"
                      Visibility="{Binding IsMenuVisible, Converter={StaticResource BoolToVisConverter}}"
                      Grid.Column="2">

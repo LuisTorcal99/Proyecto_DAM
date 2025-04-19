@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.IO;
+using System.Security.Cryptography.Xml;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using ClosedXML.Excel;
@@ -6,10 +8,14 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
+using PdfSharp.Drawing;
+using PdfSharp.Pdf;
 using Proyecto_DAM.DTO;
 using Proyecto_DAM.Interfaces;
 using Proyecto_DAM.Service;
+using Proyecto_DAM.Utils;
 using Proyecto_DAM.View;
+using static Proyecto_DAM.Models.ExportJsonModel;
 
 namespace Proyecto_DAM.ViewModel
 {
@@ -73,6 +79,22 @@ namespace Proyecto_DAM.ViewModel
             set => SetProperty(ref _isMenuVisible, value);
         }
 
+        public async Task<(List<AsignaturaDTO>, List<EventoDTO>, List<NotaDTO>)> ObtenerAsignaturasEventosNotasAsync()
+        {
+            // Obtener todas las asignaturas, eventos y notas
+            var asignaturas = (await _asignaturaService.GetAsignatura()).ToList();
+            var eventos = (await _eventoService.GetEvento()).ToList();
+            var notas = (await _notaService.GetNota()).ToList();
+
+            // Filtrar asignaturas del usuario actual
+            var asignaturasFiltradas = asignaturas
+                .Where(a => a.IdUsuario.Equals(App.Current.Services.GetService<LoginDTO>().Id))
+                .ToList();
+
+            return (asignaturasFiltradas, eventos, notas);
+        }
+
+
         // ----- Comandos -----
 
         [RelayCommand]
@@ -128,7 +150,7 @@ namespace Proyecto_DAM.ViewModel
         {
             var saveFileDialog = new SaveFileDialog
             {
-                Filter = "Excel files (*.xlsx)|*.xlsx",
+                Filter = Constantes.EXCEL_FILTER,
                 FileName = "resumen_estudio.xlsx"
             };
 
@@ -137,15 +159,7 @@ namespace Proyecto_DAM.ViewModel
                 string rutaArchivo = saveFileDialog.FileName;
                 var workbook = new XLWorkbook();
 
-                // Obtener todas las asignaturas, eventos y notas
-                var asignaturas = (await _asignaturaService.GetAsignatura()).ToList();
-                var eventos = (await _eventoService.GetEvento()).ToList();
-                var notas = (await _notaService.GetNota()).ToList();
-
-                // Filtrar asignaturas del usuario actual
-                var asignaturasFiltradas = asignaturas
-                        .Where(a => a.IdUsuario.Equals(App.Current.Services.GetService<LoginDTO>().Id))
-                        .ToList();
+                var (asignaturasFiltradas, eventos, notas) = await ObtenerAsignaturasEventosNotasAsync();
 
                 // Empezamos en la primera hoja del libro de Excel
                 var hoja = workbook.Worksheets.Add("Resumen Estudio");
@@ -163,14 +177,17 @@ namespace Proyecto_DAM.ViewModel
 
                     // Escribir los datos de la asignatura
                     hoja.Cell(fila, 1).Value = "Nombre:";
+                    hoja.Cell(fila, 1).Style.Font.Bold = true;
                     hoja.Cell(fila, 2).Value = asignatura.Nombre;
                     fila++;
 
                     hoja.Cell(fila, 1).Value = "Descripción:";
+                    hoja.Cell(fila, 1).Style.Font.Bold = true;
                     hoja.Cell(fila, 2).Value = asignatura.Descripcion;
                     fila++;
 
                     hoja.Cell(fila, 1).Value = "Créditos/Horas:";
+                    hoja.Cell(fila, 1).Style.Font.Bold = true;
                     hoja.Cell(fila, 2).Value = asignatura.Creditos;
                     fila++;
 
@@ -189,12 +206,19 @@ namespace Proyecto_DAM.ViewModel
                         fila++;
 
                         hoja.Cell(fila, 1).Value = "Nombre";
+                        hoja.Cell(fila, 1).Style.Font.Bold = true;
                         hoja.Cell(fila, 2).Value = "Descripción";
+                        hoja.Cell(fila, 2).Style.Font.Bold = true;
                         hoja.Cell(fila, 3).Value = "Fecha";
+                        hoja.Cell(fila, 3).Style.Font.Bold = true;
                         hoja.Cell(fila, 4).Value = "Porcentaje";
+                        hoja.Cell(fila, 4).Style.Font.Bold = true;
                         hoja.Cell(fila, 5).Value = "Tipo";
+                        hoja.Cell(fila, 5).Style.Font.Bold = true;
                         hoja.Cell(fila, 6).Value = "Estado";
+                        hoja.Cell(fila, 6).Style.Font.Bold = true;
                         hoja.Cell(fila, 7).Value = "Nota";
+                        hoja.Cell(fila, 7).Style.Font.Bold = true;
                         fila++;
 
                         // Escribir los eventos de la asignatura
@@ -220,7 +244,6 @@ namespace Proyecto_DAM.ViewModel
                         fila++;
                     }
 
-                    // Añadir un espacio entre asignaturas
                     fila++;
                 }
 
@@ -234,9 +257,182 @@ namespace Proyecto_DAM.ViewModel
         }
 
         [RelayCommand]
-        public void ExportarPDF()
+        public async void ExportarPDF()
         {
+            var saveFileDialog = new SaveFileDialog
+            {
+                Filter = Constantes.PDF_FILTER,
+                FileName = "resumen_estudio.pdf"
+            };
 
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                string rutaArchivo = saveFileDialog.FileName;
+
+                // Crear un documento PDF
+                PdfDocument document = new PdfDocument();
+                PdfPage page = document.AddPage();
+                XGraphics gfx = XGraphics.FromPdfPage(page);
+
+                // Definir fuentes
+                XFont font = new XFont("Arial", 10);
+                XFont fontBlack = new XFont("Arial Black", 10);
+
+                // Espacios iniciales
+                double x = 40;
+                double y = 40;
+                double lineHeight = 18;
+
+                var (asignaturasFiltradas, eventos, notas) = await ObtenerAsignaturasEventosNotasAsync();
+
+                // Iterar sobre todas las asignaturas filtradas
+                foreach (var asignatura in asignaturasFiltradas)
+                {
+                    // Título de la asignatura
+                    gfx.DrawString("Asignatura:", fontBlack, XBrushes.Black, x, y);
+                    y += lineHeight;
+
+                    gfx.DrawString($"Nombre: {asignatura.Nombre}", font, XBrushes.Black, x, y);
+                    y += lineHeight;
+                    gfx.DrawString($"Descripción: {asignatura.Descripcion}", font, XBrushes.Black, x, y);
+                    y += lineHeight;
+                    gfx.DrawString($"Créditos: {asignatura.Creditos}", font, XBrushes.Black, x, y);
+                    y += lineHeight;
+
+                    y += lineHeight;
+
+                    // Obtener los eventos asociados a la asignatura
+                    var eventosAsignatura = eventos.Where(e => e.IdAsignatura == asignatura.Id).ToList();
+
+                    if (eventosAsignatura.Any())
+                    {
+                        // Encabezado de la tabla de eventos
+                        gfx.DrawString("Eventos:", fontBlack, XBrushes.Black, x, y);
+                        y += lineHeight;
+
+                        // Ajustar el ancho de las columnas
+                        double columnWidth1 = 100;  // Espacio para "Nombre"
+                        double columnWidth2 = 120;  // Espacio para "Descripción"
+                        double columnWidth3 = 80;   // Espacio para "Fecha"
+                        double columnWidth4 = 80;   // Espacio para "Porcentaje"
+                        double columnWidth5 = 60;   // Espacio para "Tipo"
+                        double columnWidth6 = 60;   // Espacio para "Estado"
+                        double columnWidth7 = 60;   // Espacio para "Nota"
+
+                        gfx.DrawString("Nombre", font, XBrushes.Black, x, y);
+                        gfx.DrawString("Descripción", font, XBrushes.Black, x + columnWidth1, y);
+                        gfx.DrawString("Fecha", font, XBrushes.Black, x + columnWidth1 + columnWidth2, y);
+                        gfx.DrawString("Porcentaje", font, XBrushes.Black, x + columnWidth1 + columnWidth2 + columnWidth3, y);
+                        gfx.DrawString("Tipo", font, XBrushes.Black, x + columnWidth1 + columnWidth2 + columnWidth3 + columnWidth4, y);
+                        gfx.DrawString("Estado", font, XBrushes.Black, x + columnWidth1 + columnWidth2 + columnWidth3 + columnWidth4 + columnWidth5, y);
+                        gfx.DrawString("Nota", font, XBrushes.Black, x + columnWidth1 + columnWidth2 + columnWidth3 + columnWidth4 + columnWidth5 + columnWidth6, y);
+                        y += lineHeight;
+                        // Subrayar los títulos
+                        gfx.DrawLine(XPens.Black, x, y - lineHeight + 5, x + columnWidth1, y - lineHeight + 5); // Nombre
+                        gfx.DrawLine(XPens.Black, x + columnWidth1, y - lineHeight + 5, x + columnWidth1 + columnWidth2, y - lineHeight + 5); // Descripción
+                        gfx.DrawLine(XPens.Black, x + columnWidth1 + columnWidth2, y - lineHeight + 5, x + columnWidth1 + columnWidth2 + columnWidth3, y - lineHeight + 5); // Fecha
+                        gfx.DrawLine(XPens.Black, x + columnWidth1 + columnWidth2 + columnWidth3, y - lineHeight + 5, x + columnWidth1 + columnWidth2 + columnWidth3 + columnWidth4, y - lineHeight + 5); // Porcentaje
+                        gfx.DrawLine(XPens.Black, x + columnWidth1 + columnWidth2 + columnWidth3 + columnWidth4, y - lineHeight + 5, x + columnWidth1 + columnWidth2 + columnWidth3 + columnWidth4 + columnWidth5, y - lineHeight + 5); // Tipo
+                        gfx.DrawLine(XPens.Black, x + columnWidth1 + columnWidth2 + columnWidth3 + columnWidth4 + columnWidth5, y - lineHeight + 5, x + columnWidth1 + columnWidth2 + columnWidth3 + columnWidth4 + columnWidth5 + columnWidth6, y - lineHeight + 5); // Estado
+                        gfx.DrawLine(XPens.Black, x + columnWidth1 + columnWidth2 + columnWidth3 + columnWidth4 + columnWidth5 + columnWidth6, y - lineHeight + 5, x + columnWidth1 + columnWidth2 + columnWidth3 + columnWidth4 + columnWidth5 + columnWidth6 + 60, y - lineHeight + 5); // Nota
+
+                        // Añadir las filas de eventos
+                        foreach (var evento in eventosAsignatura)
+                        {
+                            gfx.DrawString(evento.Nombre, font, XBrushes.Black, x, y);
+                            gfx.DrawString(evento.Descripcion, font, XBrushes.Black, x + columnWidth1, y);
+                            gfx.DrawString(evento.Fecha.ToString("dd/MM/yyyy"), font, XBrushes.Black, x + columnWidth1 + columnWidth2, y);
+                            gfx.DrawString(evento.Porcentaje.ToString(), font, XBrushes.Black, x + columnWidth1 + columnWidth2 + columnWidth3, y);
+                            gfx.DrawString(evento.Tipo, font, XBrushes.Black, x + columnWidth1 + columnWidth2 + columnWidth3 + columnWidth4, y);
+                            gfx.DrawString(evento.Estado, font, XBrushes.Black, x + columnWidth1 + columnWidth2 + columnWidth3 + columnWidth4 + columnWidth5, y);
+
+                            // Buscar la nota asociada al evento
+                            var notaEvento = notas.FirstOrDefault(n => n.IdEvento == evento.Id);
+                            gfx.DrawString(notaEvento?.NotaValor.ToString() ?? "Sin nota", font, XBrushes.Black, x + columnWidth1 + columnWidth2 + columnWidth3 + columnWidth4 + columnWidth5 + columnWidth6, y);
+                            y += lineHeight;
+
+                            // Comprobar si necesitamos una nueva página
+                            if (y > page.Height - 100) 
+                            {
+                                page = document.AddPage();
+                                gfx = XGraphics.FromPdfPage(page);
+                                y = 40; // Reiniciar la posición vertical
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        gfx.DrawString("No hay eventos asociados", font, XBrushes.Black, x, y);
+                        y += lineHeight;
+                    }
+
+                    // Dejar un espacio entre asignaturas
+                    y += lineHeight;
+
+                    // Comprobar si necesitamos una nueva página
+                    if (y > page.Height - 100)
+                    {
+                        page = document.AddPage();
+                        gfx = XGraphics.FromPdfPage(page);
+                        y = 40; // Reiniciar la posición vertical
+                    }
+                }
+
+                // Guardar el archivo PDF
+                document.Save(rutaArchivo);
+                MessageBox.Show("PDF exportado correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
+        [RelayCommand]
+        public async void ExportarJSON()
+        {
+            var saveFileDialog = new SaveFileDialog
+            {
+                Filter = Constantes.JSON_FILTER,
+                FileName = "resumen_estudio.json"
+            };
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                string rutaArchivo = saveFileDialog.FileName;
+
+                var (asignaturasFiltradas, eventos, notas) = await ObtenerAsignaturasEventosNotasAsync();
+
+                // Crear lista de asignaturas para exportar
+                var asignaturasExportar = new List<Asignatura>();
+
+                foreach (var asignatura in asignaturasFiltradas)
+                {
+                    // Crear objeto Asignatura con eventos
+                    var eventosAsignatura = eventos.Where(e => e.IdAsignatura == asignatura.Id).ToList();
+                    var eventosExportar = eventosAsignatura.Select(e => new Evento
+                    {
+                        Nombre = e.Nombre,
+                        Descripcion = e.Descripcion,
+                        Fecha = e.Fecha,
+                        Porcentaje = e.Porcentaje,
+                        Tipo = e.Tipo,
+                        Estado = e.Estado,
+                        Nota = notas.FirstOrDefault(n => n.IdEvento == e.Id)?.NotaValor
+                    }).ToList();
+
+                    asignaturasExportar.Add(new Asignatura
+                    {
+                        Nombre = asignatura.Nombre,
+                        Descripcion = asignatura.Descripcion,
+                        Creditos = asignatura.Creditos,
+                        Eventos = eventosExportar
+                    });
+                }
+
+                // Crear instancia de FileService para exportar los datos a JSON
+                var fileService = new FileService<Asignatura>();
+                fileService.Save(rutaArchivo, asignaturasExportar);
+
+                MessageBox.Show("JSON exportado correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
 
         // ----- Tema -----
@@ -255,8 +451,8 @@ namespace Proyecto_DAM.ViewModel
                 {
                     _selectedTheme = value;
                     OnPropertyChanged();
-                    ApplyTheme(_selectedTheme);  // Llamamos a ApplyTheme para cambiar el tema
-                    SaveThemePreference();  // Guardar el tema seleccionado
+                    ApplyTheme(_selectedTheme);  
+                    SaveThemePreference();  
                 }
             }
         }
@@ -265,7 +461,7 @@ namespace Proyecto_DAM.ViewModel
         private void SaveThemePreference()
         {
             var settings = new SettingsManager { SelectedTheme = _selectedTheme };
-            settings.SaveSettings();  // Guardar en el archivo
+            settings.SaveSettings();  
         }
 
         // Método para cambiar los colores del tema

@@ -12,6 +12,8 @@ namespace Proyecto_DAM.Utils
     {
         public const string BASE_LOCAL_DIRECTORY = "./FILES";
         public const string JSON_FILTER = "JSON Files (*.json)|*.json|All Files (*.*)|*.*";
+        public const string EXCEL_FILTER = "Excel Files (*.xlsx;*.xls)|*.xlsx;*.xls|All Files (*.*)|*.*";
+        public const string PDF_FILTER = "PDF Files (*.pdf)|*.pdf|All Files (*.*)|*.*";
         public const string SIMBOLOS_PASSWORD = @"!"";#$%&'()*+,-./:;<=>?@[]^_`{|}~"; 
         public const string PATTERN_CORREO = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
 
