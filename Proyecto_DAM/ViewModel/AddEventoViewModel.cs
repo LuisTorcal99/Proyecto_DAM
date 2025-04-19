@@ -115,8 +115,6 @@ namespace Proyecto_DAM.ViewModel
                     Contenido = $"Evento creado: {evento.Nombre} (Tipo: {evento.Tipo}, Asignatura: {evento.IdAsignatura}, Fecha: {evento.Fecha})"
                 };
                 await _rabbitMQProducer.EnviarMensaje(JsonSerializer.Serialize(mensaje));
-
-                MessageBox.Show("Evento enviado a RabbitMQ.");
             }
             catch (Exception ex)
             {

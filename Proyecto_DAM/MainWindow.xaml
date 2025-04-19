@@ -55,17 +55,21 @@
                    <MenuItem Header="_Inicio" Foreground="{DynamicResource TextColor}" FontFamily="Cascadia Code"
                              Command="{Binding SelectViewModelCommand}"
                              CommandParameter="{Binding DataContext.PrincipalViewModel, RelativeSource={RelativeSource AncestorType=Window}}" />
-                   <MenuItem Header="_Eventos" Foreground="{DynamicResource TextColor}" FontFamily="Cascadia Code"
+                    <MenuItem Header="_Concentracion" Foreground="{DynamicResource TextColor}" FontFamily="Cascadia Code"
+                              Command="{Binding SelectViewModelCommand}"
+                              CommandParameter="{Binding DataContext.PomodoroViewModel, RelativeSource={RelativeSource AncestorType=Window}}" />
+                    <MenuItem Header="_Eventos" Foreground="{DynamicResource TextColor}" FontFamily="Cascadia Code"
                              Command="{Binding SelectViewModelCommand}"
                              CommandParameter="{Binding DataContext.EventosViewModel, RelativeSource={RelativeSource AncestorType=Window}}" />
-                   <MenuItem Header="_Crear" Foreground="{DynamicResource TextColor}" FontFamily="Cascadia Code">
-                       <MenuItem Header="Crear Asignatura" Command="{Binding AddAsignaturaCommand}" FontFamily="Cascadia Code" Foreground="Black"/>
+                    <MenuItem Header="_Crear" Foreground="{DynamicResource TextColor}" FontFamily="Cascadia Code">
+                        <MenuItem Header="Crear Asignatura" Command="{Binding AddAsignaturaCommand}" FontFamily="Cascadia Code" Foreground="Black"/>
                         <MenuItem Header="Crear Evento" Command="{Binding AddEventoCommand}" FontFamily="Cascadia Code" Foreground="Black"/>
-                   </MenuItem>
-                   <MenuItem Header="_Concentracion" Foreground="{DynamicResource TextColor}" FontFamily="Cascadia Code"
-                         Command="{Binding SelectViewModelCommand}"
-                         CommandParameter="{Binding DataContext.PomodoroViewModel, RelativeSource={RelativeSource AncestorType=Window}}" />
-               </Menu>
+                    </MenuItem>
+                    <MenuItem Header="_Exportar" Foreground="{DynamicResource TextColor}" FontFamily="Cascadia Code">
+                        <MenuItem Header="Excel" Command="{Binding ExportarExcelCommand}" FontFamily="Cascadia Code" Foreground="Black"/>
+                        <MenuItem Header="PDF" Command="{Binding ExportarPDFCommand}" FontFamily="Cascadia Code" Foreground="Black"/>
+                    </MenuItem>
+                </Menu>
 
                <!-- Logout alineado a la derecha en rojo -->
                <Menu FontSize="15" Background="Transparent"
