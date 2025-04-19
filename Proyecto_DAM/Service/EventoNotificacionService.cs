@@ -41,7 +41,7 @@ namespace Proyecto_DAM.Service
                     };
                 }
 
-                if (evento.EmailEnviado)
+                if (evento.EmailEnviado || evento.Estado.Equals("Completado"))
                     continue;
 
                 var diasRestantes = (evento.Fecha - DateTime.Now).TotalDays;
