@@ -31,12 +31,12 @@ namespace Proyecto_DAM.DTO
         public object AspNetUser { get; set; }
 
         [JsonPropertyName("asignaturas")]
-        public List<string> Asignaturas { get; set; } = new List<string>();
+        public List<AsignaturaDTO> Asignaturas { get; set; }
 
         [JsonPropertyName("eventos")]
-        public List<string> Eventos { get; set; } = new List<string>();
+        public List<EventoDTO> Eventos { get; set; }
 
         [JsonPropertyName("notas")]
-        public List<string> Notas { get; set; } = new List<string>();
+        public List<NotaDTO> Notas { get; set; } 
     }
 }

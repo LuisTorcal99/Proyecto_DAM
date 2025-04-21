@@ -10,5 +10,9 @@ namespace Proyecto_DAM.Interfaces
     public interface IUserApiProvider
     {
         Task<IEnumerable<UsuarioDTO>> GetUser();
+        Task<UsuarioDTO> GetOneUser(string id);
+        Task PostUser(UsuarioDTO user);
+        Task PatchUser(UsuarioDTO user);
+        Task<bool> DeleteUser(string id);
     }
 }
