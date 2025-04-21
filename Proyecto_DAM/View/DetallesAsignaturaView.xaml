@@ -103,8 +103,9 @@
                                             </TextBox.ToolTip>
                                             <TextBox.Text>
                                                 <Binding Path="Nota.NotaValor"
-                                         UpdateSourceTrigger="PropertyChanged"
-                                         Mode="TwoWay">
+                                                 UpdateSourceTrigger="PropertyChanged"
+                                                 Mode="TwoWay"
+                                                 StringFormat="F2">
                                                     <Binding.TargetNullValue>0</Binding.TargetNullValue>
                                                     <Binding.FallbackValue>0</Binding.FallbackValue>
                                                 </Binding>

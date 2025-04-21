@@ -13,6 +13,7 @@ using Proyecto_DAM.Interfaces;
 using Proyecto_DAM.Utils;
 using Proyecto_DAM.RabbitMQ;
 using System.Text.Json;
+using System.Globalization;
 
 namespace Proyecto_DAM.ViewModel
 {
@@ -63,8 +64,8 @@ namespace Proyecto_DAM.ViewModel
             {
                 var notaValor = evento.Nota.NotaValor;
 
-                // Si la nota no está en el rango de 0 a 10, se ignora
-                if (notaValor < 0 || notaValor > 10)
+                // Si la nota es -1, significa que no se ha asignado una nota
+                if (notaValor == -1)
                 {
                     await _eventoService.PatchEvento(evento);
                     MessageBox.Show("Estado o Tipo guardados correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -75,6 +76,12 @@ namespace Proyecto_DAM.ViewModel
                         Contenido = $"Evento actualizado: {evento.Nombre} (Tipo: {evento.Tipo}, Estado: {evento.Estado})"
                     };
                     await _rabbitMQProducer.EnviarMensaje(JsonSerializer.Serialize(mensaje));
+                    return;
+                }
+
+                // Si la nota no está en el rango de 0 a 10, se ignora
+                if (notaValor < 0 || notaValor > 10)
+                {
                     return;
                 }
 

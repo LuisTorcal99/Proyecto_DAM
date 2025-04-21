@@ -8,8 +8,7 @@ namespace RestAPI.Models.Entity
         public int Id { get; set; }
 
         [Required]
-        public int NotaValor { get; set; }
-
+        public double NotaValor { get; set; }
         public int IdAsignatura { get; set; }
         public AsignaturaEntity Asignatura { get; set; }
 

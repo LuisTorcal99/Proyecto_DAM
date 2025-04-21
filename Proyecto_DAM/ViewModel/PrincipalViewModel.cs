@@ -54,8 +54,6 @@ namespace Proyecto_DAM.ViewModel
 
             var view = new DetallesAsignaturaView { DataContext = viewModel };
             view.ShowDialog();
-
-            await LoadAsync();
         }
 
         public override async Task LoadAsync()

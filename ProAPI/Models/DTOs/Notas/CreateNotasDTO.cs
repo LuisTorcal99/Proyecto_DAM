@@ -5,7 +5,7 @@ namespace RestAPI.Models.DTOs.Notas
     public class CreateNotasDTO
     {
         [Required]
-        public int NotaValor { get; set; }
+        public double NotaValor { get; set; }
 
         [Required]
         public int IdAsignatura { get; set; }

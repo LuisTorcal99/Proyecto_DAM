@@ -10,9 +10,7 @@ namespace Proyecto_DAM.Service
 {
     internal class HttpsJsonClientService<T> : IHttpsJsonClientProvider<T> where T : class
     {
-
         public static string Token = string.Empty;
-
 
         LoginDTO loginDTO = App.Current.Services.GetService<LoginDTO>();
 
@@ -39,7 +37,6 @@ namespace Proyecto_DAM.Service
             }
             return default;
         }
-
         public async Task<T?> GetByIdAsync(string path, string id)
         {
             try
@@ -66,7 +63,6 @@ namespace Proyecto_DAM.Service
             }
             return default;
         }
-
 
         public async Task Authenticate(string path, HttpClient httpClient, HttpResponseMessage request)
         {
@@ -130,7 +126,6 @@ namespace Proyecto_DAM.Service
             return default;
         }
 
-
         public async Task<T?> LoginPostAsync(string path, LoginDTO data)
         {
             try
@@ -159,7 +154,6 @@ namespace Proyecto_DAM.Service
             }
             return default;
         }
-
         public async Task<T?> RegisterPostAsync(string path, RegistroDTO data)
         {
             try
@@ -188,7 +182,6 @@ namespace Proyecto_DAM.Service
             }
             return default;
         }
-
         public async Task<T?> PutAsync(string path, T data)
         {
             try
@@ -287,7 +280,6 @@ namespace Proyecto_DAM.Service
             }
             return default;
         }
-
         public async Task<bool> DeleteAsync(string path, string id)
         {
             try
