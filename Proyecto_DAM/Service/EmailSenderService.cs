@@ -14,7 +14,15 @@ namespace Proyecto_DAM.Services
         {
             try
             {
-                var smtp = new SmtpClient("sandbox.smtp.mailtrap.io", 2525)
+                // mailtrap
+                //var smtp = new SmtpClient("sandbox.smtp.mailtrap.io", 2525)
+                //{
+                //    Credentials = new NetworkCredential(Constantes.USER_MAIL, Constantes.USER_PASS),
+                //    EnableSsl = true
+                //};
+
+                // gmail
+                var smtp = new SmtpClient("smtp.gmail.com", 587)
                 {
                     Credentials = new NetworkCredential(Constantes.USER_MAIL, Constantes.USER_PASS),
                     EnableSsl = true
