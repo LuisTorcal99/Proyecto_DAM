@@ -8,6 +8,7 @@
         DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
         mc:Ignorable="d"
         Title="Detalles Asignatura" Height="600" Width="1000"
+        MinHeight="600" MinWidth="1000"
         Background="White"
         WindowStartupLocation="CenterScreen">
 

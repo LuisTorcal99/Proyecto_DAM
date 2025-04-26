@@ -11,6 +11,7 @@
         Title="Añadir Evento"
         Height="650"
         Width="650"
+        MinHeight="650" MinWidth="650"
         Background="White"
         WindowStartupLocation="CenterScreen">
 
