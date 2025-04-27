@@ -44,6 +44,8 @@ namespace Proyecto_DAM.ViewModel
             _notaService = notaApiProvider;
             _rabbitMQProducer = rabbitMQProducer;
             _eventoNotificacion = eventoNotificacion;
+
+            AsignaturaItem = new ObservableCollection<AsignaturaItemModel>();
         }
 
         [RelayCommand]
@@ -68,6 +70,7 @@ namespace Proyecto_DAM.ViewModel
 
                 if (asignaturas?.Any() == true)
                 {
+
                     var asignaturasFiltradas = asignaturas
                         .Where(a => a.IdUsuario.Equals(App.Current.Services.GetService<LoginDTO>().Id))
                         .ToList();
@@ -92,6 +95,7 @@ namespace Proyecto_DAM.ViewModel
                         AsignaturaItem.Add(model);
                     }
                 }
+
                 else
                 {
                     MessageBox.Show(Constantes.MSG_ERROR);

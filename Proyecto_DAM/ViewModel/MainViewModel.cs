@@ -98,7 +98,7 @@ namespace Proyecto_DAM.ViewModel
         // ----- Comandos -----
 
         [RelayCommand]
-        private async void SelectViewModel(object? parameter)
+        private async Task SelectViewModel(object? parameter)
         {
             if (parameter is ViewModelBase viewModel)
             {
@@ -108,7 +108,7 @@ namespace Proyecto_DAM.ViewModel
         }
 
         [RelayCommand]
-        public void AddAsignatura()
+        public async Task AddAsignatura()
         {
             var viewModel = App.Current.Services.GetService<AddAsignaturaViewModel>();
 
@@ -123,11 +123,18 @@ namespace Proyecto_DAM.ViewModel
                 DataContext = viewModel
             };
 
-            view.ShowDialog();
+            bool? resultado = view.ShowDialog();
+
+            if (resultado == true)
+            {
+                await PrincipalViewModel.LoadAsync();
+                await EventosViewModel.LoadAsync();
+            }
         }
 
+
         [RelayCommand]
-        public void AddEvento()
+        public async Task AddEvento()
         {
             var viewModel = App.Current.Services.GetService<AddEventoViewModel>();
 
@@ -142,11 +149,17 @@ namespace Proyecto_DAM.ViewModel
                 DataContext = viewModel
             };
 
-            view.ShowDialog();
+            bool? resultado = view.ShowDialog();
+
+            if (resultado == true)
+            {
+                await PrincipalViewModel.LoadAsync();
+                await EventosViewModel.LoadAsync();
+            }
         }
 
         [RelayCommand]
-        public void Cargar()
+        public async Task Cargar()
         {
             var viewModel = App.Current.Services.GetService<CargarViewModel>();
 
@@ -161,7 +174,13 @@ namespace Proyecto_DAM.ViewModel
                 DataContext = viewModel
             };
 
-            view.ShowDialog();
+            bool? resultado = view.ShowDialog();
+
+            if (resultado == true)
+            {
+                await PrincipalViewModel.LoadAsync();
+                await EventosViewModel.LoadAsync();
+            }
         }
 
         [RelayCommand]

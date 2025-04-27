@@ -446,6 +446,7 @@ namespace Proyecto_DAM.ViewModel
                             Contenido = $"Asignatura creada: {asignatura.Nombre} (Creditos: {asignatura.Creditos})"
                         };
                         await _rabbitMQProducer.EnviarMensaje(JsonSerializer.Serialize(mensaje));
+                        App.Current.Services.GetService<MainViewModel>().SelectViewModelCommand.Execute(App.Current.Services.GetService<PrincipalViewModel>());
                     }
                 }
                 MessageBox.Show($"Curso añadido correctamente.");
@@ -467,6 +468,7 @@ namespace Proyecto_DAM.ViewModel
                     Contenido = $"Asignatura creada: {AsignaturaSeleccionada.Nombre} (Creditos: {AsignaturaSeleccionada.Creditos})"
                 };
                 await _rabbitMQProducer.EnviarMensaje(JsonSerializer.Serialize(mensaje));
+                App.Current.Services.GetService<MainViewModel>().SelectViewModelCommand.Execute(App.Current.Services.GetService<PrincipalViewModel>());
             }
         }
     }

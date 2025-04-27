@@ -107,6 +107,8 @@ namespace Proyecto_DAM.ViewModel
             try
             {
                 await _eventoApiService.PostEvento(evento);
+
+                App.Current.Services.GetService<MainViewModel>().SelectViewModelCommand.Execute(App.Current.Services.GetService<EventosViewModel>());
                 MessageBox.Show(Constantes.MSG_PERFECT);
 
                 var mensaje = new MensajeRabbit

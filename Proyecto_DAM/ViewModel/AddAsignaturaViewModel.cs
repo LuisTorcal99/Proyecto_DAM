@@ -70,6 +70,8 @@ namespace Proyecto_DAM.ViewModel
                 await _rabbitMQProducer.EnviarMensaje(JsonSerializer.Serialize(mensaje));
 
                 MessageBox.Show(Constantes.MSG_PERFECT);
+
+                App.Current.Services.GetService<MainViewModel>().SelectViewModelCommand.Execute(App.Current.Services.GetService<PrincipalViewModel>());
             }
             catch (Exception ex)
             {
