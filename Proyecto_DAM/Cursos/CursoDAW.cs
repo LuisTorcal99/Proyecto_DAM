@@ -18,50 +18,50 @@ namespace Proyecto_DAM.Cursos
                 {
                     Nombre = "Desarrollo web en entorno cliente",
                     Descripcion = "Diseño y desarrollo de aplicaciones web para el lado del cliente.",
-                    Creditos = 125,
-                    IdUsuario = "admin"
+                    Horas = 125,
+                    Creditos = 6
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Desarrollo web en entorno servidor",
                     Descripcion = "Desarrollo de aplicaciones web en el lado del servidor.",
-                    Creditos = 180,
-                    IdUsuario = "admin"
+                    Horas = 180,
+                    Creditos = 6
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Despliegue de aplicaciones web",
                     Descripcion = "Implantación y despliegue de aplicaciones web.",
-                    Creditos = 90,
-                    IdUsuario = "admin"
+                    Horas = 90,
+                    Creditos = 6
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Diseño de interfaces web",
                     Descripcion = "Creación de interfaces web eficientes y accesibles.",
-                    Creditos = 145,
-                    IdUsuario = "admin"
+                    Horas = 145,
+                    Creditos = 6
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Empresa e iniciativa emprendedora",
                     Descripcion = "Conocimiento de la creación y gestión de empresas.",
-                    Creditos = 60,
-                    IdUsuario = "admin"
+                    Horas = 60,
+                    Creditos = 6
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Formación en Centros de Trabajo",
                     Descripcion = "Practicas profesionales en una empresa.",
-                    Creditos = 400,
-                    IdUsuario = "admin"
+                    Horas = 400,
+                    Creditos = 12
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Proyecto de desarrollo de aplicaciones Web",
                     Descripcion = "Desarrollo de un proyecto práctico de DAW.",
-                    Creditos = 30,
-                    IdUsuario = "admin"
+                    Horas = 30,
+                    Creditos = 12
                 },
             };
         }

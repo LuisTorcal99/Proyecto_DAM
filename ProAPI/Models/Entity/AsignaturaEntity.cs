@@ -13,6 +13,9 @@ namespace RestAPI.Models.Entity
         public string Descripcion { get; set; }
 
         public int Creditos { get; set; }
+        public int Horas { get; set; }
+        public int PorcentajeFaltas { get; set; }
+        public int Faltas { get; set; }
 
         public string IdUsuario { get; set; }
         public User Usuario { get; set; }

@@ -123,13 +123,7 @@ namespace Proyecto_DAM.ViewModel
                 DataContext = viewModel
             };
 
-            bool? resultado = view.ShowDialog();
-
-            if (resultado == true)
-            {
-                await PrincipalViewModel.LoadAsync();
-                await EventosViewModel.LoadAsync();
-            }
+            view.ShowDialog();
         }
 
 
@@ -149,13 +143,7 @@ namespace Proyecto_DAM.ViewModel
                 DataContext = viewModel
             };
 
-            bool? resultado = view.ShowDialog();
-
-            if (resultado == true)
-            {
-                await PrincipalViewModel.LoadAsync();
-                await EventosViewModel.LoadAsync();
-            }
+            view.ShowDialog();
         }
 
         [RelayCommand]
@@ -174,13 +162,7 @@ namespace Proyecto_DAM.ViewModel
                 DataContext = viewModel
             };
 
-            bool? resultado = view.ShowDialog();
-
-            if (resultado == true)
-            {
-                await PrincipalViewModel.LoadAsync();
-                await EventosViewModel.LoadAsync();
-            }
+            view.ShowDialog();
         }
 
         [RelayCommand]

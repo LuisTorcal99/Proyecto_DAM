@@ -9,5 +9,6 @@ namespace Proyecto_DAM.Interfaces
     public interface ICalcularMediaProvider 
     {
         Task<string> CalcularMedia(int idAsignatura);
+        Task<string> CalcularFaltas(int IdAsignatura);
     }
 }

@@ -26,6 +26,9 @@ namespace Proyecto_DAM.ViewModel
         [ObservableProperty]
         public string _Creditos;
 
+        [ObservableProperty]
+        public string _Horas;
+
         private readonly IAsignaturaApiProvider _asignaturaApiService;
         private readonly IRabbitMQProducer _rabbitMQProducer;
 
@@ -33,12 +36,14 @@ namespace Proyecto_DAM.ViewModel
         {
             _asignaturaApiService = asignaturaApi;
             _rabbitMQProducer = rabbitMQProducer;
+            _Creditos = "6";
         }
 
         [RelayCommand]
         public async Task Guardar()
         {
-            if (string.IsNullOrEmpty(Nombre) || string.IsNullOrEmpty(Descripcion) || string.IsNullOrEmpty(Creditos))
+            if (string.IsNullOrEmpty(Nombre) || string.IsNullOrEmpty(Descripcion) || 
+                string.IsNullOrEmpty(Creditos) || string.IsNullOrEmpty(Horas))
             {
                 MessageBox.Show(Constantes.ERROR_CAMPOSNULL);
                 return;
@@ -50,11 +55,20 @@ namespace Proyecto_DAM.ViewModel
                 return;
             }
 
+            if (!int.TryParse(Horas, out int horas))
+            {
+                MessageBox.Show(Constantes.ERROR_CAMPOSNUMERICO);
+                return;
+            }
+
             var asignatura = new AsignaturaDTO
             {
                 Nombre = Nombre,
                 Descripcion = Descripcion,
                 Creditos = creditos,
+                Horas = horas,
+                PorcentajeFaltas = 0,
+                Faltas = 0,
                 IdUsuario = App.Current.Services.GetService<LoginDTO>().Id
             };
 

@@ -9,10 +9,10 @@
         d:DataContext="{d:DesignInstance Type=viewmodel:AddAsignaturaViewModel}"
         mc:Ignorable="d"
         Title="Añadir Asignatura"
-        Height="450"
+        Height="500"
         Width="600"
         Background="White"
-        MinHeight="450" MinWidth="600"
+        MinHeight="500" MinWidth="600"
         WindowStartupLocation="CenterScreen">
 
     <Grid Margin="25">
@@ -22,7 +22,6 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Título -->
         <Label Content="Añadir Asignatura" 
                FontFamily="Cascadia Code" 
                FontSize="24" 
@@ -31,10 +30,8 @@
                HorizontalAlignment="Center"
                Margin="0,0,0,20"/>
 
-        <!-- Formulario -->
         <StackPanel Grid.Row="1" VerticalAlignment="Center">
 
-            <!-- Nombre -->
             <StackPanel>
                 <TextBlock Text="Nombre:" 
                            FontFamily="Cascadia Code" 
@@ -49,7 +46,6 @@
                          Padding="5"/>
             </StackPanel>
 
-            <!-- Descripción -->
             <StackPanel>
                 <TextBlock Text="Descripción:" 
                            FontFamily="Cascadia Code" 
@@ -65,9 +61,8 @@
                          Padding="5"/>
             </StackPanel>
 
-            <!-- Créditos -->
             <StackPanel>
-                <TextBlock Text="Créditos/Horas:" 
+                <TextBlock Text="Créditos:" 
                            FontFamily="Cascadia Code" 
                            FontSize="14" 
                            Foreground="Black"/>
@@ -79,9 +74,23 @@
                          BorderThickness="0" 
                          Padding="5"/>
             </StackPanel>
+
+            <StackPanel>
+                <TextBlock Text="Horas totales:" 
+                           FontFamily="Cascadia Code" 
+                           FontSize="14" 
+                           Foreground="Black"/>
+                <TextBox Text="{Binding Horas, UpdateSourceTrigger=PropertyChanged}" 
+                         Height="35" 
+                         FontSize="14"
+                         FontFamily="Cascadia Code"
+                         Background="#f7f2f5" 
+                         BorderThickness="0" 
+                         Padding="5"/>
+            </StackPanel>
+
         </StackPanel>
 
-        <!-- Botón Guardar -->
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
             <Button Content="Guardar" 
                     Command="{Binding GuardarCommand}" 

@@ -14,6 +14,9 @@ namespace Proyecto_DAM.Models
         public int Id { get; set; }
         public string Descripcion { get; set; }
         public int Creditos { get; set; }
+        public int Horas { get; set; }
+        public int PorcentajeFaltas { get; set; }
+        public int Faltas { get; set; }
         public int TotalEventos { get; set; }
         public int TotalNotas { get; set; }
 
@@ -24,6 +27,9 @@ namespace Proyecto_DAM.Models
                 Nombre = asignaturaDTO.Nombre,
                 Id = asignaturaDTO.Id,
                 Descripcion = asignaturaDTO.Descripcion,
+                Horas = asignaturaDTO.Horas,
+                PorcentajeFaltas = asignaturaDTO.PorcentajeFaltas,
+                Faltas = asignaturaDTO.Faltas,
                 Creditos = asignaturaDTO.Creditos,
                 TotalEventos = 0,
                 TotalNotas = 0

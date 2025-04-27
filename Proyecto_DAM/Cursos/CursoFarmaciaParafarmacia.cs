@@ -18,43 +18,43 @@ namespace Proyecto_DAM.Cursos
                 {
                     Nombre = "Disposición y venta de productos",
                     Descripcion = "Gestión de la venta y disposición de productos en farmacias.",
-                    Creditos = 125,
-                    IdUsuario = "admin"
+                    Horas = 125,
+                    Creditos = 6
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Oficina de farmacia",
                     Descripcion = "Gestión de una oficina de farmacia.",
-                    Creditos = 225,
-                    IdUsuario = "admin"
+                    Horas = 225,
+                    Creditos = 6
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Operaciones básicas de laboratorio",
                     Descripcion = "Técnicas básicas de laboratorio en farmacia.",
-                    Creditos = 315,
-                    IdUsuario = "admin"
+                    Horas = 315,
+                    Creditos = 6
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Primeros auxilios",
                     Descripcion = "Conocimientos y habilidades para la prestación de primeros auxilios.",
-                    Creditos = 65,
-                    IdUsuario = "admin"
+                    Horas = 65,
+                    Creditos = 6
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Anatomofisiología y patología básicas",
                     Descripcion = "Estudio de la anatomía y fisiología humana.",
-                    Creditos = 125,
-                    IdUsuario = "admin"
+                    Horas = 125,
+                    Creditos = 6
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Formación y Orientación Laboral",
                     Descripcion = "Desarrollo de competencias laborales en el ámbito farmacéutico.",
-                    Creditos = 90,
-                    IdUsuario = "admin"
+                    Horas = 90,
+                    Creditos = 6
                 }
             };
         }
@@ -66,43 +66,43 @@ namespace Proyecto_DAM.Cursos
                 {
                     Nombre = "Dispensación de productos farmacéuticos",
                     Descripcion = "Dispensación de medicamentos y productos farmacéuticos.",
-                    Creditos = 155,
-                    IdUsuario = "admin"
+                    Horas = 155,
+                    Creditos = 6
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Dispensación de productos parafarmacéuticos",
                     Descripcion = "Dispensación de productos parafarmacéuticos y productos de salud.",
-                    Creditos = 155,
-                    IdUsuario = "admin"
+                    Horas = 155,
+                    Creditos = 6
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Formulación magistral",
                     Descripcion = "Elaboración de medicamentos personalizados en farmacia.",
-                    Creditos = 155,
-                    IdUsuario = "admin"
+                    Horas = 155,
+                    Creditos = 6
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Promoción de la salud",
                     Descripcion = "Estrategias para la promoción de la salud en la comunidad.",
-                    Creditos = 130,
-                    IdUsuario = "admin"
+                    Horas = 130,
+                    Creditos = 6
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Empresa e iniciativa emprendedora",
                     Descripcion = "Conocimientos sobre emprendimiento y gestión de empresas en el sector farmacéutico.",
-                    Creditos = 60,
-                    IdUsuario = "admin"
+                    Horas = 60,
+                    Creditos = 6
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Formación en Centros de Trabajo",
                     Descripcion = "Prácticas en empresas farmacéuticas para aplicar los conocimientos adquiridos.",
-                    Creditos = 400,
-                    IdUsuario = "admin"
+                    Horas = 400,
+                    Creditos = 6
                 }
             };
         }

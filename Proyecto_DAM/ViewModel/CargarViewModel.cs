@@ -438,6 +438,9 @@ namespace Proyecto_DAM.ViewModel
                             Nombre = asignatura.Nombre,
                             Descripcion = asignatura.Descripcion,
                             Creditos = asignatura.Creditos,
+                            Horas = asignatura.Horas,
+                            PorcentajeFaltas = 0,
+                            Faltas = 0,
                             IdUsuario = App.Current.Services.GetService<LoginDTO>().Id
                         };
                         await _asignaturaApiService.PostAsignatura(asignaturaConIDUsuario);
@@ -459,6 +462,9 @@ namespace Proyecto_DAM.ViewModel
                     Nombre = AsignaturaSeleccionada.Nombre,
                     Descripcion = AsignaturaSeleccionada.Descripcion,
                     Creditos = AsignaturaSeleccionada.Creditos,
+                    Horas = AsignaturaSeleccionada.Horas,
+                    PorcentajeFaltas = 0,
+                    Faltas = 0,
                     IdUsuario = App.Current.Services.GetService<LoginDTO>().Id
                 };
                 await _asignaturaApiService.PostAsignatura(asignaturaConIDUsuario);

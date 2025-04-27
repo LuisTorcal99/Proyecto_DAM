@@ -20,50 +20,50 @@ namespace Proyecto_DAM.Cursos
                 {
                     Nombre = "Sistemas informáticos",
                     Descripcion = "Fundamentos de los sistemas informáticos.",
-                    Creditos = 170,
-                    IdUsuario = "admin"
+                    Horas = 170,
+                    Creditos = 6
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Bases de datos",
                     Descripcion = "Introducción a las bases de datos relacionales.",
-                    Creditos = 190,
-                    IdUsuario = "admin"
+                    Horas = 190,
+                    Creditos = 6
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Programación",
                     Descripcion = "Asignatura de programación básica en Java.",
-                    Creditos = 245, 
-                    IdUsuario = "admin"
+                    Horas = 245,
+                    Creditos = 6
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Lenguajes de marcas y sistemas de gestión de información",
                     Descripcion = "Trabajo con lenguajes de marcas y sistemas de gestión de información.",
-                    Creditos = 110, 
-                    IdUsuario = "admin"
+                    Horas = 110,
+                    Creditos = 6
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Entorno de desarrollo",
                     Descripcion = "Configuración y uso de entornos de desarrollo de software.",
-                    Creditos = 100, 
-                    IdUsuario = "admin"
+                    Horas = 100,
+                    Creditos = 6
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Inglés técnico",
                     Descripcion = "Estudio del inglés técnico aplicado a la informática.",
-                    Creditos = 65,
-                    IdUsuario = "admin"
+                    Horas = 65,
+                    Creditos = 6
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Formación y Orientación Laboral",
                     Descripcion = "Desarrollo de habilidades y conocimientos para el entorno laboral.",
-                    Creditos = 90, 
-                    IdUsuario = "admin"
+                    Horas = 90,
+                    Creditos = 6
                 }
             };
         }
@@ -77,57 +77,57 @@ namespace Proyecto_DAM.Cursos
                 {
                     Nombre = "Acceso a datos",
                     Descripcion = "Manejo y acceso a bases de datos desde aplicaciones.",
-                    Creditos = 125, 
-                    IdUsuario = "admin"
+                    Horas = 125,
+                    Creditos = 6
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Desarrollo de interfaces",
                     Descripcion = "Creación de interfaces de usuario para aplicaciones.",
-                    Creditos = 140, 
-                    IdUsuario = "admin"
+                    Horas = 140,
+                    Creditos = 6
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Programación multimedia y dispositivos móviles",
                     Descripcion = "Desarrollo de aplicaciones multimedia y para dispositivos móviles.",
-                    Creditos = 85, 
-                    IdUsuario = "admin"
+                    Horas = 85,
+                    Creditos = 6
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Programación de servicios y procesos",
                     Descripcion = "Creación de servicios y procesos en sistemas operativos.",
-                    Creditos = 70, 
-                    IdUsuario = "admin"
+                    Horas = 70,
+                    Creditos = 6
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Sistemas de gestión empresarial",
                     Descripcion = "Implantación de sistemas informáticos de gestión empresarial.",
-                    Creditos = 120, 
-                    IdUsuario = "admin"
+                    Horas = 120,
+                    Creditos = 6
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Empresa e iniciativa emprendedora",
                     Descripcion = "Conocimiento de la creación y gestión de empresas.",
-                    Creditos = 60, 
-                    IdUsuario = "admin"
+                    Horas = 60,
+                    Creditos = 6
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Proyecto de desarrollo de aplicaciones multiplataforma",
                     Descripcion = "Desarrollo de un proyecto práctico de DAM.",
-                    Creditos = 30,
-                    IdUsuario = "admin"
+                    Horas = 30,
+                    Creditos = 12
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Formación en Centros de Trabajo",
                     Descripcion = "Practicas profesionales en una empresa.",
-                    Creditos = 400,
-                    IdUsuario = "admin"
+                    Horas = 400,
+                    Creditos = 12
                 }
             };
         }

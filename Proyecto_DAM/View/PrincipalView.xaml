@@ -72,8 +72,16 @@
                                             <TextBlock Text="{Binding Descripcion}" FontSize="16" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" Margin="10,0"/>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="5">
-                                            <Label Content="Créditos/Horas:" VerticalAlignment="Center" Width="90" HorizontalAlignment="Right" FontSize="10" Foreground="{DynamicResource TextColor}"/>
+                                            <Label Content="Créditos:" VerticalAlignment="Center" Width="90" HorizontalAlignment="Right" FontSize="10" Foreground="{DynamicResource TextColor}"/>
                                             <TextBlock Text="{Binding Creditos}" FontSize="16" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" Margin="10,0"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="5">
+                                            <Label Content="Horas:" VerticalAlignment="Center" Width="90" HorizontalAlignment="Right" FontSize="10" Foreground="{DynamicResource TextColor}"/>
+                                            <TextBlock Text="{Binding Horas}" FontSize="16" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" Margin="10,0"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="5">
+                                            <Label Content="Faltas:" VerticalAlignment="Center" Width="90" HorizontalAlignment="Right" FontSize="10" Foreground="{DynamicResource TextColor}"/>
+                                            <TextBlock Text="{Binding Faltas}" FontSize="16" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" Margin="10,0"/>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="5">
                                             <Label Content="Total Eventos:" VerticalAlignment="Center" Width="90" HorizontalAlignment="Right" FontSize="10" Foreground="{DynamicResource TextColor}"/>

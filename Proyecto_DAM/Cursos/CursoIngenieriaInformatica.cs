@@ -15,42 +15,42 @@ namespace Proyecto_DAM.Cursos
                     Nombre = "Matemáticas I",
                     Descripcion = "Fundamentos matemáticos aplicados a la informática.",
                     Creditos = 6,
-                    IdUsuario = "admin"
+                    Horas = 60
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Física I",
                     Descripcion = "Fundamentos de la física para la ingeniería.",
                     Creditos = 6,
-                    IdUsuario = "admin"
+                    Horas = 60
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Informática I",
                     Descripcion = "Conceptos básicos de la informática y la programación.",
                     Creditos = 6,
-                    IdUsuario = "admin"
+                    Horas = 60
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Álgebra Lineal",
                     Descripcion = "Estudio de matrices, vectores y sistemas de ecuaciones lineales.",
                     Creditos = 6,
-                    IdUsuario = "admin"
+                    Horas = 60
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Estructuras de Datos",
                     Descripcion = "Estudio de las estructuras de datos más utilizadas en programación.",
                     Creditos = 6,
-                    IdUsuario = "admin"
+                    Horas = 60
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Física II",
                     Descripcion = "Continuación de la asignatura de Física I, enfocada en la termodinámica y electromagnetismo.",
                     Creditos = 6,
-                    IdUsuario = "admin"
+                    Horas = 60
                 }
             };
         }
@@ -65,35 +65,35 @@ namespace Proyecto_DAM.Cursos
                     Nombre = "Matemáticas II",
                     Descripcion = "Cálculo diferencial e integral aplicado a la ingeniería.",
                     Creditos = 6,
-                    IdUsuario = "admin"
+                    Horas = 60
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Programación II",
                     Descripcion = "Ampliación de conceptos en programación, con énfasis en programación orientada a objetos.",
                     Creditos = 6,
-                    IdUsuario = "admin"
+                    Horas = 60
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Sistemas Operativos",
                     Descripcion = "Estudio de los sistemas operativos y sus mecanismos de funcionamiento.",
                     Creditos = 6,
-                    IdUsuario = "admin"
+                    Horas = 60
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Teoría de la Computación",
                     Descripcion = "Fundamentos teóricos de la computación y la automatización.",
                     Creditos = 6,
-                    IdUsuario = "admin"
+                    Horas = 60
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Bases de Datos",
                     Descripcion = "Diseño y gestión de bases de datos relacionales.",
                     Creditos = 6,
-                    IdUsuario = "admin"
+                    Horas = 60
                 }
             };
         }
@@ -108,35 +108,35 @@ namespace Proyecto_DAM.Cursos
                     Nombre = "Arquitectura de Computadores",
                     Descripcion = "Estudio de la arquitectura interna de las computadoras y su funcionamiento.",
                     Creditos = 6,
-                    IdUsuario = "admin"
+                    Horas = 60
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Redes de Computadores",
                     Descripcion = "Diseño y gestión de redes de comunicación de datos.",
                     Creditos = 6,
-                    IdUsuario = "admin"
+                    Horas = 60
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Inteligencia Artificial",
                     Descripcion = "Fundamentos y aplicaciones de la inteligencia artificial en informática.",
                     Creditos = 6,
-                    IdUsuario = "admin"
+                    Horas = 60
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Desarrollo de Software",
                     Descripcion = "Metodologías y herramientas para el desarrollo de software.",
                     Creditos = 6,
-                    IdUsuario = "admin"
+                    Horas = 60
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Programación Concurrente",
                     Descripcion = "Técnicas y enfoques para desarrollar aplicaciones concurrentes.",
                     Creditos = 6,
-                    IdUsuario = "admin"
+                    Horas = 60
                 }
             };
         }
@@ -151,42 +151,42 @@ namespace Proyecto_DAM.Cursos
                     Nombre = "Gestión de Proyectos Informáticos",
                     Descripcion = "Metodologías y herramientas para la gestión eficiente de proyectos tecnológicos.",
                     Creditos = 6,
-                    IdUsuario = "admin"
+                    Horas = 60
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Seguridad Informática",
                     Descripcion = "Estudio de los sistemas y protocolos de seguridad en la informática.",
                     Creditos = 6,
-                    IdUsuario = "admin"
+                    Horas = 60
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Sistemas Distribuidos",
                     Descripcion = "Estudio de arquitecturas y sistemas distribuidos para aplicaciones avanzadas.",
                     Creditos = 6,
-                    IdUsuario = "admin"
+                    Horas = 60
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Programación de Aplicaciones Web",
                     Descripcion = "Diseño y desarrollo de aplicaciones web interactivas.",
                     Creditos = 6,
-                    IdUsuario = "admin"
+                    Horas = 60
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Prácticas Externas",
                     Descripcion = "Aplicación de los conocimientos adquiridos en entornos profesionales.",
                     Creditos = 12,
-                    IdUsuario = "admin"
+                    Horas = 60
                 },
                 new AsignaturaDTO
                 {
                     Nombre = "Trabajo Fin de Grado",
                     Descripcion = "Desarrollo de un trabajo de investigación o de aplicación en el área de la informática.",
                     Creditos = 12,
-                    IdUsuario = "admin"
+                    Horas = 15
                 }
             };
         }

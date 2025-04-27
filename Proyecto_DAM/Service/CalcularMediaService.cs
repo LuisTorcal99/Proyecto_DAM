@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using Proyecto_DAM.DTO;
 using Proyecto_DAM.Interfaces;
 
 namespace Proyecto_DAM.Service
@@ -76,6 +78,37 @@ namespace Proyecto_DAM.Service
                 return $"✅ Media final: {mediaFinal:F2}";
             }
         }
+        public async Task<string> CalcularFaltas(int IdAsignatura)
+        {
+            // Obtener la asignatura con el id proporcionado
+            var asignatura = await _asignaturaService.GetOneAsignatura(IdAsignatura.ToString());
 
+            // Comprobar si se ha encontrado la asignatura
+            if (asignatura == null)
+                return "La asignatura no se ha encontrado.";
+
+            // Comprobar si las horas totales están registradas
+            if (asignatura.Horas <= 0)
+                return "No se han registrado horas en la asignatura.";
+
+            // Calcular el porcentaje de faltas consumidas
+            double porcentajeFaltasConsumidas = ((double)asignatura.Faltas / asignatura.Horas) * 100;
+
+            // Obtener el porcentaje de faltas permitido directamente desde la asignatura
+            double porcentajeFaltasPermitidas = asignatura.PorcentajeFaltas;
+
+            // Calcular el porcentaje de faltas restantes
+            double porcentajeFaltasRestantes = porcentajeFaltasPermitidas - porcentajeFaltasConsumidas;
+
+            // Calcular el número de faltas restantes
+            double faltasRestantes = (asignatura.Horas * porcentajeFaltasRestantes) / 100;
+
+            // Verificar si ya se han superado las faltas permitidas
+            if (porcentajeFaltasRestantes < 0)
+                return "Ya has superado el límite de faltas permitidas para esta asignatura.";
+
+            // Devolver el porcentaje y el número de faltas restantes
+            return $"Te quedan {faltasRestantes:F2} faltas ({porcentajeFaltasRestantes:F2}%) permitidas para no perder la evaluación.";
+        }
     }
 }

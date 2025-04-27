@@ -12,6 +12,12 @@ namespace RestAPI.Models.DTOs.Asignaturas
         [Required]
         public int Creditos { get; set; }
 
+        public int Horas { get; set; }
+
+        public int PorcentajeFaltas { get; set; }
+
+        public int Faltas { get; set; }
+
         [Required]
         public string IdUsuario { get; set; }
     }

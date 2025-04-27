@@ -14,6 +14,9 @@ using Proyecto_DAM.Utils;
 using Proyecto_DAM.RabbitMQ;
 using System.Text.Json;
 using System.Globalization;
+using System.Net.Http;
+using DocumentFormat.OpenXml.Office2010.Excel;
+using Proyecto_DAM.View;
 
 namespace Proyecto_DAM.ViewModel
 {
@@ -23,13 +26,17 @@ namespace Proyecto_DAM.ViewModel
         private readonly IEventoApiProvider _eventoService;
         private readonly INotaApiProvider _notaService;
         private readonly ICalcularMediaProvider _calcularMediaService;
-        private readonly IRabbitMQProducer _rabbitMQProducer;  
+        private readonly IRabbitMQProducer _rabbitMQProducer;
+        private readonly IServiceProvider _serviceProvider;
 
         [ObservableProperty]
         private AsignaturaDTO? _Asignatura;
 
         [ObservableProperty]
         public string _MediaResultado;
+
+        [ObservableProperty]
+        public string _FaltasRestantesParaPerderEvaluacion;
 
         public ObservableCollection<string> TiposEvento { get; set; }
         public ObservableCollection<string> EstadosEvento { get; set; }
@@ -38,16 +45,18 @@ namespace Proyecto_DAM.ViewModel
                                             IEventoApiProvider eventoService,
                                             INotaApiProvider notaService,
                                             ICalcularMediaProvider calcularMediaService,
-                                            IRabbitMQProducer rabbitMQProducer)  
+                                            IRabbitMQProducer rabbitMQProducer,
+                                            IServiceProvider serviceProvider)
         {
             _asignaturaService = asignaturaApiProvider;
             _eventoService = eventoService;
             _notaService = notaService;
             _calcularMediaService = calcularMediaService;
-            _rabbitMQProducer = rabbitMQProducer; 
+            _rabbitMQProducer = rabbitMQProducer;
 
             TiposEvento = new ObservableCollection<string>() { "Tarea", "Examen" };
             EstadosEvento = new ObservableCollection<string>() { "Pendiente", "EnProceso", "Completado" };
+            _serviceProvider = serviceProvider;
         }
 
         public async Task SetIdAsignatura(int id)
@@ -76,7 +85,6 @@ namespace Proyecto_DAM.ViewModel
                         Contenido = $"Evento actualizado: {evento.Nombre} (Tipo: {evento.Tipo}, Estado: {evento.Estado})"
                     };
                     await _rabbitMQProducer.EnviarMensaje(JsonSerializer.Serialize(mensaje));
-                    App.Current.Services.GetService<MainViewModel>().SelectViewModelCommand.Execute(App.Current.Services.GetService<PrincipalViewModel>());
                     return;
                 }
 
@@ -108,6 +116,7 @@ namespace Proyecto_DAM.ViewModel
                     await _notaService.PostNota(newNota);
                     evento.Nota = newNota;
                     await _eventoService.PatchEvento(evento);
+                    MediaResultado = await _calcularMediaService.CalcularMedia(StringUtils.ConvertToNumberNoPanic(Asignatura.Id.ToString()));
 
                     var mensaje = new MensajeRabbit
                     {
@@ -133,6 +142,7 @@ namespace Proyecto_DAM.ViewModel
                     await _notaService.PatchNota(updatedNota);
                     evento.Nota = updatedNota;
                     await _eventoService.PatchEvento(evento);
+                    MediaResultado = await _calcularMediaService.CalcularMedia(StringUtils.ConvertToNumberNoPanic(Asignatura.Id.ToString()));
 
                     var mensaje = new MensajeRabbit
                     {
@@ -164,20 +174,16 @@ namespace Proyecto_DAM.ViewModel
                 try
                 {
                     var notas = await _notaService.GetNota();
-
                     var notaAsociada = notas.FirstOrDefault(n => n.IdEvento == evento.Id);
 
                     if (notaAsociada != null)
                     {
                         await _notaService.DeleteNota(notaAsociada.Id.ToString());
-
                         evento.Nota = null;
-
                         await _eventoService.PatchEvento(evento);
                     }
 
                     await _eventoService.DeleteEvento(evento.Id.ToString());
-                    Asignatura?.Eventos?.Remove(evento);
 
                     var mensaje = new MensajeRabbit
                     {
@@ -186,9 +192,22 @@ namespace Proyecto_DAM.ViewModel
                     };
                     await _rabbitMQProducer.EnviarMensaje(JsonSerializer.Serialize(mensaje));
 
-                    await CargarDetalles(Asignatura.Id.ToString());
+                    App.Current.Services.GetService<MainViewModel>().SelectViewModelCommand.Execute(App.Current.Services.GetService<PrincipalViewModel>());
+
+                    Application.Current.Windows
+                        .OfType<Window>()
+                        .FirstOrDefault(w => w.IsActive)?
+                        .Close();
 
                     MessageBox.Show("Evento eliminado correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    var viewModel = _serviceProvider.GetRequiredService<DetallesAsignaturaViewModel>();
+                    await viewModel.SetIdAsignatura(Asignatura.Id);
+
+                    var view = new DetallesAsignaturaView { DataContext = viewModel };
+                    view.ShowDialog();
+
+                   
                 }
                 catch (Exception ex)
                 {
@@ -239,6 +258,7 @@ namespace Proyecto_DAM.ViewModel
             {
                 Asignatura = await _asignaturaService.GetOneAsignatura(id);
                 MediaResultado = await _calcularMediaService.CalcularMedia(StringUtils.ConvertToNumberNoPanic(id));
+                FaltasRestantesParaPerderEvaluacion = await _calcularMediaService.CalcularFaltas(StringUtils.ConvertToNumberNoPanic(id));
 
                 if (Asignatura != null)
                 {
@@ -272,11 +292,53 @@ namespace Proyecto_DAM.ViewModel
                     }
 
                     Asignatura.Eventos = eventosAsignatura;
+
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error al cargar los detalles: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        [RelayCommand]
+        public async Task GuardarCambios()
+        {
+            try
+            {
+                var faltas = Asignatura.Faltas;
+                var porcentajeFaltas = Asignatura.PorcentajeFaltas;
+
+                var asignaturaUpdate = new AsignaturaDTO
+                {
+                    Id = Asignatura.Id,
+                    Nombre = Asignatura.Nombre,
+                    Descripcion = Asignatura.Descripcion,
+                    Creditos = Asignatura.Creditos,
+                    Horas = Asignatura.Horas,
+                    IdUsuario = App.Current.Services.GetService<LoginDTO>().Id,
+                    Eventos = Asignatura.Eventos,
+                    Notas = Asignatura.Notas,
+                    
+                    Faltas = faltas,
+                    PorcentajeFaltas = porcentajeFaltas
+                };
+
+                await _asignaturaService.PatchAsignatura(asignaturaUpdate);
+
+                var mensaje = new MensajeRabbit
+                {
+                    Tipo = "Evento",
+                    Contenido = $"Asignatura actualizada: {Asignatura.Nombre}"
+                };
+                await _rabbitMQProducer.EnviarMensaje(JsonSerializer.Serialize(mensaje));
+                MessageBox.Show("Asignatura actualizada correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                FaltasRestantesParaPerderEvaluacion = await _calcularMediaService.CalcularFaltas(StringUtils.ConvertToNumberNoPanic(Asignatura.Id.ToString()));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al guardar los cambios: " + ex.Message);
             }
         }
 
