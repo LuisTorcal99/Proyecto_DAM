@@ -12,8 +12,8 @@ using RestAPI.Data;
 namespace RestAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250414124541_InitialIdentitySetup")]
-    partial class InitialIdentitySetup
+    [Migration("20250427221743_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -243,6 +243,12 @@ namespace RestAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Faltas")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Horas")
+                        .HasColumnType("int");
+
                     b.Property<string>("IdUsuario")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -250,6 +256,9 @@ namespace RestAPI.Migrations
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PorcentajeFaltas")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -267,6 +276,13 @@ namespace RestAPI.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("EmailEnviado")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Estado")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -289,6 +305,10 @@ namespace RestAPI.Migrations
 
                     b.Property<double>("Porcentaje")
                         .HasColumnType("float");
+
+                    b.Property<string>("Tipo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -317,8 +337,8 @@ namespace RestAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("NotaValor")
-                        .HasColumnType("int");
+                    b.Property<double>("NotaValor")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 

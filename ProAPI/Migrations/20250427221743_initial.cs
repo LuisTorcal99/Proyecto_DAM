@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace RestAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialIdentitySetup : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -188,6 +188,9 @@ namespace RestAPI.Migrations
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Creditos = table.Column<int>(type: "int", nullable: false),
+                    Horas = table.Column<int>(type: "int", nullable: false),
+                    PorcentajeFaltas = table.Column<int>(type: "int", nullable: false),
+                    Faltas = table.Column<int>(type: "int", nullable: false),
                     IdUsuario = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
@@ -212,8 +215,11 @@ namespace RestAPI.Migrations
                     Porcentaje = table.Column<double>(type: "float", nullable: false),
                     Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
                     FechaInicio = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Tipo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Estado = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IdUsuario = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    IdAsignatura = table.Column<int>(type: "int", nullable: false)
+                    IdAsignatura = table.Column<int>(type: "int", nullable: false),
+                    EmailEnviado = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -238,7 +244,7 @@ namespace RestAPI.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    NotaValor = table.Column<int>(type: "int", nullable: false),
+                    NotaValor = table.Column<double>(type: "float", nullable: false),
                     IdAsignatura = table.Column<int>(type: "int", nullable: false),
                     IdEvento = table.Column<int>(type: "int", nullable: false),
                     IdUsuario = table.Column<string>(type: "nvarchar(450)", nullable: false)
