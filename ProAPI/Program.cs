@@ -55,9 +55,6 @@ builder.Services.AddAuthentication(auth =>
     };
 });
 
-
-
-
 //Required for Authorization
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

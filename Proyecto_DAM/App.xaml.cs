@@ -7,6 +7,7 @@ using Proyecto_DAM.Interfaces;
 using Proyecto_DAM.RabbitMQ;
 using Proyecto_DAM.Service;
 using Proyecto_DAM.Services;
+using Proyecto_DAM.Utils;
 using Proyecto_DAM.ViewModel;
 
 namespace Proyecto_DAM
@@ -21,9 +22,11 @@ namespace Proyecto_DAM
             Services = ConfigureServices();
         }
 
-        protected override void OnStartup(StartupEventArgs e)
+        protected override async void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+
+            await DockerHelper.StartDockerAsync();
 
             var consumidor = Services.GetService<IRabbitMQConsumer>();
             Task.Run(() => consumidor.IniciarConsumo());

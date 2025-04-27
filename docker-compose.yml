@@ -1,0 +1,27 @@
+﻿services:
+  sql_server:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: SQL_Server_LT
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "wnD/LbJq?X39t,}-628%)"
+      MSSQL_PID: "Developer"
+    ports:
+      - "1433:1433"
+    volumes:
+      - SQL_Server_Volume:/var/opt/mssql
+    restart: unless-stopped
+
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq_LT
+    environment:
+      RABBITMQ_DEFAULT_USER: "guest"
+      RABBITMQ_DEFAULT_PASS: "guest"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    restart: unless-stopped
+
+volumes:
+  SQL_Server_Volume:
