@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Proyecto_DAM.Utils
@@ -44,6 +41,40 @@ namespace Proyecto_DAM.Utils
             Console.WriteLine("Docker output: " + output);
             if (!string.IsNullOrEmpty(error))
                 Console.WriteLine("Docker error: " + error);
+        }
+
+        public static async Task StopDockerAsync()
+        {
+            var stopSqlTask = StopDockerContainerAsync("SQL_Server_LT");
+            var stopRabbitTask = StopDockerContainerAsync("rabbitmq_LT");
+
+            await Task.WhenAll(stopSqlTask, stopRabbitTask);
+        }
+
+        private static async Task StopDockerContainerAsync(string containerName)
+        {
+            var process = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "docker",
+                    Arguments = $"stop {containerName}",
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                }
+            };
+
+            process.Start();
+            await Task.Run(() => process.WaitForExit());
+            string output = await process.StandardOutput.ReadToEndAsync();
+            string error = await process.StandardError.ReadToEndAsync();
+            await process.WaitForExitAsync();
+
+            Console.WriteLine($"Docker output (stop {containerName}): " + output);
+            if (!string.IsNullOrEmpty(error))
+                Console.WriteLine($"Docker error (stop {containerName}): " + error);
         }
 
         private static async Task<bool> IsContainerRunningAsync(string containerName)

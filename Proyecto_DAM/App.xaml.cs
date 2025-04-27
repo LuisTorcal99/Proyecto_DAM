@@ -35,12 +35,17 @@ namespace Proyecto_DAM
             mainWindow?.Show();
         }
 
-        protected override void OnExit(ExitEventArgs e)
+        protected override async void OnExit(ExitEventArgs e)
         {
             var consumidor = Services.GetService<IRabbitMQConsumer>();
             consumidor?.DetenerConsumo();
+
+            await DockerHelper.StopDockerAsync();
+
             base.OnExit(e);
         }
+
+
 
         public new static App Current => (App)Application.Current;
         public IServiceProvider Services { get; }
