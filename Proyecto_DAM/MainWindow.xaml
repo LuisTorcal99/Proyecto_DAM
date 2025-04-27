@@ -7,7 +7,7 @@
        xmlns:view="clr-namespace:Proyecto_DAM.View" 
        d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel}"
        mc:Ignorable="d"
-       Title="MainWindow" Height="450" Width="800"
+       Title="MainWindow" Height="600" Width="1000"
        MinHeight="450" MinWidth="800">
 
    <Window.Resources>
@@ -66,6 +66,8 @@
                         <MenuItem Header="PDF" Command="{Binding ExportarPDFCommand}" FontFamily="Cascadia Code" Foreground="Black"/>
                         <MenuItem Header="JSON" Command="{Binding ExportarJSONCommand}" FontFamily="Cascadia Code" Foreground="Black"/>
                     </MenuItem>
+                    <MenuItem Header="_Cargar" Foreground="{DynamicResource TextColor}" FontFamily="Cascadia Code"
+                              Command="{Binding CargarCommand}"/>
                 </Menu>
 
                <Menu FontSize="15" Background="Transparent"

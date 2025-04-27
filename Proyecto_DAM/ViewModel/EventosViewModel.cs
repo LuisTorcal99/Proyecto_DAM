@@ -19,7 +19,7 @@ namespace Proyecto_DAM.ViewModel
         private readonly IAsignaturaApiProvider _AsignaturaApiService;
 
         private int _currentPage = 1;
-        private readonly int _itemsPerPage = 5;
+        private readonly int _itemsPerPage = 10;
 
         public ObservableCollection<string> TiposEvento { get; } = new() { "Tarea", "Examen" };
         public ObservableCollection<string> EstadosEvento { get; } = new() { "Pendiente", "EnProceso", "Completado" };
@@ -93,7 +93,6 @@ namespace Proyecto_DAM.ViewModel
                 CurrentPage--;
             }
         }
-
         public override async Task LoadAsync()
         {
             DatosGridItem.Clear();
@@ -154,14 +153,19 @@ namespace Proyecto_DAM.ViewModel
             RefreshPaginatedItems(); 
         }
 
-
         [RelayCommand]
-        public void AplicarFiltros()
+        public async Task AplicarFiltros()
         {
+            var asignaturas = await _AsignaturaApiService.GetAsignatura();
+            var asignaturaSeleccionada = asignaturas
+                .FirstOrDefault(a => a.Nombre.Equals(FiltroAsignatura, StringComparison.OrdinalIgnoreCase))?.Id;
+
+
             var eventosFiltrados = DatosGridItem
                 .Where(e =>
                     (string.IsNullOrEmpty(FiltroTipo) || e.Tipo.Contains(FiltroTipo, StringComparison.OrdinalIgnoreCase)) &&
-                    (string.IsNullOrEmpty(FiltroEstado) || e.Estado.Contains(FiltroEstado, StringComparison.OrdinalIgnoreCase)) 
+                    (string.IsNullOrEmpty(FiltroEstado) || e.Estado.Contains(FiltroEstado, StringComparison.OrdinalIgnoreCase)) &&
+                    (string.IsNullOrEmpty(FiltroAsignatura) || e.IdAsignatura == asignaturaSeleccionada)
                 )
                 .ToList();
 
@@ -171,6 +175,5 @@ namespace Proyecto_DAM.ViewModel
                 PaginatedItems.Add(evento);
             }
         }
-
     }
 }

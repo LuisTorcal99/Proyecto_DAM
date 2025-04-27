@@ -146,6 +146,25 @@ namespace Proyecto_DAM.ViewModel
         }
 
         [RelayCommand]
+        public void Cargar()
+        {
+            var viewModel = App.Current.Services.GetService<CargarViewModel>();
+
+            if (viewModel is null)
+            {
+                MessageBox.Show("No se pudo cargar el ViewModel.");
+                return;
+            }
+
+            var view = new CargarView
+            {
+                DataContext = viewModel
+            };
+
+            view.ShowDialog();
+        }
+
+        [RelayCommand]
         public async void ExportarExcel()
         {
             var saveFileDialog = new SaveFileDialog

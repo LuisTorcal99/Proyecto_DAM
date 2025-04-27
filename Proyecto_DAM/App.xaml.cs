@@ -59,6 +59,7 @@ namespace Proyecto_DAM
             services.AddTransient<AddEventoViewModel>();
             services.AddTransient<DetallesAsignaturaViewModel>();
             services.AddTransient<PomodoroViewModel>();
+            services.AddTransient<CargarViewModel>();
 
             //Services 
             services.AddSingleton<MainViewModel>();

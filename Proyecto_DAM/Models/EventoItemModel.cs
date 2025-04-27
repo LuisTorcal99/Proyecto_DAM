@@ -16,6 +16,7 @@ namespace Proyecto_DAM.Models
         public string Estado { get; set; }
         public DateTime Fecha { get; set; }
         public double Porcentaje { get; set; }
+        public int IdAsignatura { get; set; }
 
         public Brush BackgroundColor
         {
@@ -37,6 +38,7 @@ namespace Proyecto_DAM.Models
                 Estado = eventoDTO.Estado,
                 Fecha = eventoDTO.Fecha,
                 Porcentaje = eventoDTO.Porcentaje,
+                IdAsignatura = eventoDTO.IdAsignatura
             };
         }
     }

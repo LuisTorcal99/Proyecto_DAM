@@ -1,0 +1,122 @@
+﻿<Window x:Class="Proyecto_DAM.View.CargarView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Proyecto_DAM.View"
+        xmlns:viewmodel="clr-namespace:Proyecto_DAM.ViewModel"
+        mc:Ignorable="d"
+        Title="Cargar Asignatura"
+        Height="450"
+        Width="600"
+        Background="White"
+        MinHeight="500" MinWidth="600"
+        WindowStartupLocation="CenterScreen"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+
+    <Grid Margin="25">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Título -->
+        <Label Content="Cargar Asignatura"
+               FontFamily="Cascadia Code" 
+               FontSize="24" 
+               FontWeight="Bold" 
+               Foreground="#2C3E50" 
+               HorizontalAlignment="Center"
+               Margin="0,0,0,20"/>
+
+        <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="400">
+
+            <!-- Tipo de Estudio -->
+            <StackPanel>
+                <TextBlock Text="Tipo de Estudio:" 
+                           FontFamily="Cascadia Code" 
+                           FontSize="14" 
+                           Foreground="Black"/>
+                <ComboBox x:Name="ComboTipo"
+                          ItemsSource="{Binding Tipos}"
+                          SelectedItem="{Binding TipoSeleccionado, Mode=TwoWay}"
+                          Height="35"
+                          FontSize="14"
+                          FontFamily="Cascadia Code"
+                          Background="#f7f2f5" 
+                          BorderThickness="1"
+                          Padding="5"/>
+            </StackPanel>
+
+            <!-- Módulo -->
+            <StackPanel Margin="0,20,0,0">
+                <TextBlock Text="Módulo:" 
+                           FontFamily="Cascadia Code" 
+                           FontSize="14" 
+                           Foreground="Black"/>
+                <ComboBox x:Name="ComboModulo"
+                          ItemsSource="{Binding Modulos}"
+                          SelectedItem="{Binding ModuloSeleccionado, Mode=TwoWay}"
+                          Height="35"
+                          FontSize="14"
+                          FontFamily="Cascadia Code"
+                          Background="#f7f2f5" 
+                          BorderThickness="1"
+                          Padding="5"
+                          IsEnabled="{Binding IsModuloEnabled}"/>
+            </StackPanel>
+
+            <!-- Curso -->
+            <StackPanel Margin="0,20,0,0">
+                <TextBlock Text="Curso:" 
+                           FontFamily="Cascadia Code" 
+                           FontSize="14" 
+                           Foreground="Black"/>
+                <ComboBox x:Name="ComboCurso"
+                          ItemsSource="{Binding Cursos}"
+                          SelectedItem="{Binding CursoSeleccionado, Mode=TwoWay}"
+                          Height="35"
+                          FontSize="14"
+                          FontFamily="Cascadia Code"
+                          Background="#f7f2f5" 
+                          BorderThickness="1"
+                          Padding="5"
+                          IsEnabled="{Binding IsCursoEnabled}"/>
+            </StackPanel>
+
+            <!-- Asignaturas -->
+            <StackPanel Margin="0,20,0,0">
+                <TextBlock Text="Asignaturas:" 
+                           FontFamily="Cascadia Code" 
+                           FontSize="14" 
+                           Foreground="Black"/>
+                <ComboBox x:Name="ComboAsignaturas"
+                          ItemsSource="{Binding Asignaturas}"
+                          SelectedItem="{Binding AsignaturaSeleccionada, Mode=TwoWay}"
+                          DisplayMemberPath="Nombre"
+                          Height="35"
+                          FontSize="14"
+                          FontFamily="Cascadia Code"
+                          Background="#f7f2f5" 
+                          BorderThickness="1"
+                          Padding="5"
+                          IsEnabled="{Binding IsAsignaturaEnabled}"/>
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Botón Añadir -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+            <Button Content="Añadir" 
+                    Command="{Binding AnadirCommand}" 
+                    Width="150" 
+                    Height="40"
+                    FontFamily="Cascadia Code"
+                    Background="#4CAF50" 
+                    BorderBrush="Transparent"
+                    Foreground="Black"
+                    FontWeight="Bold"
+                    Cursor="Hand"/>
+        </StackPanel>
+    </Grid>
+</Window>
