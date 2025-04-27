@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Windows;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.VisualBasic;
 using Proyecto_DAM.Cursos;
 using Proyecto_DAM.DTO;
 using Proyecto_DAM.Interfaces;
@@ -150,7 +151,7 @@ namespace Proyecto_DAM.ViewModel
                     break;
 
                 case "Carrera":
-                    Modulos = new ObservableCollection<string> { "Ingeniera informatica", "Enfermeria" };
+                    Modulos = new ObservableCollection<string> { "Ingenieria informatica", "Enfermeria" };
                     break;
 
                 default:
@@ -175,7 +176,7 @@ namespace Proyecto_DAM.ViewModel
                     Cursos.Add("2º");
                     break;
 
-                case "Ingeniería informatica":
+                case "Ingenieria informatica":
                 case "Enfermeria":
                     Cursos.Add("1º");
                     Cursos.Add("2º");
