@@ -19,6 +19,6 @@ namespace RestAPI.Models.DTOs.Asignaturas
         public int Faltas { get; set; }
 
         [Required]
-        public string IdUsuario { get; set; }
+        public int IdUsuario { get; set; }
     }
 }

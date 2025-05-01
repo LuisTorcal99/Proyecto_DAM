@@ -9,6 +9,9 @@ namespace Proyecto_DAM.Interfaces
 {
     public interface IActualizarPerfilProvider
     {
-        Task<bool> Comparar_Y_Actualizar(string userId);
+        Task<(UsuarioDTO usuario, AppNetUserDto aspNetUser)> ObtenerUsuariosPorId(int userId);
+        Task<bool> ActualizarUsuarios(UsuarioDTO usuario, AppNetUserDto aspNetUser);
+        Task<AppNetUserDto> ObtenerUserAspNetPorId(int userId);
+        Task<bool> ActualizarAspNetUser(AppNetUserDto aspNetUser);
     }
 }

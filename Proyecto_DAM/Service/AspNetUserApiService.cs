@@ -46,7 +46,6 @@ namespace Proyecto_DAM.Service
             }
         }
 
-        // Actualizar un usuario
         public async Task UpdateUser(AppNetUserDto user)
         {
             try

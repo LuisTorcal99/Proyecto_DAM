@@ -12,8 +12,8 @@ using RestAPI.Data;
 namespace RestAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250501094051_update")]
-    partial class update
+    [Migration("20250501143457_fix")]
+    partial class fix
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -249,9 +249,8 @@ namespace RestAPI.Migrations
                     b.Property<int>("Horas")
                         .HasColumnType("int");
 
-                    b.Property<string>("IdUsuario")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("IdUsuario")
+                        .HasColumnType("int");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -295,9 +294,8 @@ namespace RestAPI.Migrations
                     b.Property<int>("IdAsignatura")
                         .HasColumnType("int");
 
-                    b.Property<string>("IdUsuario")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("IdUsuario")
+                        .HasColumnType("int");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -333,9 +331,8 @@ namespace RestAPI.Migrations
                     b.Property<int>("IdEvento")
                         .HasColumnType("int");
 
-                    b.Property<string>("IdUsuario")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("IdUsuario")
+                        .HasColumnType("int");
 
                     b.Property<double>("NotaValor")
                         .HasColumnType("float");
@@ -354,9 +351,11 @@ namespace RestAPI.Migrations
 
             modelBuilder.Entity("RestAPI.Models.Entity.User", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AspNetUserId")
                         .IsRequired()

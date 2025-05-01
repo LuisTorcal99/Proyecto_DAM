@@ -20,7 +20,7 @@ namespace Proyecto_DAM.Service
             _rabbitMqProducer = rabbitMqProducer;
             _eventoService = eventoService;
         }
-        public async Task VerificarYEnviarCorreos(List<EventoDTO> eventos, List<NotaDTO> notas, string idUsuario)
+        public async Task VerificarYEnviarCorreos(List<EventoDTO> eventos, List<NotaDTO> notas, int idUsuario)
         {
             foreach (var evento in eventos)
             {
@@ -37,7 +37,7 @@ namespace Proyecto_DAM.Service
                         NotaValor = -1, 
                         IdEvento = evento.Id,
                         IdAsignatura = evento.IdAsignatura, 
-                        IdUsuario = idUsuario.ToString()
+                        IdUsuario = idUsuario
                     };
                 }
 

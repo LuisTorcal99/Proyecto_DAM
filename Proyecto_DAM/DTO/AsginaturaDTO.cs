@@ -31,7 +31,7 @@ namespace Proyecto_DAM.DTO
         public int Faltas { get; set; }
 
         [JsonPropertyName("idUsuario")]
-        public string IdUsuario { get; set; }  
+        public int IdUsuario { get; set; }  
 
         public List<NotaDTO> Notas { get; set; }
         public List<EventoDTO> Eventos { get; set; }

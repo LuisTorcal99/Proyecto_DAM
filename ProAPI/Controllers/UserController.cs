@@ -97,13 +97,5 @@ namespace RestAPI.Controllers
             if (!result) return BadRequest("No se pudo actualizar el usuario (verifica contraseña si aplica).");
             return NoContent();
         }
-
-        [HttpPatch("perfil/{id}")]
-        public async Task<IActionResult> UpdatePerfil(string id, [FromBody] UserUpdateDto dto)
-        {
-            var result = await _userRepository.UpdatePerfilAsync(id, dto);
-            if (!result) return NotFound("Perfil no encontrado.");
-            return NoContent();
-        }
     }
 }

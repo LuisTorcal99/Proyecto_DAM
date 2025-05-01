@@ -5,7 +5,7 @@
 namespace RestAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class cache : Migration
+    public partial class fix : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

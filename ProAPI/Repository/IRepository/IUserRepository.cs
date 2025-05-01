@@ -7,7 +7,6 @@ namespace RestAPI.Repository.IRepository
     {
         Task<ICollection<UserDto>> GetUsers();
         Task<bool> UpdateAppUserAsync(string appUserId, UserUpdateDto dto);
-        Task<bool> UpdatePerfilAsync(string appUserId, UserUpdateDto dto);
         bool IsUniqueUser(string userName);
         Task<UserLoginResponseDto> Login(UserLoginDto userLoginDto);
         Task<UserLoginResponseDto> Register(UserRegistrationDto userRegistrationDto);

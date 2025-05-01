@@ -23,7 +23,7 @@ namespace Proyecto_DAM.DTO
         public DateTime FechaInicio { get; set; }
 
         [JsonPropertyName("idUsuario")]
-        public string IdUsuario { get; set; }
+        public int IdUsuario { get; set; }
 
         [JsonPropertyName("idAsignatura")]
         public int IdAsignatura { get; set; }

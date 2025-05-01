@@ -1,64 +1,85 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Proyecto_DAM.DTO;
+﻿using Proyecto_DAM.DTO;
 using Proyecto_DAM.Interfaces;
 
-namespace Proyecto_DAM.Service
+public class ActualizarPerfilService : IActualizarPerfilProvider
 {
-    public class ActualizarPerfilService : IActualizarPerfilProvider
+    private readonly IUserApiProvider _userApiProvider;
+    private readonly IAspNetUserApiProvider _aspNetUserApiService;
+
+    public ActualizarPerfilService(IUserApiProvider userApiProvider, IAspNetUserApiProvider aspNetUserApiService)
     {
-        private readonly IUserApiProvider _userApiProvider;
-        private readonly IAspNetUserApiProvider _aspNetUserApiService;
+        _userApiProvider = userApiProvider;
+        _aspNetUserApiService = aspNetUserApiService;
+    }
 
-        public ActualizarPerfilService(IUserApiProvider userApiProvider, IAspNetUserApiProvider aspNetUserApiService)
+    public async Task<(UsuarioDTO usuario, AppNetUserDto aspNetUser)> ObtenerUsuariosPorId(int userId)
+    {
+        var allUsers = await _userApiProvider.GetUser();
+        var usuario = allUsers.FirstOrDefault(u => u.Id == userId);
+
+        if (usuario == null)
+            return (null, null);
+
+        var allAspNetUsers = await _aspNetUserApiService.GetUsers();
+        var aspNetUser = allAspNetUsers.FirstOrDefault(a => a.Id == usuario.AspNetUserId);
+
+        return (usuario, aspNetUser);
+    }
+
+    public async Task<AppNetUserDto> ObtenerUserAspNetPorId(int userId)
+    {
+        var allUsers = await _userApiProvider.GetUser();
+        var usuario = allUsers.FirstOrDefault(u => u.Id == userId);
+
+        if (usuario == null)
+            return null;
+
+        var allAspNetUsers = await _aspNetUserApiService.GetUsers();
+        var aspNetUser = allAspNetUsers.FirstOrDefault(a => a.Id == usuario.AspNetUserId);
+
+        return aspNetUser;
+    }
+
+    public async Task<bool> ActualizarUsuarios(UsuarioDTO usuario, AppNetUserDto aspNetUser)
+    {
+        if (usuario == null || aspNetUser == null || usuario.AspNetUserId != aspNetUser.Id)
         {
-            _userApiProvider = userApiProvider;
-            _aspNetUserApiService = aspNetUserApiService;
+            Console.WriteLine("Datos inválidos o no coinciden los IDs.");
+            return false;
         }
-        public async Task<bool> Comparar_Y_Actualizar(string userId)
+
+        try
         {
-            try
-            {
-                // Obtener los datos completos del UsuarioDTO usando el id
-                UsuarioDTO usuario = await _userApiProvider.GetOneUser(userId);
-                if (usuario == null)
-                {
-                    Console.WriteLine($"No se encontró el usuario con id {userId}");
-                    return false;
-                }
+            await _userApiProvider.PatchUser(usuario);
+            await _aspNetUserApiService.UpdateUser(aspNetUser);
+            Console.WriteLine("Usuarios actualizados correctamente.");
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al actualizar los usuarios: {ex.Message}");
+            return false;
+        }
+    }
 
-                // Obtener los datos completos del AppNetUserDto usando el aspNetUserId del usuario
-                AppNetUserDto aspNetUser = await _aspNetUserApiService.GetUserById(usuario.AspNetUserId);
-                if (aspNetUser == null)
-                {
-                    Console.WriteLine($"No se encontró el usuario AspNet con id {usuario.AspNetUserId}");
-                    return false;
-                }
+    public async Task<bool> ActualizarAspNetUser(AppNetUserDto aspNetUser)
+    {
+        if ( aspNetUser == null )
+        {
+            Console.WriteLine("Datos inválidos o no coinciden los IDs.");
+            return false;
+        }
 
-                // Comparar el aspNetUserId de UsuarioDTO con el id de AppNetUserDto
-                if (usuario.AspNetUserId == aspNetUser.Id)
-                {
-                    // Si coinciden, actualizamos ambos usuarios
-                    await _userApiProvider.PatchUser(usuario); // Actualizamos el UsuarioDTO
-                    await _aspNetUserApiService.UpdateUser(aspNetUser); // Actualizamos el AppNetUserDto
-
-                    Console.WriteLine("Usuarios actualizados correctamente.");
-                    return true;
-                }
-                else
-                {
-                    Console.WriteLine("El aspNetUserId no coincide con el id del usuario.");
-                    return false;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error al comparar o actualizar los usuarios: {ex.Message}");
-                return false;
-            }
+        try
+        {
+            await _aspNetUserApiService.UpdateUser(aspNetUser);
+            Console.WriteLine("Usuario actualizado correctamente.");
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al actualizar los usuarios: {ex.Message}");
+            return false;
         }
     }
 }

@@ -16,7 +16,7 @@ namespace RestAPI.Models.DTOs.Evento
         public DateTime Fecha { get; set; }
 
         [Required]
-        public string IdUsuario { get; set; }
+        public int IdUsuario { get; set; }
 
         [Required]
         public int IdAsignatura { get; set; }

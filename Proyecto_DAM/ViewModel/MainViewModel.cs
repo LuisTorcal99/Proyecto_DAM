@@ -64,7 +64,7 @@ namespace Proyecto_DAM.ViewModel
             set
             {
                 SetProperty(ref _selectedViewModel, value);
-                IsMenuVisible = value is PrincipalViewModel || value is EventosViewModel || value is PomodoroViewModel;
+                IsMenuVisible = value is PrincipalViewModel || value is EventosViewModel || value is PomodoroViewModel || value is PerfilViewModel;
             }
         }
 

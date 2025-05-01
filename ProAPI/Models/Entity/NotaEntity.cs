@@ -15,7 +15,7 @@ namespace RestAPI.Models.Entity
         public int IdEvento { get; set; }
         public EventoEntity Evento { get; set; }
 
-        public string IdUsuario { get; set; }
+        public int IdUsuario { get; set; }
         public User Usuario { get; set; }
     }
 }

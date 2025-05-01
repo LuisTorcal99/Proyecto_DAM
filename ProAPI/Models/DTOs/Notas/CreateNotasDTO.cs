@@ -14,6 +14,6 @@ namespace RestAPI.Models.DTOs.Notas
         public int IdEvento { get; set; }
 
         [Required]
-        public string IdUsuario { get; set; }
+        public int IdUsuario { get; set; }
     }
 }

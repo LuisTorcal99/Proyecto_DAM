@@ -17,6 +17,6 @@ namespace Proyecto_DAM.DTO
         public int IdEvento { get; set; }
 
         [JsonPropertyName("idUsuario")]
-        public string IdUsuario { get; set; }
+        public int IdUsuario { get; set; }
     }
 }

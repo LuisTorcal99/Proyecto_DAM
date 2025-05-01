@@ -15,7 +15,7 @@ namespace RestAPI.Models.Entity
         public string Estado { get; set; } // "Pendiente", "EnProceso", "Realizado"
 
         // Relación con el usuario
-        public string IdUsuario { get; set; }
+        public int IdUsuario { get; set; }
         public User Usuario { get; set; }
 
         // Relación con la asignatura

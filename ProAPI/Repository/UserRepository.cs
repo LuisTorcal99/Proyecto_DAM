@@ -171,25 +171,5 @@ namespace RestAPI.Repository
             var result = await _userManager.UpdateAsync(user);
             return result.Succeeded;
         }
-
-        public async Task<bool> UpdatePerfilAsync(string appUserId, UserUpdateDto dto)
-        {
-            var perfil = _context.Users.FirstOrDefault(u => u.AspNetUserId == appUserId);
-            if (perfil == null) return false;
-
-            if (!string.IsNullOrEmpty(dto.Name))
-                perfil.Name = dto.Name;
-
-            if (!string.IsNullOrEmpty(dto.Email))
-                perfil.Email = dto.Email;
-
-            if (!string.IsNullOrEmpty(dto.NewPassword))
-                perfil.Password = dto.NewPassword;
-
-            _context.Users.Update(perfil);
-            await _context.SaveChangesAsync();
-            return true;
-        }
-
     }
 }

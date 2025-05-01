@@ -9,6 +9,6 @@ namespace Proyecto_DAM.Interfaces
 {
     public interface IEventoNotificacionProvider
     {
-        Task VerificarYEnviarCorreos(List<EventoDTO> eventos, List<NotaDTO> notas, string idUsuario);
+        Task VerificarYEnviarCorreos(List<EventoDTO> eventos, List<NotaDTO> notas, int idUsuario);
     }
 }

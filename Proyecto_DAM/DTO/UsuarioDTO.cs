@@ -10,7 +10,7 @@ namespace Proyecto_DAM.DTO
     public class UsuarioDTO
     {
         [JsonPropertyName("id")]
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         [JsonPropertyName("name")]
         public string Nombre { get; set; }
