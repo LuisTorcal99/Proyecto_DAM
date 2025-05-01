@@ -26,7 +26,10 @@
        <DataTemplate DataType="{x:Type viewmodel:PomodoroViewModel}">
            <view:PomodoroView/>
        </DataTemplate>
-       <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
+        <DataTemplate DataType="{x:Type viewmodel:PerfilViewModel}">
+            <view:PerfilView/>
+        </DataTemplate>
+        <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
    </Window.Resources>
 
    <Grid>
@@ -83,9 +86,12 @@
                               Padding="2" FontFamily="Cascadia Code" /> 
                     </StackPanel>
 
-                    <MenuItem Header="_Logout" Foreground="#f44336" FontFamily="Cascadia Code"
-                             Command="{Binding SelectViewModelCommand}"
-                             CommandParameter="{Binding DataContext.LoginViewModel, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                    <MenuItem Header="👤" Foreground="{DynamicResource TextColor}" FontFamily="Cascadia Code">
+                        <MenuItem Header="Perfil" Command="{Binding SelectViewModelCommand}" FontFamily="Cascadia Code" Foreground="Black"
+                                    CommandParameter="{Binding DataContext.PerfilViewModel, RelativeSource={RelativeSource AncestorType=Window}}" />
+                        <MenuItem Header="Cerrar Sesión" Command="{Binding SelectViewModelCommand}" FontFamily="Cascadia Code" Foreground="Red"
+                                    CommandParameter="{Binding DataContext.LoginViewModel, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                    </MenuItem>
                </Menu>
            </Grid>
        </Border>

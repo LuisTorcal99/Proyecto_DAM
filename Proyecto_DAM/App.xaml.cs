@@ -68,6 +68,7 @@ namespace Proyecto_DAM
             services.AddTransient<DetallesAsignaturaViewModel>();
             services.AddTransient<PomodoroViewModel>();
             services.AddTransient<CargarViewModel>();
+            services.AddTransient<PerfilViewModel>();
 
             //Services 
             services.AddSingleton<MainViewModel>();
@@ -81,6 +82,8 @@ namespace Proyecto_DAM
             services.AddSingleton<ICalcularMediaProvider, CalcularMediaService>();
             services.AddSingleton<IRabbitMQProducer, RabbitMQProducer>();
             services.AddSingleton<IRabbitMQConsumer, RabbitMQConsumer>();
+            services.AddSingleton<IActualizarPerfilProvider, ActualizarPerfilService>();
+            services.AddSingleton<IAspNetUserApiProvider, AspNetUserApiService>();
             services.AddSingleton(typeof(IFileProvider<>), typeof(FileService<>));
             services.AddSingleton(typeof(IHttpsJsonClientProvider<>), typeof(HttpsJsonClientService<>));
 

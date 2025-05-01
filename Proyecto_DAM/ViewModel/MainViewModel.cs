@@ -29,13 +29,15 @@ namespace Proyecto_DAM.ViewModel
         public MainViewModel(LoginViewModel login, RegistroViewModel registro,
             PrincipalViewModel principal, EventosViewModel eventos,
             PomodoroViewModel pomodoro, IAsignaturaApiProvider asignaturaService, 
-            IEventoApiProvider eventoService, INotaApiProvider notaService)
+            IEventoApiProvider eventoService, INotaApiProvider notaService, 
+            PerfilViewModel perfil)
         {
             LoginViewModel = login;
             RegistroViewModel = registro;
             PrincipalViewModel = principal;
             EventosViewModel = eventos;
             PomodoroViewModel = pomodoro;
+            PerfilViewModel = perfil;
 
             SelectedViewModel = login;
             IsMenuVisible = false;
@@ -54,6 +56,7 @@ namespace Proyecto_DAM.ViewModel
         public PrincipalViewModel PrincipalViewModel { get; }
         public EventosViewModel EventosViewModel { get; }
         public PomodoroViewModel PomodoroViewModel { get; }
+        public PerfilViewModel PerfilViewModel { get; }
 
         public ViewModelBase? SelectedViewModel
         {

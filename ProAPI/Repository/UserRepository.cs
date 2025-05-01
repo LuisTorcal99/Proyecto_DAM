@@ -143,5 +143,53 @@ namespace RestAPI.Repository
                 User = user
             };
         }
+
+        public async Task<bool> UpdateAppUserAsync(string appUserId, UserUpdateDto dto)
+        {
+            var user = await _userManager.FindByIdAsync(appUserId);
+            if (user == null) return false;
+
+            if (!string.IsNullOrEmpty(dto.Name))
+                user.Name = dto.Name;
+
+            if (!string.IsNullOrEmpty(dto.UserName))
+                user.UserName = dto.UserName;
+
+            if (!string.IsNullOrEmpty(dto.Email))
+            {
+                user.Email = dto.Email;
+                user.NormalizedEmail = dto.Email.ToUpper();
+            }
+
+            // Si se quiere cambiar la contraseña
+            if (!string.IsNullOrEmpty(dto.CurrentPassword) && !string.IsNullOrEmpty(dto.NewPassword))
+            {
+                var passwordChanged = await _userManager.ChangePasswordAsync(user, dto.CurrentPassword, dto.NewPassword);
+                if (!passwordChanged.Succeeded) return false;
+            }
+
+            var result = await _userManager.UpdateAsync(user);
+            return result.Succeeded;
+        }
+
+        public async Task<bool> UpdatePerfilAsync(string appUserId, UserUpdateDto dto)
+        {
+            var perfil = _context.Users.FirstOrDefault(u => u.AspNetUserId == appUserId);
+            if (perfil == null) return false;
+
+            if (!string.IsNullOrEmpty(dto.Name))
+                perfil.Name = dto.Name;
+
+            if (!string.IsNullOrEmpty(dto.Email))
+                perfil.Email = dto.Email;
+
+            if (!string.IsNullOrEmpty(dto.NewPassword))
+                perfil.Password = dto.NewPassword;
+
+            _context.Users.Update(perfil);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
     }
 }

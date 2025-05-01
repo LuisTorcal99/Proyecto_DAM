@@ -54,15 +54,13 @@ namespace Proyecto_DAM.Service
                 }
             }
         }
-
-
         private async Task EnviarCorreo(EventoDTO evento)
         {
             var email = new Email
             {
                 To = App.Current.Services.GetService<LoginDTO>().Email,
-                Subject = $"Recordatorio: Evento '{evento.Nombre}' en 2 días",
-                Body = $"Este es un recordatorio de que el evento '{evento.Nombre}' ocurrirá el {evento.Fecha:dd/MM/yyyy}.",
+                Subject = $"Recordatorio: Evento '{evento.Nombre}' en menos de 2 días",
+                Body = $"Este es un recordatorio de que el evento '{evento.Nombre}' ocurrirá el {evento.Fecha:dd/MM/yyyy} a las {evento.Fecha:HH:mm}.",
             };
 
             var mensaje = new MensajeRabbit
@@ -72,7 +70,7 @@ namespace Proyecto_DAM.Service
             };
 
             await _rabbitMqProducer.EnviarMensaje(JsonSerializer.Serialize(mensaje));
-            Console.WriteLine($"Correo enviado para el evento: {evento.Nombre}");
+            Console.WriteLine($"Correo enviado para el evento: {evento.Nombre} a las {evento.Fecha:HH:mm}");
         }
     }
 }
