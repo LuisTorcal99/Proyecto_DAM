@@ -35,15 +35,7 @@ namespace RestAPI.Repository
 
         public async Task<ICollection<User>> GetAllAsync()
         {
-            if (_cache.TryGetValue(UserCacheKey, out ICollection<User> UserCached))
-                return UserCached;
-
-            var UsersFromDb = await _context.Users.OrderBy(c => c.Name).ToListAsync();
-            var cacheEntryOptions = new MemoryCacheEntryOptions()
-                  .SetAbsoluteExpiration(TimeSpan.FromSeconds(CacheExpirationTime));
-
-            _cache.Set(UserCacheKey, UsersFromDb, cacheEntryOptions);
-            return UsersFromDb;
+            return await _context.Users.OrderBy(c => c.Name).ToListAsync(); // sin caché
         }
 
         public async Task<User> GetAsync(int id)

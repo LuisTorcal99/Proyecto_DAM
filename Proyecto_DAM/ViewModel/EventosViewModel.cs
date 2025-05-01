@@ -105,19 +105,13 @@ namespace Proyecto_DAM.ViewModel
 
                 if (eventos?.Any() == true)
                 {
-                    var idUsuario = App.Current.Services.GetService<LoginDTO>().Id;
-
                     var eventosFiltrados = eventos
-                        .Where(e => e.IdUsuario == idUsuario && e.Fecha > DateTime.Now)
+                        .Where(e => e.Fecha > DateTime.Now)
                         .Select(e => EventoItemModel.CreateModelFromDTO(e))
                         .OrderBy(e => e.Fecha)
                         .ToList();
 
-                    var asignaturasFiltradas = asignaturas
-                        .Where(a => a.IdUsuario.Equals(App.Current.Services.GetService<LoginDTO>().Id))
-                        .ToList();
-
-                    foreach (var Asignatura in asignaturasFiltradas)
+                    foreach (var Asignatura in asignaturas)
                     {
                         Asignaturas.Add(Asignatura.Nombre);
                     }

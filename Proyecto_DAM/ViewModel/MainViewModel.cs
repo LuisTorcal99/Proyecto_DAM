@@ -81,17 +81,11 @@ namespace Proyecto_DAM.ViewModel
 
         public async Task<(List<AsignaturaDTO>, List<EventoDTO>, List<NotaDTO>)> ObtenerAsignaturasEventosNotasAsync()
         {
-            // Obtener todas las asignaturas, eventos y notas
             var asignaturas = (await _asignaturaService.GetAsignatura()).ToList();
             var eventos = (await _eventoService.GetEvento()).ToList();
             var notas = (await _notaService.GetNota()).ToList();
 
-            // Filtrar asignaturas del usuario actual
-            var asignaturasFiltradas = asignaturas
-                .Where(a => a.IdUsuario.Equals(App.Current.Services.GetService<LoginDTO>().Id))
-                .ToList();
-
-            return (asignaturasFiltradas, eventos, notas);
+            return (asignaturas, eventos, notas);
         }
 
 
@@ -179,7 +173,7 @@ namespace Proyecto_DAM.ViewModel
                 string rutaArchivo = saveFileDialog.FileName;
                 var workbook = new XLWorkbook();
 
-                var (asignaturasFiltradas, eventos, notas) = await ObtenerAsignaturasEventosNotasAsync();
+                var (asignaturas, eventos, notas) = await ObtenerAsignaturasEventosNotasAsync();
 
                 // Empezamos en la primera hoja del libro de Excel
                 var hoja = workbook.Worksheets.Add("Resumen Estudio");
@@ -187,8 +181,8 @@ namespace Proyecto_DAM.ViewModel
                 // Contador de fila inicial
                 int fila = 1;
 
-                // Iterar sobre todas las asignaturas filtradas
-                foreach (var asignatura in asignaturasFiltradas)
+                // Iterar sobre todas las asignaturas
+                foreach (var asignatura in asignaturas)
                 {
                     hoja.Cell(fila, 1).Value = "Asignatura:";
                     hoja.Cell(fila, 1).Style.Font.Bold = true;
@@ -303,10 +297,10 @@ namespace Proyecto_DAM.ViewModel
                 double y = 40;
                 double lineHeight = 18;
 
-                var (asignaturasFiltradas, eventos, notas) = await ObtenerAsignaturasEventosNotasAsync();
+                var (asignaturas, eventos, notas) = await ObtenerAsignaturasEventosNotasAsync();
 
-                // Iterar sobre todas las asignaturas filtradas
-                foreach (var asignatura in asignaturasFiltradas)
+                // Iterar sobre todas las asignaturas 
+                foreach (var asignatura in asignaturas)
                 {
                     // Título de la asignatura
                     gfx.DrawString("Asignatura:", fontBlack, XBrushes.Black, x, y);
@@ -418,12 +412,12 @@ namespace Proyecto_DAM.ViewModel
             {
                 string rutaArchivo = saveFileDialog.FileName;
 
-                var (asignaturasFiltradas, eventos, notas) = await ObtenerAsignaturasEventosNotasAsync();
+                var (asignaturas, eventos, notas) = await ObtenerAsignaturasEventosNotasAsync();
 
                 // Crear lista de asignaturas para exportar
                 var asignaturasExportar = new List<Asignatura>();
 
-                foreach (var asignatura in asignaturasFiltradas)
+                foreach (var asignatura in asignaturas)
                 {
                     // Crear objeto Asignatura con eventos
                     var eventosAsignatura = eventos.Where(e => e.IdAsignatura == asignatura.Id).ToList();

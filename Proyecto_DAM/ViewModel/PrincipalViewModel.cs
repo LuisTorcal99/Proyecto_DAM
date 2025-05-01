@@ -71,25 +71,13 @@ namespace Proyecto_DAM.ViewModel
                 if (asignaturas?.Any() == true)
                 {
 
-                    var asignaturasFiltradas = asignaturas
-                        .Where(a => a.IdUsuario.Equals(App.Current.Services.GetService<LoginDTO>().Id))
-                        .ToList();
+                    await _eventoNotificacion.VerificarYEnviarCorreos(eventos.ToList(), notas.ToList(), idUsuario);
 
-                    var eventosFiltrados = eventos
-                        .Where(e => e.IdUsuario.Equals(App.Current.Services.GetService<LoginDTO>().Id))
-                        .ToList();
-
-                    var notasFiltrados = notas
-                        .Where(e => e.IdUsuario.Equals(App.Current.Services.GetService<LoginDTO>().Id))
-                        .ToList();
-
-                    await _eventoNotificacion.VerificarYEnviarCorreos(eventosFiltrados, notasFiltrados, idUsuario);
-
-                    foreach (var dto in asignaturasFiltradas)
+                    foreach (var dto in asignaturas)
                     {
                         var model = AsignaturaItemModel.CreateModelFromDTO(dto);
 
-                        model.TotalEventos = eventosFiltrados.Count(e => e.IdAsignatura == model.Id);
+                        model.TotalEventos = eventos.Count(e => e.IdAsignatura == model.Id);
                         model.TotalNotas = notas.Count(n => n.IdAsignatura == model.Id && n.NotaValor > -1);
 
                         AsignaturaItem.Add(model);

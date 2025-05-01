@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using Proyecto_DAM.DTO;
 using Proyecto_DAM.Interfaces;
 using Proyecto_DAM.Utils;
@@ -20,7 +21,9 @@ namespace Proyecto_DAM.Service
 
         public async Task<IEnumerable<NotaDTO>> GetNota()
         {
-            return await _httpsJsonClientProvider.GetAsync(Constantes.NOTA_PATH);
+            var todas = await _httpsJsonClientProvider.GetAsync(Constantes.NOTA_PATH);
+
+            return todas.Where(a => a.IdUsuario == App.Current.Services.GetService<LoginDTO>().Id);
         }
 
         public async Task<NotaDTO> GetOneNota(string id)

@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Proyecto_DAM.DTO;
 using Proyecto_DAM.Interfaces;
 using Proyecto_DAM.Utils;
+using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Proyecto_DAM.Service
 {
@@ -20,7 +22,9 @@ namespace Proyecto_DAM.Service
 
         public async Task<IEnumerable<AsignaturaDTO>> GetAsignatura()
         {
-            return await _httpsJsonClientProvider.GetAsync(Constantes.ASIGNATURA_PATH);
+            var todas = await _httpsJsonClientProvider.GetAsync(Constantes.ASIGNATURA_PATH);
+
+            return todas.Where(a => a.IdUsuario == App.Current.Services.GetService<LoginDTO>().Id);
         }
 
         public async Task<AsignaturaDTO> GetOneAsignatura(string id)
