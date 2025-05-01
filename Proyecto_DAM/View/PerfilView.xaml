@@ -98,10 +98,10 @@
                         Width="120" 
                         Height="40"
                         HorizontalAlignment="Right" 
-                        FontFamily="Cascadia Code"
-                        Background="#4CAF50" 
+                        Background="{DynamicResource BackgroundColor}" 
+                        FontFamily="Cascadia Code" 
+                        Foreground="{DynamicResource TextColor}"
                         BorderBrush="Transparent"
-                        Foreground="Black"
                         FontWeight="Bold"
                         Cursor="Hand"/>
             </StackPanel>
@@ -255,6 +255,7 @@
                     <lvc:CartesianChart.AxisX>
                         <lvc:Axis Labels="{Binding XLabels}"
                           FontSize="12"
+                          Foreground="Black"
                           FontFamily="Cascadia Code"/>
                     </lvc:CartesianChart.AxisX>
 
@@ -263,6 +264,7 @@
                         <lvc:Axis Title="Nº Notas"
                           LabelFormatter="{Binding YFormatter}"
                           FontSize="11"
+                          Foreground="Black"
                           FontFamily="Cascadia Code"
                           MinValue="0" />
                     </lvc:CartesianChart.AxisY>

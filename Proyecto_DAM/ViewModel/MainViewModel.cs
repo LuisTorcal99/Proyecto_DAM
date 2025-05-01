@@ -488,7 +488,7 @@ namespace Proyecto_DAM.ViewModel
 
             if (theme == "Claro")
             {
-                resources["BackgroundColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFF1CAE4"));
+                resources["BackgroundColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F1CAE4"));
                 resources["TextColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#34495E"));
             }
             else if (theme == "Oscuro")

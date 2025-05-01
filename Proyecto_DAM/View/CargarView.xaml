@@ -111,10 +111,10 @@
                     Command="{Binding AnadirCommand}" 
                     Width="150" 
                     Height="40"
-                    FontFamily="Cascadia Code"
-                    Background="#4CAF50" 
+                    Background="{DynamicResource BackgroundColor}"
+                    FontFamily="Cascadia Code" 
                     BorderBrush="Transparent"
-                    Foreground="Black"
+                    Foreground="{DynamicResource TextColor}"
                     FontWeight="Bold"
                     Cursor="Hand"/>
         </StackPanel>

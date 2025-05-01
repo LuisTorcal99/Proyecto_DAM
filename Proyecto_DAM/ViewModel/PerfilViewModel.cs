@@ -185,7 +185,7 @@ namespace Proyecto_DAM.ViewModel
                     {
                         Title = "Notas",
                         Values = new ChartValues<double> { TotalAprobadas, TotalSuspendidas, TotalPendientes },
-                        Fill = new SolidColorBrush(Color.FromRgb(103, 80, 164)), 
+                        Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F1CAE4")),
                         Stroke = Brushes.Black,
                         StrokeThickness = 1,
                         MaxColumnWidth = 60,
@@ -197,7 +197,7 @@ namespace Proyecto_DAM.ViewModel
                     {
                         Title = "Notas Examen",
                         Values = new ChartValues<double> { TotalExamenesAprobados, TotalExamenesSuspendidos, TotalExamenesPendientes },
-                        Fill = new SolidColorBrush(Color.FromRgb(244, 67, 54)), 
+                        Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#0E351B")),
                         Stroke = Brushes.Black,
                         StrokeThickness = 1,
                         MaxColumnWidth = 60,

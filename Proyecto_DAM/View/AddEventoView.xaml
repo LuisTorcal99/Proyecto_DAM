@@ -154,10 +154,11 @@
                     Command="{Binding GuardarCommand}" 
                     Width="120" 
                     Height="40"
-                    FontFamily="Cascadia Code"
-                    Background="#4CAF50" 
+
                     BorderBrush="Transparent"
-                    Foreground="Black"
+                    Background="{DynamicResource BackgroundColor}" 
+                    FontFamily="Cascadia Code" 
+                    Foreground="{DynamicResource TextColor}"
                     FontWeight="Bold"
                     Cursor="Hand"/>
         </StackPanel>
