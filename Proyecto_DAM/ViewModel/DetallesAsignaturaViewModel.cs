@@ -318,6 +318,7 @@ namespace Proyecto_DAM.ViewModel
                     Horas = Asignatura.Horas,
                     IdUsuario = App.Current.Services.GetService<LoginDTO>().Id,
                     Eventos = Asignatura.Eventos,
+                    Notas = Asignatura.Notas,
                     
                     Faltas = faltas,
                     PorcentajeFaltas = porcentajeFaltas
