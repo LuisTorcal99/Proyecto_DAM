@@ -45,12 +45,12 @@ namespace RestAPI.Controllers
                 return BadRequest(new { error = "Incorrect Input", message = ModelState });
             }
 
-            if (!_userRepository.IsUniqueUser(userRegistrationDto.UserName))
+            if (!_userRepository.IsUniqueUser(userRegistrationDto.Email))
             {
                 _reponseApi.StatusCode = HttpStatusCode.BadRequest;
                 _reponseApi.IsSuccess = false;
-                _reponseApi.ErrorMessages.Add("Username already exists");
-                return BadRequest();
+                _reponseApi.ErrorMessages.Add("El correo ya está registrado.");
+                return BadRequest(_reponseApi);
             }
 
             var newUser = await _userRepository.Register(userRegistrationDto);
@@ -58,15 +58,14 @@ namespace RestAPI.Controllers
             {
                 _reponseApi.StatusCode = HttpStatusCode.BadRequest;
                 _reponseApi.IsSuccess = false;
-                _reponseApi.ErrorMessages.Add("Error registering the user");
-                return BadRequest();
+                _reponseApi.ErrorMessages.Add("Error al registrar el usuario.");
+                return BadRequest(_reponseApi); 
             }
 
             _reponseApi.StatusCode = HttpStatusCode.OK;
             _reponseApi.IsSuccess = true;
             return Ok(_reponseApi);
         }
-
 
         [AllowAnonymous]
         [HttpPost("login")]

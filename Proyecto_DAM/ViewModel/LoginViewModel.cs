@@ -31,7 +31,7 @@ namespace Proyecto_DAM.ViewModel
             _httpJsonProvider = httpJsonProvider;
             _UsuarioService = userApi;
             _rabbitMQProducer = rabbitMQProducer;
-            CrearAdmin();
+            //CrearAdmin();
             Email = Constantes.EMAIL;
             Password = Constantes.PASSWORD;
         }
@@ -94,18 +94,18 @@ namespace Proyecto_DAM.ViewModel
             mainViewModel.SelectViewModelCommand.Execute(RegistroViewModel);
         }
 
-        private async void CrearAdmin()
-        {
-            var admin = new RegistroDTO(
-                // name, username, email, password, role
-                Constantes.USERNAME,
-                Constantes.USERNAME,
-                Constantes.EMAIL,
-                Constantes.PASSWORD,
-                Constantes.ROLE_REGISTRER_ADMIN
-            );
-            await _httpJsonProvider.RegisterPostAsync(Constantes.REGISTER_PATH, admin);
-        }
+        //private async void CrearAdmin()
+        //{
+        //    var admin = new RegistroDTO(
+        //        // name, username, email, password, role
+        //        Constantes.USERNAME,
+        //        Constantes.USERNAME,
+        //        Constantes.EMAIL,
+        //        Constantes.PASSWORD,
+        //        Constantes.ROLE_REGISTRER_ADMIN
+        //    );
+        //    await _httpJsonProvider.RegisterPostAsync(Constantes.REGISTER_PATH, admin);
+        //}
 
         public override Task LoadAsync()
         {

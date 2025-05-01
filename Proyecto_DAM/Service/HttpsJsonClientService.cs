@@ -5,6 +5,7 @@ using Proyecto_DAM.DTO;
 using Proyecto_DAM.Interfaces;
 using Proyecto_DAM.Utils;
 using Microsoft.Extensions.DependencyInjection;
+using System.Windows;
 
 namespace Proyecto_DAM.Service
 {
@@ -160,28 +161,49 @@ namespace Proyecto_DAM.Service
             {
                 using (HttpClient httpClient = new HttpClient())
                 {
-
                     httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginDTO.Token}");
 
-                    // Serializar el Asignatura 'data' (UserRegistroDTO) a JSON
                     string jsonContent = JsonSerializer.Serialize(data);
-
-                    // Crear el contenido HTTP con el tipo adecuado para enviar JSON
                     var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
                     HttpResponseMessage response = await httpClient.PostAsync($"{Constantes.BASE_URL}{path}", content);
-
-                    // Leer el contenido de la respuesta y deserializarlo
                     string responseBody = await response.Content.ReadAsStringAsync();
-                    return JsonSerializer.Deserialize<T>(responseBody, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        try
+                        {
+                            var errorApi = JsonSerializer.Deserialize<ResponseApi>(responseBody, new JsonSerializerOptions
+                            {
+                                PropertyNameCaseInsensitive = true
+                            });
+
+                            if (errorApi != null && !errorApi.IsSuccess && errorApi.ErrorMessages.Any())
+                            {
+                                MessageBox.Show(string.Join("\n", errorApi.ErrorMessages));
+                                return default;
+                            }
+                        }
+                        catch
+                        {
+                            MessageBox.Show("Error desconocido al registrar.");
+                            return default;
+                        }
+                    }
+
+                    return JsonSerializer.Deserialize<T>(responseBody, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error en la solicitud POST: {ex.Message}");
+                MessageBox.Show("Error en la solicitud POST: " + ex.Message);
+                return default;
             }
-            return default;
         }
+
         public async Task<T?> PutAsync(string path, T data)
         {
             try

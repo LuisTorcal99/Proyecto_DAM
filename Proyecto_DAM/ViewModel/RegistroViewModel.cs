@@ -65,6 +65,11 @@ namespace Proyecto_DAM.ViewModel
 
                 UserDTO user = await _httpJsonProvider.RegisterPostAsync(Constantes.REGISTER_PATH, UsuarioRegistrado);
 
+                if (user == null)
+                {
+                    return;
+                }
+
                 var mensaje = new MensajeRabbit
                 {
                     Tipo = "Evento",
