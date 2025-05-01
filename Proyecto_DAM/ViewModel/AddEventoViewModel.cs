@@ -52,7 +52,7 @@ namespace Proyecto_DAM.ViewModel
             _eventoApiService = eventoApiProvider;
             _rabbitMQProducer = rabbitMQProducer; 
             Asignaturas = new ObservableCollection<AsignaturaItemModel>();
-            Tipos = new ObservableCollection<string>() { "Tarea", "Examen" };
+            Tipos = new ObservableCollection<string>() { "Nota", "Tarea", "Examen" };
             _ = LoadAsync();
         }
 

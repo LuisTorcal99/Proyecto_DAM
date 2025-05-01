@@ -54,7 +54,7 @@ namespace Proyecto_DAM.ViewModel
             _calcularMediaService = calcularMediaService;
             _rabbitMQProducer = rabbitMQProducer;
 
-            TiposEvento = new ObservableCollection<string>() { "Tarea", "Examen" };
+            TiposEvento = new ObservableCollection<string>() { "Nota", "Tarea", "Examen" };
             EstadosEvento = new ObservableCollection<string>() { "Pendiente", "EnProceso", "Completado" };
             _serviceProvider = serviceProvider;
         }
@@ -318,7 +318,6 @@ namespace Proyecto_DAM.ViewModel
                     Horas = Asignatura.Horas,
                     IdUsuario = App.Current.Services.GetService<LoginDTO>().Id,
                     Eventos = Asignatura.Eventos,
-                    Notas = Asignatura.Notas,
                     
                     Faltas = faltas,
                     PorcentajeFaltas = porcentajeFaltas

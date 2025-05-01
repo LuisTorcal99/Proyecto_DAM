@@ -21,7 +21,7 @@ namespace Proyecto_DAM.ViewModel
         private int _currentPage = 1;
         private readonly int _itemsPerPage = 10;
 
-        public ObservableCollection<string> TiposEvento { get; } = new() { "Tarea", "Examen" };
+        public ObservableCollection<string> TiposEvento { get; } = new() {"Nota", "Tarea", "Examen" };
         public ObservableCollection<string> EstadosEvento { get; } = new() { "Pendiente", "EnProceso", "Completado" };
 
         [ObservableProperty]
