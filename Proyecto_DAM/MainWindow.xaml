@@ -3,6 +3,7 @@
        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
        xmlns:viewmodel="clr-namespace:Proyecto_DAM.ViewModel"
        xmlns:view="clr-namespace:Proyecto_DAM.View" 
        d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel}"
@@ -28,6 +29,12 @@
        </DataTemplate>
         <DataTemplate DataType="{x:Type viewmodel:PerfilViewModel}">
             <view:PerfilView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodel:BienestarViewModel}">
+            <view:BienestarView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodel:LogrosViewModel}">
+            <view:LogrosView/>
         </DataTemplate>
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
    </Window.Resources>
@@ -60,6 +67,12 @@
                     <MenuItem Header="_Concentracion" Foreground="{DynamicResource TextColor}" FontFamily="Cascadia Code"
                               Command="{Binding SelectViewModelCommand}"
                               CommandParameter="{Binding DataContext.PomodoroViewModel, RelativeSource={RelativeSource AncestorType=Window}}" />
+                    <MenuItem Header="_Bienestar" Foreground="{DynamicResource TextColor}" FontFamily="Cascadia Code"
+                              Command="{Binding SelectViewModelCommand}"
+                              CommandParameter="{Binding DataContext.BienestarViewModel, RelativeSource={RelativeSource AncestorType=Window}}" />
+                    <MenuItem Header="_Logros" Foreground="{DynamicResource TextColor}" FontFamily="Cascadia Code"
+                              Command="{Binding SelectViewModelCommand}"
+                              CommandParameter="{Binding DataContext.LogrosViewModel, RelativeSource={RelativeSource AncestorType=Window}}" />
                     <MenuItem Header="_Crear" Foreground="{DynamicResource TextColor}" FontFamily="Cascadia Code">
                         <MenuItem Header="Crear Asignatura" Command="{Binding AddAsignaturaCommand}" FontFamily="Cascadia Code" Foreground="Black"/>
                         <MenuItem Header="Crear Evento" Command="{Binding AddEventoCommand}" FontFamily="Cascadia Code" Foreground="Black"/>

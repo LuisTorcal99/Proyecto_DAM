@@ -45,8 +45,6 @@ namespace Proyecto_DAM
             base.OnExit(e);
         }
 
-
-
         public new static App Current => (App)Application.Current;
         public IServiceProvider Services { get; }
 
@@ -69,6 +67,8 @@ namespace Proyecto_DAM
             services.AddTransient<PomodoroViewModel>();
             services.AddTransient<CargarViewModel>();
             services.AddTransient<PerfilViewModel>();
+            services.AddTransient<BienestarViewModel>();
+            services.AddTransient<LogrosViewModel>();
 
             //Services 
             services.AddSingleton<MainViewModel>();
@@ -84,6 +84,7 @@ namespace Proyecto_DAM
             services.AddSingleton<IRabbitMQConsumer, RabbitMQConsumer>();
             services.AddSingleton<IActualizarPerfilProvider, ActualizarPerfilService>();
             services.AddSingleton<IAspNetUserApiProvider, AspNetUserApiService>();
+            services.AddSingleton<IBienestarApiProvider, BienestarApiService>();
             services.AddSingleton(typeof(IFileProvider<>), typeof(FileService<>));
             services.AddSingleton(typeof(IHttpsJsonClientProvider<>), typeof(HttpsJsonClientService<>));
 

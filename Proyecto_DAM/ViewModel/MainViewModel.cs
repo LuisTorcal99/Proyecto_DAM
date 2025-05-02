@@ -30,7 +30,7 @@ namespace Proyecto_DAM.ViewModel
             PrincipalViewModel principal, EventosViewModel eventos,
             PomodoroViewModel pomodoro, IAsignaturaApiProvider asignaturaService, 
             IEventoApiProvider eventoService, INotaApiProvider notaService, 
-            PerfilViewModel perfil)
+            PerfilViewModel perfil, BienestarViewModel bienestar, LogrosViewModel logros)
         {
             LoginViewModel = login;
             RegistroViewModel = registro;
@@ -38,6 +38,8 @@ namespace Proyecto_DAM.ViewModel
             EventosViewModel = eventos;
             PomodoroViewModel = pomodoro;
             PerfilViewModel = perfil;
+            BienestarViewModel = bienestar;
+            LogrosViewModel = logros;
 
             SelectedViewModel = login;
             IsMenuVisible = false;
@@ -57,6 +59,8 @@ namespace Proyecto_DAM.ViewModel
         public EventosViewModel EventosViewModel { get; }
         public PomodoroViewModel PomodoroViewModel { get; }
         public PerfilViewModel PerfilViewModel { get; }
+        public BienestarViewModel BienestarViewModel { get; }
+        public LogrosViewModel LogrosViewModel { get; }
 
         public ViewModelBase? SelectedViewModel
         {
@@ -64,7 +68,7 @@ namespace Proyecto_DAM.ViewModel
             set
             {
                 SetProperty(ref _selectedViewModel, value);
-                IsMenuVisible = value is PrincipalViewModel || value is EventosViewModel || value is PomodoroViewModel || value is PerfilViewModel;
+                IsMenuVisible = value is PrincipalViewModel || value is EventosViewModel || value is PomodoroViewModel || value is PerfilViewModel || value is BienestarViewModel || value is LogrosViewModel;
             }
         }
 

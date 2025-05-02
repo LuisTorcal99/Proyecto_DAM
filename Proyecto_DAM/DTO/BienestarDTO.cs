@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 
 namespace Proyecto_DAM.DTO
 {
-    using System.Text.Json.Serialization;
-
     public class BienestarDTO
     {
         [JsonPropertyName("id")]
@@ -19,14 +13,13 @@ namespace Proyecto_DAM.DTO
         [JsonPropertyName("fecha")]
         public DateTime Fecha { get; set; }
 
-        [JsonPropertyName("estadoAnimo")]
-        public int EstadoAnimo { get; set; }
+        [JsonPropertyName("estadoDeAnimo")]
+        public string EstadoDeAnimo { get; set; }
 
-        [JsonPropertyName("nivelEstres")]
-        public int NivelEstres { get; set; }
+        [JsonPropertyName("nivelDeEstres")]
+        public int NivelDeEstres { get; set; }
 
-        [JsonPropertyName("sugerencia")]
+        [JsonPropertyName("sugerencias")]
         public string Sugerencia { get; set; }
-
     }
 }
