@@ -71,5 +71,8 @@ namespace RestAPI.Data
         public DbSet<NotaEntity> Notas { get; set; }
         public DbSet<EventoEntity> Eventos { get; set; }
         public DbSet<AsignaturaEntity> Asignaturas { get; set; }
+        public DbSet<RegistroTiempoEstudiadoEntity> RegistroTiempoEstudiado { get; set; }
+        public DbSet<GamificacionEntity> Gamificacion { get; set; }
+        public DbSet<BienestarEstudiantilEntity> BienestarEstudiantil { get; set; }
     }
 }

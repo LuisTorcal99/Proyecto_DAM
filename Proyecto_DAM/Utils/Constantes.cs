@@ -25,6 +25,7 @@ namespace Proyecto_DAM.Utils
         public const string ASIGNATURA_PATH = "Asignatura";
         public const string EVENTO_PATH = "Evento";
         public const string NOTA_PATH = "Nota";
+        public const string TIEMPO_ESTUDIO_PATH = "RegistroTiempoEstudiado";
 
         public const string ERROR_TYC = "Debes aceptar los términos y condiciones";
         public const string ERROR_PASSWORDEQUALS = "Contraseñas distintas";

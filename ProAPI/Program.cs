@@ -20,6 +20,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // Add services to the container.
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IGamificacionRepository, GamificacionRepository>();
+builder.Services.AddScoped<IBienestarEstudiantilRepository, BienestarEstudiantilRepository>();
+builder.Services.AddScoped<IRegistroTiempoEstudiadoRepository, RegistroTiempoEstudiadoRepository>();
 builder.Services.AddScoped<IAsignaturaRepository, AsignaturaRepository>();
 builder.Services.AddScoped<INotaRepository, NotasRepository>();
 builder.Services.AddScoped<IEventoRepository, EventoRepository>();

@@ -14,10 +14,12 @@ namespace Proyecto_DAM.Service
     public class AsignaturaApiService : IAsignaturaApiProvider
     {
         private readonly IHttpsJsonClientProvider<AsignaturaDTO> _httpsJsonClientProvider;
+        private readonly IHttpsJsonClientProvider<TiempoEstudioDTO> _httpsJsonClientTiempo;
 
-        public AsignaturaApiService(IHttpsJsonClientProvider<AsignaturaDTO> httpsJsonClientProvider)
+        public AsignaturaApiService(IHttpsJsonClientProvider<AsignaturaDTO> httpsJsonClientProvider, IHttpsJsonClientProvider<TiempoEstudioDTO> httpsJsonClientTiempo)
         {
             _httpsJsonClientProvider = httpsJsonClientProvider;
+            _httpsJsonClientTiempo = httpsJsonClientTiempo;
         }
 
         public async Task<IEnumerable<AsignaturaDTO>> GetAsignatura()
@@ -72,5 +74,32 @@ namespace Proyecto_DAM.Service
                 return false;
             }
         }
+
+        public async Task<TiempoEstudioDTO> GetTiempoEstudio(int idAsignatura)
+        {
+            var todos = await _httpsJsonClientTiempo.GetAsync(Constantes.TIEMPO_ESTUDIO_PATH);
+            var idUsuario = App.Current.Services.GetService<LoginDTO>().Id;
+            return todos.FirstOrDefault(t => t.AsignaturaID == idAsignatura && t.UsuarioId == idUsuario);
+        }
+
+        public async Task PatchTiempoEstudio(TiempoEstudioDTO tiempo)
+        {
+            await _httpsJsonClientTiempo.PatchAsync($"{Constantes.TIEMPO_ESTUDIO_PATH}/{tiempo.Id}", tiempo);
+        }
+
+        public async Task PostTiempoEstudio(TiempoEstudioDTO tiempo)
+        {
+            try
+            {
+                if (tiempo == null) return;
+                await _httpsJsonClientTiempo.PostAsync(Constantes.TIEMPO_ESTUDIO_PATH, tiempo);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al crear el tiempo de estudio: {ex.Message}");
+            }
+        }
+
+
     }
 }
