@@ -8,14 +8,14 @@
              d:DataContext="{d:DesignInstance Type=viewmodel:PomodoroViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             Background="White">
+             Background="{DynamicResource WindowBackgroundColor}">
 
     <Grid>
         <!-- Binding al color de fondo -->
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Background="{Binding FondoColor}" Width="auto" Height="auto" >
             <TextBlock Text="Temporizador" FontSize="30" FontWeight="Bold" Foreground="#34495E" HorizontalAlignment="Center" Margin="0,0,0,10" FontFamily="Cascadia Code"/>
-            <TextBox Text="{Binding MinutosIntroducidos}" Width="82" FontSize="30" HorizontalAlignment="Center" Padding="4" TextAlignment="Center" FontFamily="Cascadia Code"/>
-            <Button Content="Empezar" Command="{Binding EmpezarCommand}" Width="87" Margin="10,10,10,0" Background="{DynamicResource BackgroundColor}" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}" Height="25" BorderBrush="Transparent"/>
+            <TextBox Text="{Binding MinutosIntroducidos}" Width="120" Height="50" FontSize="30" HorizontalAlignment="Center" Padding="4" TextAlignment="Center" FontFamily="Cascadia Code"/>
+            <Button Content="Empezar" Command="{Binding EmpezarCommand}" Width="100" Margin="10,10,10,0" Background="{DynamicResource BackgroundColor}" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}" Height="40" BorderBrush="Transparent"/>
             <TextBlock Text="{Binding TiempoRestante}" FontSize="50" FontWeight="Bold" Foreground="#34495E" HorizontalAlignment="Center" Margin="10,20,10,0" FontFamily="Cascadia Code"/>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">

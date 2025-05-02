@@ -490,11 +490,13 @@ namespace Proyecto_DAM.ViewModel
             {
                 resources["BackgroundColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F1CAE4"));
                 resources["TextColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#34495E"));
+                resources["WindowBackgroundColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F9EEF5"));
             }
             else if (theme == "Oscuro")
             {
                 resources["BackgroundColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#0E351B"));
                 resources["TextColor"] = new SolidColorBrush(Colors.White);
+                resources["WindowBackgroundColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2D4D42"));
             }
         }
     }

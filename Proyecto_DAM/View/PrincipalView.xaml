@@ -9,13 +9,14 @@
              d:DataContext="{d:DesignInstance Type=viewmodel:PrincipalViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             Background="White">
+             Background="{DynamicResource WindowBackgroundColor}">
     <Grid>
         <ScrollViewer>
             <StackPanel Margin="5">
                 <Label Content="Asignaturas:" 
                    FontFamily="Cascadia Code" 
                    FontSize="18" 
+                   Foreground="{DynamicResource TextColor}"
                    Margin="0,0,0,10" />
 
                 <ItemsControl ItemsSource="{Binding AsignaturaItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
@@ -69,7 +70,8 @@
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="5">
                                             <Label Content="Descripción:" VerticalAlignment="Center" Width="90" HorizontalAlignment="Right" FontSize="10" Foreground="{DynamicResource TextColor}"/>
-                                            <TextBlock Text="{Binding Descripcion}" FontSize="16" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" Margin="10,0"/>
+                                            <TextBlock Text="{Binding Descripcion}" FontSize="16" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" 
+                                                   Margin="10,0" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" MaxWidth="500" />    
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="5">
                                             <Label Content="Créditos:" VerticalAlignment="Center" Width="90" HorizontalAlignment="Right" FontSize="10" Foreground="{DynamicResource TextColor}"/>

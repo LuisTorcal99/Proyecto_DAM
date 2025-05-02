@@ -9,7 +9,7 @@
              d:DataContext="{d:DesignInstance Type=viewmodel:EventosViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             Background="White">
+             Background="{DynamicResource WindowBackgroundColor}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
@@ -21,23 +21,24 @@
         <Label Content="Eventos:" 
                FontFamily="Cascadia Code" 
                FontSize="18" 
+               Foreground="{DynamicResource TextColor}"
                Margin="25,10,0,5" />
 
         <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="25,0,25,10" HorizontalAlignment="Right" VerticalAlignment="Center">
             <StackPanel Margin="10,0" Orientation="Vertical">
-                <TextBlock Text="Tipo:" FontWeight="Bold" />
+                <TextBlock Text="Tipo:" FontWeight="Bold" Foreground="{DynamicResource TextColor}"/>
                 <ComboBox ItemsSource="{Binding TiposEvento}" 
                   SelectedItem="{Binding FiltroTipo, Mode=TwoWay}" 
                   Width="150" />
             </StackPanel>
             <StackPanel Margin="10,0" Orientation="Vertical">
-                <TextBlock Text="Estado:" FontWeight="Bold" />
+                <TextBlock Text="Estado:" FontWeight="Bold" Foreground="{DynamicResource TextColor}"/>
                 <ComboBox ItemsSource="{Binding EstadosEvento}" 
                   SelectedItem="{Binding FiltroEstado, Mode=TwoWay}" 
                   Width="150" />
             </StackPanel>
             <StackPanel Margin="10,0" Orientation="Vertical">
-                <TextBlock Text="Asignatura:" FontWeight="Bold" />
+                <TextBlock Text="Asignatura:" FontWeight="Bold" Foreground="{DynamicResource TextColor}"/>
                 <ComboBox ItemsSource="{Binding Asignaturas}" SelectedItem="{Binding FiltroAsignatura, Mode=TwoWay}" Width="150" />
             </StackPanel>
             <Button Content="Filtrar" Command="{Binding AplicarFiltrosCommand}" Width="100" Height="30" Margin="20,12,0,0"
@@ -51,10 +52,12 @@
             Grid.Row="2"
             ItemsSource="{Binding PaginatedItems}" 
             IsReadOnly="True"
+            Height="410"
             CanUserResizeColumns="True"
             AutoGenerateColumns="False"
             CanUserResizeRows="False"
             MinRowHeight="25"
+            RowHeight="38.5"
             Margin="25"
             ColumnWidth="*"
             ScrollViewer.VerticalScrollBarVisibility="Auto"
@@ -84,7 +87,7 @@
         <StackPanel Orientation="Horizontal" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
             <Button Content="Atras" Command="{Binding MoveToPreviousPageCommand}" Width="90" Height="20" Margin="5" 
                     Background="{DynamicResource BackgroundColor}" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}"/>
-            <TextBlock Text="{Binding CurrentPage}" VerticalAlignment="Center" Margin="10" FontSize="16" FontWeight="Bold" Foreground="Black"/>
+            <TextBlock Text="{Binding CurrentPage}" VerticalAlignment="Center" Margin="10" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource TextColor}"/>
             <Button Content="Siguiente" Command="{Binding MoveToNextPageCommand}" Width="90" Height="20" Margin="5" 
                     Background="{DynamicResource BackgroundColor}" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}"/>
         </StackPanel>

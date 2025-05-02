@@ -11,7 +11,7 @@
         Title="Añadir Asignatura"
         Height="500"
         Width="600"
-        Background="White"
+        Background="{DynamicResource WindowBackgroundColor}"
         MinHeight="500" MinWidth="600"
         WindowStartupLocation="CenterScreen">
 
@@ -26,7 +26,7 @@
                FontFamily="Cascadia Code" 
                FontSize="24" 
                FontWeight="Bold" 
-               Foreground="#2C3E50" 
+               Foreground="{DynamicResource TextColor}"
                HorizontalAlignment="Center"
                Margin="0,0,0,20"/>
 
@@ -36,13 +36,13 @@
                 <TextBlock Text="Nombre:" 
                            FontFamily="Cascadia Code" 
                            FontSize="14" 
-                           Foreground="Black"/>
+                           Foreground="{DynamicResource TextColor}"/>
                 <TextBox Text="{Binding Nombre, UpdateSourceTrigger=PropertyChanged}" 
                          Height="35" 
                          FontSize="14"
                          FontFamily="Cascadia Code"
                          Background="#f7f2f5" 
-                         BorderThickness="0" 
+                         
                          Padding="5"/>
             </StackPanel>
 
@@ -50,14 +50,14 @@
                 <TextBlock Text="Descripción:" 
                            FontFamily="Cascadia Code" 
                            FontSize="14" 
-                           Foreground="Black"/>
+                           Foreground="{DynamicResource TextColor}"/>
                 <TextBox Text="{Binding Descripcion, UpdateSourceTrigger=PropertyChanged}" 
                          Height="80" 
                          FontSize="14"
                          FontFamily="Cascadia Code"
                          AcceptsReturn="True"
                          Background="#f7f2f5" 
-                         BorderThickness="0" 
+                         
                          Padding="5"/>
             </StackPanel>
 
@@ -65,13 +65,13 @@
                 <TextBlock Text="Créditos:" 
                            FontFamily="Cascadia Code" 
                            FontSize="14" 
-                           Foreground="Black"/>
+                           Foreground="{DynamicResource TextColor}"/>
                 <TextBox Text="{Binding Creditos, UpdateSourceTrigger=PropertyChanged}" 
                          Height="35" 
                          FontSize="14"
                          FontFamily="Cascadia Code"
                          Background="#f7f2f5" 
-                         BorderThickness="0" 
+                         
                          Padding="5"/>
             </StackPanel>
 
@@ -79,13 +79,13 @@
                 <TextBlock Text="Horas totales:" 
                            FontFamily="Cascadia Code" 
                            FontSize="14" 
-                           Foreground="Black"/>
+                           Foreground="{DynamicResource TextColor}"/>
                 <TextBox Text="{Binding Horas, UpdateSourceTrigger=PropertyChanged}" 
                          Height="35" 
                          FontSize="14"
                          FontFamily="Cascadia Code"
                          Background="#f7f2f5" 
-                         BorderThickness="0" 
+                         
                          Padding="5"/>
             </StackPanel>
 

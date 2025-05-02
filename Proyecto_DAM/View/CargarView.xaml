@@ -9,7 +9,7 @@
         Title="Cargar Asignatura"
         Height="450"
         Width="600"
-        Background="White"
+        Background="{DynamicResource WindowBackgroundColor}"
         MinHeight="500" MinWidth="600"
         WindowStartupLocation="CenterScreen"
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
@@ -26,7 +26,7 @@
                FontFamily="Cascadia Code" 
                FontSize="24" 
                FontWeight="Bold" 
-               Foreground="#2C3E50" 
+               Foreground="{DynamicResource TextColor}" 
                HorizontalAlignment="Center"
                Margin="0,0,0,20"/>
 
@@ -37,7 +37,7 @@
                 <TextBlock Text="Tipo de Estudio:" 
                            FontFamily="Cascadia Code" 
                            FontSize="14" 
-                           Foreground="Black"/>
+                           Foreground="{DynamicResource TextColor}"/>
                 <ComboBox x:Name="ComboTipo"
                           ItemsSource="{Binding Tipos}"
                           SelectedItem="{Binding TipoSeleccionado, Mode=TwoWay}"
@@ -54,7 +54,7 @@
                 <TextBlock Text="Módulo:" 
                            FontFamily="Cascadia Code" 
                            FontSize="14" 
-                           Foreground="Black"/>
+                           Foreground="{DynamicResource TextColor}"/>
                 <ComboBox x:Name="ComboModulo"
                           ItemsSource="{Binding Modulos}"
                           SelectedItem="{Binding ModuloSeleccionado, Mode=TwoWay}"
@@ -72,7 +72,7 @@
                 <TextBlock Text="Curso:" 
                            FontFamily="Cascadia Code" 
                            FontSize="14" 
-                           Foreground="Black"/>
+                           Foreground="{DynamicResource TextColor}"/>
                 <ComboBox x:Name="ComboCurso"
                           ItemsSource="{Binding Cursos}"
                           SelectedItem="{Binding CursoSeleccionado, Mode=TwoWay}"
@@ -90,7 +90,7 @@
                 <TextBlock Text="Asignaturas:" 
                            FontFamily="Cascadia Code" 
                            FontSize="14" 
-                           Foreground="Black"/>
+                           Foreground="{DynamicResource TextColor}"/>
                 <ComboBox x:Name="ComboAsignaturas"
                           ItemsSource="{Binding Asignaturas}"
                           SelectedItem="{Binding AsignaturaSeleccionada, Mode=TwoWay}"
