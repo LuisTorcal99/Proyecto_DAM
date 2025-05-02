@@ -74,6 +74,7 @@ namespace Proyecto_DAM
             services.AddSingleton<MainViewModel>();
             services.AddSingleton<LoginDTO>();
             services.AddSingleton<IEventoNotificacionProvider, EventoNotificacionService>();
+            services.AddSingleton<ILogrosApiProvider, LogrosApiService>();
             services.AddSingleton<IEmailSenderProvider, EmailSenderService>();
             services.AddSingleton<INotaApiProvider, NotaApiService>();
             services.AddSingleton<IEventoApiProvider, EventoApiService>();

@@ -27,6 +27,7 @@ namespace Proyecto_DAM.Utils
         public const string NOTA_PATH = "Nota";
         public const string TIEMPO_ESTUDIO_PATH = "RegistroTiempoEstudiado";
         public const string BIENESTAR = "BienestarEstudiantil";
+        public const string LOGROS = "Gamificacion";
 
         public const string ERROR_TYC = "Debes aceptar los términos y condiciones";
         public const string ERROR_PASSWORDEQUALS = "Contraseñas distintas";
@@ -46,6 +47,8 @@ namespace Proyecto_DAM.Utils
 
         public const string ROLE_REGISTRER_ADMIN = "admin";
 
+        public const int PUNTOS_TOTALES = 650;
+        public const int LOGROS_TOTALES = 15;
         public const string USERNAME = "admin";
         public const string EMAIL = "admin@gmail.com";
         public const string PASSWORD = "ADMINadmin10.";
