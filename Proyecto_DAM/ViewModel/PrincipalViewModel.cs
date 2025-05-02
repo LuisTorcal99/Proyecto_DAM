@@ -32,6 +32,9 @@ namespace Proyecto_DAM.ViewModel
         [ObservableProperty]
         private ObservableCollection<AsignaturaItemModel> _AsignaturaItem;
 
+        [ObservableProperty]
+        private string _NumeroAsignaturas;
+
         public PrincipalViewModel(IAsignaturaApiProvider asignaturaService, IHttpsJsonClientProvider<AsignaturaDTO> httpService,
                         IServiceProvider serviceProvider, IEventoApiProvider eventoApiProvider, INotaApiProvider notaApiProvider,
                         IRabbitMQProducer rabbitMQProducer, IEventoNotificacionProvider eventoNotificacion)
@@ -72,6 +75,8 @@ namespace Proyecto_DAM.ViewModel
                 {
 
                     await _eventoNotificacion.VerificarYEnviarCorreos(eventos.ToList(), notas.ToList(), idUsuario);
+
+                    NumeroAsignaturas = $"Asignaturas({asignaturas.ToList().Count}):";
 
                     foreach (var dto in asignaturas)
                     {

@@ -13,11 +13,13 @@
     <Grid>
         <ScrollViewer>
             <StackPanel Margin="5">
-                <Label Content="Asignaturas:" 
-                   FontFamily="Cascadia Code" 
-                   FontSize="18" 
-                   Foreground="{DynamicResource TextColor}"
-                   Margin="0,0,0,10" />
+                <Label Content="{Binding NumeroAsignaturas}"
+                       FontFamily="Cascadia Code"
+                       FontSize="18"
+                       Foreground="{DynamicResource TextColor}"
+                       Margin="10,5,0,5"
+                       HorizontalAlignment="Left"/>
+
 
                 <ItemsControl ItemsSource="{Binding AsignaturaItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <ItemsControl.ItemsPanel>

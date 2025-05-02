@@ -11,23 +11,36 @@
              Background="{DynamicResource WindowBackgroundColor}">
 
     <Grid>
-        <!-- Binding al color de fondo -->
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Background="{Binding FondoColor}" Width="auto" Height="auto" >
-            <TextBlock Text="Temporizador" FontSize="30" FontWeight="Bold" Foreground="#34495E" HorizontalAlignment="Center" Margin="0,0,0,10" FontFamily="Cascadia Code"/>
-            <TextBox Text="{Binding MinutosIntroducidos}" Width="120" Height="50" FontSize="30" HorizontalAlignment="Center" Padding="4" TextAlignment="Center" FontFamily="Cascadia Code"/>
-            <Button Content="Empezar" Command="{Binding EmpezarCommand}" Width="100" Margin="10,10,10,0" Background="{DynamicResource BackgroundColor}" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}" Height="40" BorderBrush="Transparent"/>
-            <TextBlock Text="{Binding TiempoRestante}" FontSize="50" FontWeight="Bold" Foreground="#34495E" HorizontalAlignment="Center" Margin="10,20,10,0" FontFamily="Cascadia Code"/>
+        <StackPanel Background="{Binding FondoColor}" 
+                    VerticalAlignment="Stretch" 
+                    HorizontalAlignment="Stretch" 
+                    Margin="40" Width="auto" Height="auto">
+            <TextBlock Text="Temporizador" FontSize="30" FontWeight="Bold" Foreground="#34495E" 
+                       HorizontalAlignment="Center" Margin="0,0,0,10" FontFamily="Cascadia Code"/>
+
+            <TextBox Text="{Binding MinutosIntroducidos}" Width="160" Height="50" FontSize="30" 
+                     HorizontalAlignment="Center" Padding="4" TextAlignment="Center" FontFamily="Cascadia Code"/>
+
+            <Button Content="Empezar" Command="{Binding EmpezarCommand}" Width="140" Height="40"
+                    Margin="10" Background="{DynamicResource BackgroundColor}" FontFamily="Cascadia Code" 
+                    Foreground="{DynamicResource TextColor}" BorderBrush="Transparent"/>
+
+            <TextBlock Text="{Binding TiempoRestante}" FontSize="50" FontWeight="Bold" Foreground="#34495E" 
+                       HorizontalAlignment="Center" Margin="10,20,10,0" FontFamily="Cascadia Code"/>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
-                <Button Content="Pomodoro (25 min)" Command="{Binding TrabajoCommand}" Width="130" Margin="5" Background="#FF8C00" Foreground="White" Height="30" FontFamily="Cascadia Code"/>
-                <Button Content="Descanso (5 min)" Command="{Binding DescansoCommand}" Width="130" Margin="5" Background="#2196F3" Foreground="White" Height="30" FontFamily="Cascadia Code"/>
+                <Button Content="Pomodoro (25 min)" Command="{Binding TrabajoCommand}" Width="150" Height="30"
+                        Margin="5" Background="#FF8C00" Foreground="White" FontFamily="Cascadia Code"/>
+                <Button Content="Descanso (5 min)" Command="{Binding DescansoCommand}" Width="150" Height="30"
+                        Margin="5" Background="#2196F3" Foreground="White" FontFamily="Cascadia Code"/>
             </StackPanel>
 
-            <TextBlock TextWrapping="Wrap" FontSize="14" Foreground="#34495E" HorizontalAlignment="Center" Margin="10,10,10,0" FontFamily="Cascadia Code">
+            <TextBlock TextWrapping="Wrap" FontSize="14" Foreground="#34495E" TextAlignment="Center"
+                       Margin="30,20,30,10" FontFamily="Cascadia Code">
                 El método Pomodoro es una técnica de gestión del tiempo que se utiliza para mejorar la productividad.
                 Consiste en dividir el trabajo en intervalos de 25 minutos de concentración, seguidos de un breve descanso de 5 minutos.
                 Después de completar cuatro ciclos, es recomendable tomar un descanso más largo de 15-30 minutos.
-                
+
                 Este método ayuda a evitar el agotamiento y mejora la concentración durante tareas largas.
             </TextBlock>
         </StackPanel>

@@ -36,7 +36,7 @@ namespace Proyecto_DAM.ViewModel
         public PomodoroViewModel()
         {
             TiempoRestante = "00:00";
-            FondoColor = new SolidColorBrush(Colors.White);
+            FondoColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#E6F0F1"));
         }
 
         public override Task LoadAsync()
@@ -47,16 +47,10 @@ namespace Proyecto_DAM.ViewModel
         [RelayCommand]
         public void Empezar()
         {
-            FondoColor = new SolidColorBrush(Colors.White);
             if (int.TryParse(MinutosIntroducidos, out int minutos))
             {
-                _duracion = TimeSpan.FromMinutes(minutos);
-                TiempoRestante = _duracion.ToString(@"mm\:ss");
-
-                _temporizador = new DispatcherTimer();
-                _temporizador.Interval = TimeSpan.FromSeconds(1);
-                _temporizador.Tick += Temporizador_Tick;
-                _temporizador.Start();
+                var colorPersonalizado = (Color)ColorConverter.ConvertFromString("#D4C3E6");
+                IniciarTemporizador(minutos, colorPersonalizado);
             }
             else
             {
@@ -76,7 +70,7 @@ namespace Proyecto_DAM.ViewModel
                 _temporizador.Stop();
                 TiempoRestante = "¡Fin!";
 
-                FondoColor = new SolidColorBrush(Colors.Red); 
+                FondoColor = new SolidColorBrush(Color.FromRgb(255, 120, 120));
             }
         }
 

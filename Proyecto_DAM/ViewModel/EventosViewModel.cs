@@ -37,6 +37,9 @@ namespace Proyecto_DAM.ViewModel
         private string _FiltroAsignatura;
 
         [ObservableProperty]
+        private string _NumeroEventos;
+
+        [ObservableProperty]
         private ObservableCollection<EventoItemModel> _DatosGridItem;
 
         [ObservableProperty]
@@ -110,6 +113,8 @@ namespace Proyecto_DAM.ViewModel
                         .Select(e => EventoItemModel.CreateModelFromDTO(e))
                         .OrderBy(e => e.Fecha)
                         .ToList();
+
+                    NumeroEventos = $"Eventos({eventosFiltrados.Count}):";
 
                     foreach (var Asignatura in asignaturas)
                     {
