@@ -49,7 +49,7 @@ namespace Proyecto_DAM.Utils
         public const string ROLE_REGISTRER_ADMIN = "admin";
 
         public const int PUNTOS_TOTALES = 650;
-        public const int LOGROS_TOTALES = 15;
+        public const int LOGROS_TOTALES = 16;
         public const string USERNAME = "admin";
         public const string EMAIL = "admin@gmail.com";
         public const string PASSWORD = "ADMINadmin10.";

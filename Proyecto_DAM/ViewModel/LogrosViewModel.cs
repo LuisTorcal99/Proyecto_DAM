@@ -65,87 +65,92 @@ namespace Proyecto_DAM.ViewModel
             var notas = await _notaApiProvider.GetNota();
             int notasAprobadas = notas.Count(n => n.IdUsuario == usuarioId && n.NotaValor >= 5);
 
-            // Logros por tiempo de estudio
-            if (tiempoEstudio >= 1)
-                Logros.Add(new GamificacionDTO { UsuarioId = usuarioId, Fecha = ahora, TipoDeLogro = "Estudio", Puntos = 10, Descripcion = "¡Primer paso! Has estudiado al menos 1 hora." });
-            if (tiempoEstudio >= 10)
-                Logros.Add(new GamificacionDTO { UsuarioId = usuarioId, Fecha = ahora, TipoDeLogro = "Estudio", Puntos = 20, Descripcion = "¡Constante! 10 horas de estudio acumuladas." });
-            if (tiempoEstudio >= 50)
-                Logros.Add(new GamificacionDTO { UsuarioId = usuarioId, Fecha = ahora, TipoDeLogro = "Estudio", Puntos = 40, Descripcion = "¡Dedicado! 50 horas de estudio alcanzadas." });
-            if (tiempoEstudio >= 100)
-                Logros.Add(new GamificacionDTO { UsuarioId = usuarioId, Fecha = ahora, TipoDeLogro = "Estudio", Puntos = 60, Descripcion = "¡Impresionante! 100 horas de estudio." });
-            if (tiempoEstudio >= 200)
-                Logros.Add(new GamificacionDTO { UsuarioId = usuarioId, Fecha = ahora, TipoDeLogro = "Estudio", Puntos = 100, Descripcion = "¡Maestro del estudio! Más de 200 horas acumuladas." });
+            var logros = await _logrosService.GetLogros();
 
-            // Logros por notas aprobadas
-            if (notasAprobadas >= 1)
-                Logros.Add(new GamificacionDTO { UsuarioId = usuarioId, Fecha = ahora, TipoDeLogro = "Aprobados", Puntos = 10, Descripcion = "¡Primera victoria! Has aprobado tu primera nota." });
-            if (notasAprobadas >= 5)
-                Logros.Add(new GamificacionDTO { UsuarioId = usuarioId, Fecha = ahora, TipoDeLogro = "Aprobados", Puntos = 20, Descripcion = "¡Buen comienzo! 5 notas aprobadas." });
-            if (notasAprobadas >= 10)
-                Logros.Add(new GamificacionDTO { UsuarioId = usuarioId, Fecha = ahora, TipoDeLogro = "Aprobados", Puntos = 40, Descripcion = "¡Vas en serio! 10 notas aprobadas." });
-            if (notasAprobadas >= 15)
-                Logros.Add(new GamificacionDTO { UsuarioId = usuarioId, Fecha = ahora, TipoDeLogro = "Aprobados", Puntos = 60, Descripcion = "¡Excelente! 15 asignaturas aprobadas." });
-            if (notasAprobadas >= 20)
-                Logros.Add(new GamificacionDTO { UsuarioId = usuarioId, Fecha = ahora, TipoDeLogro = "Aprobados", Puntos = 100, Descripcion = "¡Crack académico! Más de 20 aprobadas." });
-
-            int logrosEstudio = Logros.Count(l => l.TipoDeLogro == "Estudio");
-            if (logrosEstudio == 5)
-                Logros.Add(new GamificacionDTO { UsuarioId = usuarioId, Fecha = ahora, TipoDeLogro = "Especial", Puntos = 50, Descripcion = "¡Has conseguido todos los logros de estudio!" });
-
-            int logrosAprobados = Logros.Count(l => l.TipoDeLogro == "Aprobados");
-            if (logrosAprobados == 5)
-                Logros.Add(new GamificacionDTO { UsuarioId = usuarioId, Fecha = ahora, TipoDeLogro = "Especial", Puntos = 50, Descripcion = "¡Todos los logros de aprobados desbloqueados!" });
-
-            // Calcular el total de puntos
-            int puntosAcumulados = Logros.Sum(l => l.Puntos);
-
-            // Otros logros por puntos
-            if (puntosAcumulados >= 100)
-                Logros.Add(new GamificacionDTO { UsuarioId = usuarioId, Fecha = ahora, TipoDeLogro = "Puntos", Puntos = 10, Descripcion = "¡Ya llevas 100 puntos!" });
-            if (puntosAcumulados >= 300)
-                Logros.Add(new GamificacionDTO { UsuarioId = usuarioId, Fecha = ahora, TipoDeLogro = "Puntos", Puntos = 30, Descripcion = "¡Maestro en camino! Has alcanzado 300 puntos." });
-            if (puntosAcumulados >= 500)
-                Logros.Add(new GamificacionDTO { UsuarioId = usuarioId, Fecha = ahora, TipoDeLogro = "Puntos", Puntos = 50, Descripcion = "¡Leyenda! Más de 500 puntos conseguidos." });
-
-            // Obtener los logros existentes desde la base de datos
-            var logrosExistentes = await _logrosService.GetLogros();
-
-            int logrosObtenidos = Logros.Count();
-
-            // Comparar y agregar logros nuevos
-            var logrosNuevos = new List<GamificacionDTO>();
-            foreach (var logro in Logros)
+            foreach (var logroExistente in logros)
             {
-                if (!logrosExistentes.Any(l => l.TipoDeLogro == logro.TipoDeLogro && l.Descripcion == logro.Descripcion))
+                Logros.Add(logroExistente);
+            }
+
+            var logrosNuevos = new List<GamificacionDTO>();
+
+            void AgregarSiNoExiste(GamificacionDTO logro)
+            {
+                if (!logros.Any(l => l.TipoDeLogro == logro.TipoDeLogro && l.Descripcion == logro.Descripcion))
                 {
                     logrosNuevos.Add(logro);
                 }
             }
 
-            // Si hay logros nuevos, hacer un POST para agregarlos
-            if (logrosNuevos.Count > 0)
-            {
-                // Iteramos sobre cada logro nuevo
-                foreach (var logro in logrosNuevos)
-                {
-                    // Convertimos el logro a un GamificacionDTO
-                    var gamificacionDTO = new GamificacionDTO
-                    {
-                        UsuarioId = logro.UsuarioId,
-                        Fecha = logro.Fecha,
-                        TipoDeLogro = logro.TipoDeLogro,
-                        Puntos = logro.Puntos,
-                        Descripcion = logro.Descripcion
-                    };
+            var now = DateTime.Now;
 
-                    // Hacemos el POST del logro
-                    await _logrosService.PostLogro(gamificacionDTO);
-                }
+            // Logros por tiempo de estudio
+            if (tiempoEstudio >= 1)
+                AgregarSiNoExiste(new GamificacionDTO { UsuarioId = usuarioId, Fecha = ahora, TipoDeLogro = "Estudio", Puntos = 10, Descripcion = "¡Primer paso! Has estudiado al menos 1 hora." });
+            if (tiempoEstudio >= 10)
+                AgregarSiNoExiste(new GamificacionDTO { UsuarioId = usuarioId, Fecha = ahora, TipoDeLogro = "Estudio", Puntos = 20, Descripcion = "¡Constante! 10 horas de estudio acumuladas." });
+            if (tiempoEstudio >= 50)
+                AgregarSiNoExiste(new GamificacionDTO { UsuarioId = usuarioId, Fecha = ahora, TipoDeLogro = "Estudio", Puntos = 40, Descripcion = "¡Dedicado! 50 horas de estudio alcanzadas." });
+            if (tiempoEstudio >= 100)
+                AgregarSiNoExiste(new GamificacionDTO { UsuarioId = usuarioId, Fecha = ahora, TipoDeLogro = "Estudio", Puntos = 60, Descripcion = "¡Impresionante! 100 horas de estudio." });
+            if (tiempoEstudio >= 200)
+                AgregarSiNoExiste(new GamificacionDTO { UsuarioId = usuarioId, Fecha = ahora, TipoDeLogro = "Estudio", Puntos = 100, Descripcion = "¡Maestro del estudio! Más de 200 horas acumuladas." });
+
+            // Logros por notas aprobadas
+            if (notasAprobadas >= 1)
+                AgregarSiNoExiste(new GamificacionDTO { UsuarioId = usuarioId, Fecha = ahora, TipoDeLogro = "Aprobados", Puntos = 10, Descripcion = "¡Primera victoria! Has aprobado tu primera nota." });
+            if (notasAprobadas >= 5)
+                AgregarSiNoExiste(new GamificacionDTO { UsuarioId = usuarioId, Fecha = ahora, TipoDeLogro = "Aprobados", Puntos = 20, Descripcion = "¡Buen comienzo! 5 notas aprobadas." });
+            if (notasAprobadas >= 10)
+                AgregarSiNoExiste(new GamificacionDTO { UsuarioId = usuarioId, Fecha = ahora, TipoDeLogro = "Aprobados", Puntos = 40, Descripcion = "¡Vas en serio! 10 notas aprobadas." });
+            if (notasAprobadas >= 15)
+                AgregarSiNoExiste(new GamificacionDTO { UsuarioId = usuarioId, Fecha = ahora, TipoDeLogro = "Aprobados", Puntos = 60, Descripcion = "¡Excelente! 15 asignaturas aprobadas." });
+            if (notasAprobadas >= 20)
+                AgregarSiNoExiste(new GamificacionDTO { UsuarioId = usuarioId, Fecha = ahora, TipoDeLogro = "Aprobados", Puntos = 100, Descripcion = "¡Crack académico! Más de 20 aprobadas." });
+
+            // Logros especiales por completar categoría
+            int logrosEstudio = logros.Count(l => l.TipoDeLogro == "Estudio") + logrosNuevos.Count(l => l.TipoDeLogro == "Estudio");
+            if (logrosEstudio == 5)
+                AgregarSiNoExiste(new GamificacionDTO { UsuarioId = usuarioId, Fecha = ahora, TipoDeLogro = "Especial", Puntos = 50, Descripcion = "¡Has conseguido todos los logros de estudio!" });
+
+            int logrosAprobados = logros.Count(l => l.TipoDeLogro == "Aprobados") + logrosNuevos.Count(l => l.TipoDeLogro == "Aprobados");
+            if (logrosAprobados == 5)
+                AgregarSiNoExiste(new GamificacionDTO { UsuarioId = usuarioId, Fecha = ahora, TipoDeLogro = "Especial", Puntos = 50, Descripcion = "¡Todos los logros de aprobados desbloqueados!" });
+
+            // Calcular puntos totales acumulados
+            int puntosAcumulados = logros.Sum(l => l.Puntos) + logrosNuevos.Sum(l => l.Puntos);
+
+            // Logros por puntos acumulados
+            if (puntosAcumulados >= 100)
+                AgregarSiNoExiste(new GamificacionDTO { UsuarioId = usuarioId, Fecha = ahora, TipoDeLogro = "Puntos", Puntos = 10, Descripcion = "¡Ya llevas 100 puntos!" });
+            if (puntosAcumulados >= 300)
+                AgregarSiNoExiste(new GamificacionDTO { UsuarioId = usuarioId, Fecha = ahora, TipoDeLogro = "Puntos", Puntos = 30, Descripcion = "¡Maestro en camino! Has alcanzado 300 puntos." });
+            if (puntosAcumulados >= 500)
+                AgregarSiNoExiste(new GamificacionDTO { UsuarioId = usuarioId, Fecha = ahora, TipoDeLogro = "Puntos", Puntos = 50, Descripcion = "¡Leyenda! Más de 500 puntos conseguidos." });
+
+            // Logro de haber conseguido todos los logros
+            if (logrosEstudio == 5 && logrosAprobados == 5)
+            {
+                AgregarSiNoExiste(new GamificacionDTO
+                {
+                    UsuarioId = usuarioId,
+                    Fecha = ahora,
+                    TipoDeLogro = "Especial",
+                    Puntos = 350,
+                    Descripcion = "¡Conseguiste todos los logros!"
+                });
             }
-            
+
+            // Finalmente, agregar los logros nuevos a la colección y a la API
+            foreach (var nuevo in logrosNuevos)
+            {
+                Logros.Add(nuevo);
+                await _logrosService.PostLogro(nuevo);
+            }
+
+            puntosAcumulados = logros.Sum(l => l.Puntos) + logrosNuevos.Sum(l => l.Puntos);
             PuntosTotales = puntosAcumulados;
-            LogrosRestantes = Constantes.LOGROS_TOTALES - logrosObtenidos;
+            LogrosRestantes = Constantes.LOGROS_TOTALES - (logros.Count() + logrosNuevos.Count);
         }
 
         public async Task CalcularRanking()
@@ -153,7 +158,6 @@ namespace Proyecto_DAM.ViewModel
             RankingUsuarios.Clear();
             int posicion = 1;
 
-            // Obtener todos los logros desde la base de datos
             var logrosExistentes = await _logrosService.GetLogrosRanking();
 
             var logrosPorUsuario = logrosExistentes
@@ -161,14 +165,16 @@ namespace Proyecto_DAM.ViewModel
                 .Select(group => new
                 {
                     UsuarioId = group.Key,
-                    TotalLogros = group.Count()
+                    TotalLogros = group.Count(),
+                    UltimoLogro = group.Min(l => l.Fecha)
                 })
                 .OrderByDescending(user => user.TotalLogros)
+                .ThenBy(user => user.UltimoLogro)
                 .ToList();
 
             foreach (var usuario in logrosPorUsuario)
             {
-                if(posicion == 10)
+                if (posicion == 10)
                     break;
 
                 var usuarioData = await _usuarioService.GetOneUser(usuario.UsuarioId.ToString());
@@ -183,12 +189,12 @@ namespace Proyecto_DAM.ViewModel
                 }
             }
         }
-    }
 
-    public class RankingDTO
-    {
-        public int Posicion { get; set; }
-        public string NombreUsuario { get; set; }
-        public int TotalLogros { get; set; }
+        public class RankingDTO
+        {
+            public int Posicion { get; set; }
+            public string NombreUsuario { get; set; }
+            public int TotalLogros { get; set; }
+        }
     }
 }

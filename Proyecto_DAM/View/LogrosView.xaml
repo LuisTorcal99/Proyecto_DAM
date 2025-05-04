@@ -36,14 +36,40 @@
                    HorizontalAlignment="Center" 
                    Margin="0,0,0,10"/>
 
+        <!-- Logros -->
         <ScrollViewer Grid.Row="1" Grid.Column="0" VerticalScrollBarVisibility="Auto">
             <ListBox ItemsSource="{Binding Logros}" BorderThickness="0"
-             Foreground="{DynamicResource TextColor}"
-             FontFamily="Cascadia Code"
-             Background="{DynamicResource BackgroundColor}">
+                     Foreground="{DynamicResource TextColor}"
+                     FontFamily="Cascadia Code"
+                     Background="{DynamicResource BackgroundColor}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Border BorderBrush="#DDD" BorderThickness="1" Padding="10" Margin="5" CornerRadius="8" Background="{DynamicResource WindowBackgroundColor}">
+                        <Border BorderBrush="Black" BorderThickness="1" Padding="10" Margin="5" CornerRadius="8">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding TipoDeLogro}" Value="Aprobados">
+                                            <Setter Property="Background" Value="#66C266"/>
+                                        </DataTrigger>
+
+                                        <DataTrigger Binding="{Binding TipoDeLogro}" Value="Estudio">
+                                            <Setter Property="Background" Value="#D0A1D6"/>
+                                        </DataTrigger>
+
+                                        <DataTrigger Binding="{Binding TipoDeLogro}" Value="Puntos">
+                                            <Setter Property="Background" Value="#F1A0A0"/>
+                                        </DataTrigger>
+
+                                        <DataTrigger Binding="{Binding TipoDeLogro}" Value="Especial">
+                                            <Setter Property="Background" Value="#FF9F00"/>
+                                        </DataTrigger>
+
+                                        <DataTrigger Binding="{Binding Descripcion}" Value="¡Conseguiste todos los logros!">
+                                            <Setter Property="Background" Value="#00B5E2"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Center">
                                 <TextBlock Text="{Binding TipoDeLogro}" FontWeight="Bold" FontSize="14" Margin="0,0,10,0"/>
                                 <TextBlock Text="{Binding Descripcion}" TextWrapping="NoWrap" Margin="0,0,10,0"/>
