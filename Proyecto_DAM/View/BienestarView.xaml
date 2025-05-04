@@ -21,8 +21,8 @@
 
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="7*" />
             </Grid.ColumnDefinitions>
 
             <!-- Contenido de historial de estado de ánimo -->
@@ -43,35 +43,39 @@
             </StackPanel>
 
             <!-- Gráfico de líneas -->
-            <lvc:CartesianChart Grid.Column="1" Series="{Binding Series}" 
+            <Border Grid.Column="1"
+                Margin="20,20,20,10"
+                Padding="10"
+                Background="#f4f4f4"
+                CornerRadius="12"
+                BorderBrush="#ddd"
+                BorderThickness="1">
+
+                <lvc:CartesianChart Grid.Column="1" Series="{Binding Series}" 
                         LegendLocation="Right"
-                        Height="200" Width="550" 
-                        Foreground="Black" Margin="0,0,0,0">
+                        Height="200" Width="auto" 
+                        Foreground="Black">
 
-                <lvc:CartesianChart.AxisX>
+                    <lvc:CartesianChart.AxisX>
 
-                    <lvc:Axis Labels="{Binding XLabels}"
+                        <lvc:Axis Labels="{Binding XLabels}"
                       FontSize="12"
                       Foreground="Black"
                       FontFamily="Cascadia Code"/>
-                </lvc:CartesianChart.AxisX>
+                    </lvc:CartesianChart.AxisX>
 
-                <lvc:CartesianChart.AxisY>
-                    <lvc:Axis Title="Nivel"
+                    <lvc:CartesianChart.AxisY>
+                        <lvc:Axis Title="Nivel"
                       LabelFormatter="{Binding YFormatter}"
                       FontSize="11"
                       Foreground="Black"
                       FontFamily="Cascadia Code"
                       MinValue="0"/>
-                </lvc:CartesianChart.AxisY>
-            </lvc:CartesianChart>
-
+                    </lvc:CartesianChart.AxisY>
+                </lvc:CartesianChart>
+            </Border>
         </Grid>
-
-        <!-- Otros elementos como el estado de ánimo y nivel de estrés actuales, sugerencia y botón guardar -->
         <StackPanel Margin="0,0,0,20">
-
-
             <!-- Leyenda del gráfico -->
             <StackPanel Grid.Column="1" Margin="0,0,50,0" HorizontalAlignment="Right">
                 <TextBlock Text="Leyenda:" FontWeight="Bold" FontSize="12" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}"/>
