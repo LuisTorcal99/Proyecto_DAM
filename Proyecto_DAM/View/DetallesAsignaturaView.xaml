@@ -7,7 +7,7 @@
         xmlns:viewmodel="clr-namespace:Proyecto_DAM.ViewModel" 
         DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
         mc:Ignorable="d"
-        Title="Detalles Asignatura" Height="700" Width="1000"
+        Title="Detalles Asignatura" Height="750" Width="1100"
         MinHeight="700" MinWidth="1000"
         Background="{DynamicResource WindowBackgroundColor}"
         WindowStartupLocation="CenterScreen">
@@ -26,23 +26,33 @@
         </Grid.RowDefinitions>
 
         <!-- Título de la Asignatura -->
-        <Label Content="{Binding Asignatura.Nombre}" 
-               FontSize="26" 
-               FontWeight="Bold" 
-               Foreground="Black"
+        <StackPanel Grid.Row="0" Margin="0,0,0,20" HorizontalAlignment="Center">
+            <Label Content="{Binding Asignatura.Nombre}" 
+           FontSize="26" 
+           FontWeight="Bold" 
+           Foreground="{DynamicResource TextColor}"
+           FontFamily="Cascadia Code"
+           HorizontalAlignment="Center" 
+           Margin="0,0,0,10"/>
+
+            <TextBlock Text="{Binding Asignatura.Descripcion}" 
+               FontSize="16" 
+               FontStyle="Italic"
+               Foreground="{DynamicResource TextColor}"
+               TextWrapping="Wrap"
+               MaxWidth="800"
                FontFamily="Cascadia Code"
-               HorizontalAlignment="Center" 
-               Margin="0,0,0,20"/>
+               TextAlignment="Center"/>
+        </StackPanel>
 
         <!-- Lista de Eventos -->
         <GroupBox Header="Eventos Relacionados" Grid.Row="1" 
                   FontWeight="Bold" 
                   FontSize="14"
+                  Foreground="{DynamicResource TextColor}"
                   BorderBrush="#f1cae4" 
                   FontFamily="Cascadia Code"
-                  Padding="10" 
-                  Background="White"
-                  HorizontalAlignment="Center">
+                  Padding="10" >
             <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                 <ListView ItemsSource="{Binding Asignatura.Eventos}" 
                           SelectionMode="Single" 
@@ -50,7 +60,7 @@
                           FontFamily="Cascadia Code"
                           Background="{DynamicResource BackgroundColor}"
                           Foreground="{DynamicResource TextColor}"
-                          BorderBrush="#f1cae4">
+                          BorderBrush="{DynamicResource BackgroundColor}">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Evento" DisplayMemberBinding="{Binding Nombre}" Width="150"/>
@@ -120,7 +130,7 @@
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
 
-                            <GridViewColumn Header="Guardar" Width="120">
+                            <GridViewColumn Header="Guardar" Width="150">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <Button Content="💾 Guardar" 
@@ -131,7 +141,7 @@
                                                 FontWeight="Bold" 
                                                 Cursor="Hand"
                                                 Padding="4"
-                                                BorderThickness="0"
+                                                
                                                 FontFamily="Cascadia Code"
                                                 Margin="5"
                                                 HorizontalAlignment="Center"
@@ -141,7 +151,7 @@
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
 
-                            <GridViewColumn Header="Borrar" Width="120">
+                            <GridViewColumn Header="Borrar" Width="150">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <Button Content="🗑 Borrar" 
@@ -153,7 +163,7 @@
                                                 Cursor="Hand"
                                                 FontFamily="Cascadia Code"
                                                 Padding="4"
-                                                BorderThickness="0"
+                                                
                                                 Margin="5"
                                                 HorizontalAlignment="Center"
                                                 Width="120"
@@ -175,12 +185,12 @@
                 <TextBlock Text="Faltas:" 
                            FontFamily="Cascadia Code"
                            FontSize="14"
-                           Foreground="Black"/>
+                           Foreground="{DynamicResource TextColor}"/>
                 <TextBox Text="{Binding Asignatura.Faltas, UpdateSourceTrigger=PropertyChanged}"
                          Width="80" Height="30"
                          FontFamily="Cascadia Code"
                          Background="#f7f2f5"
-                         BorderThickness="0"
+                         
                          Padding="5"/>
             </StackPanel>
 
@@ -189,21 +199,21 @@
                 <TextBlock Text="Porcentaje de Faltas permitidas:" 
                            FontFamily="Cascadia Code"
                            FontSize="14"
-                           Foreground="Black"/>
+                           Foreground="{DynamicResource TextColor}"/>
 
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                     <TextBox Text="{Binding Asignatura.PorcentajeFaltas, UpdateSourceTrigger=PropertyChanged}"
                              Width="80" Height="30"
                              FontFamily="Cascadia Code"
                              Background="#f7f2f5"
-                             BorderThickness="0"
+                             
                              Padding="5"
                              HorizontalAlignment="Left"/>
                     <TextBlock Text="%"
                                VerticalAlignment="Center"
                                FontFamily="Cascadia Code"
                                FontSize="14"
-                               Foreground="Black"
+                               Foreground="{DynamicResource TextColor}"
                                Margin="5,0,0,0"/>
                 </StackPanel>
             </StackPanel>
@@ -259,7 +269,7 @@
                     FontWeight="Bold" 
                     Cursor="Hand"
                     Padding="4"
-                    BorderThickness="0"
+                    
                     FontFamily="Cascadia Code"
                     Width="200"
                     Height="40"
@@ -272,7 +282,7 @@
                     Foreground="White"
                     FontWeight="Bold"
                     Padding="10,5"
-                    BorderThickness="0"
+                    
                     Width="200"
                     Height="40"
                     HorizontalAlignment="Center"

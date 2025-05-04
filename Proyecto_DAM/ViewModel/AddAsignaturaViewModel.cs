@@ -49,6 +49,18 @@ namespace Proyecto_DAM.ViewModel
                 return;
             }
 
+            if (Nombre.Length > 50)
+            {
+                MessageBox.Show("El nombre no puede superar los 100 caracteres.");
+                return;
+            }
+
+            if (Descripcion.Length > 200)
+            {
+                MessageBox.Show("La descripción no puede superar los 200 caracteres.");
+                return;
+            }
+
             if (!int.TryParse(Creditos, out int creditos))
             {
                 MessageBox.Show(Constantes.ERROR_CAMPOSNUMERICO);

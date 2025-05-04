@@ -1,6 +1,9 @@
 ﻿using System.Windows;
+using System.Windows.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using LiveCharts;
+using LiveCharts.Wpf;
 using Microsoft.Extensions.DependencyInjection;
 using Proyecto_DAM.DTO;
 using Proyecto_DAM.Interfaces;
@@ -12,10 +15,14 @@ namespace Proyecto_DAM.ViewModel
     {
         private readonly IBienestarApiProvider _bienestarApiService;
 
-        public BienestarViewModel(IBienestarApiProvider bienestarApiService)
-        {
-            _bienestarApiService = bienestarApiService;
-        }
+        [ObservableProperty]
+        public SeriesCollection _Series;
+
+        [ObservableProperty]
+        public List<string> _XLabels;
+
+        [ObservableProperty]
+        public Func<double, string> _YFormatter;
 
         // Las propiedades que cuentan los estados de ánimo y niveles de estrés deben ser de tipo int
         [ObservableProperty]
@@ -71,6 +78,13 @@ namespace Proyecto_DAM.ViewModel
         [ObservableProperty]
         private string _Sugerencia;
 
+        public List<int> EstresData { get; set; }
+
+        public BienestarViewModel(IBienestarApiProvider bienestarApiService)
+        {
+            _bienestarApiService = bienestarApiService;
+        }
+
         public override async Task LoadAsync()
         {
             var bienestarList = await _bienestarApiService.GetBienestar();
@@ -80,10 +94,11 @@ namespace Proyecto_DAM.ViewModel
                 .Where(b => b.Fecha >= fechaLimite)
                 .ToList();
 
-            ActualizarConteos(bienestarUltimos30Dias);
+            await ActualizarConteos_Grafico(bienestarUltimos30Dias);
         }
 
-        private void ActualizarConteos(List<BienestarDTO> bienestarUltimos30Dias)
+
+        private async Task ActualizarConteos_Grafico(List<BienestarDTO> bienestarUltimos30Dias)
         {
             EstadoAnimoFelizCount = 0;
             EstadoAnimoNeutralCount = 0;
@@ -93,6 +108,7 @@ namespace Proyecto_DAM.ViewModel
             EstresAltoCount = 0;
 
             BienestarDTO registroMasReciente = null;
+            var estresDataTemp = new List<double>();
 
             foreach (var bienestar in bienestarUltimos30Dias)
             {
@@ -111,6 +127,8 @@ namespace Proyecto_DAM.ViewModel
                     EstresMedioCount++;
                 else if (bienestar.NivelDeEstres >= 8 && bienestar.NivelDeEstres <= 10)
                     EstresAltoCount++;
+
+                estresDataTemp.Add(bienestar.NivelDeEstres);
 
                 // Buscar el registro más reciente
                 if (registroMasReciente == null || bienestar.Fecha > registroMasReciente.Fecha)
@@ -133,6 +151,79 @@ namespace Proyecto_DAM.ViewModel
             {
                 Sugerencia = "";
             }
+
+            var hace30Dias = DateTime.Today.AddDays(-30);
+
+            XLabels = bienestarUltimos30Dias
+                .Where(b => b.Fecha >= hace30Dias) 
+                .OrderBy(b => b.Fecha)
+                .Select(b => b.Fecha.ToString("dd/MM"))
+                .Distinct()
+                .ToList();
+
+            // Agrupar por fecha (formato "dd/MM")
+            var agrupadoPorFecha = bienestarUltimos30Dias
+                .Where(b => b.Fecha >= hace30Dias)
+                .GroupBy(b => b.Fecha.ToString("dd/MM"))
+                .ToDictionary(g => g.Key, g =>
+                {
+                    var promedioAnimo = g.Average(b => b.EstadoDeAnimo switch
+                    {
+                        "Triste" => 0,
+                        "Neutral" => 5,
+                        "Feliz" => 10,
+                        _ => 0
+                    });
+
+                    var promedioEstres = g.Average(b => b.NivelDeEstres);
+                    return (Animo: promedioAnimo, Estres: promedioEstres);
+                });
+
+            var estadoAnimoData = new List<double>();
+            var estresData = new List<double>();
+
+            foreach (var label in XLabels)
+            {
+                if (agrupadoPorFecha.TryGetValue(label, out var datos))
+                {
+                    estadoAnimoData.Add(datos.Animo);
+                    estresData.Add(datos.Estres);
+                }
+                else
+                {
+                    estadoAnimoData.Add(0);
+                    estresData.Add(0);
+                }
+            }
+
+
+            YFormatter = value => value.ToString("N0");
+
+            Series = new SeriesCollection
+            {
+                new LineSeries
+                {
+                    Title = "Estado de Ánimo",
+                    Values = new ChartValues<double>(estadoAnimoData),
+                    Stroke = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F1CAE4")),
+                    StrokeThickness = 2,
+                    Fill = Brushes.Transparent,
+                    PointGeometrySize = 10,
+                    DataLabels = true,
+                    LabelPoint = point => point.Y.ToString("N0")
+                },
+                new LineSeries
+                {
+                    Title = "Estrés",
+                    Values = new ChartValues<double>(estresData),
+                    Stroke = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#0E351B")),
+                    StrokeThickness = 2,
+                    Fill = Brushes.Transparent,
+                    PointGeometrySize = 10,
+                    DataLabels = true,
+                    LabelPoint = point => point.Y.ToString("N0")
+                }
+            };
         }
 
         [RelayCommand]

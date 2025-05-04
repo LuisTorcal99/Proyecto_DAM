@@ -39,6 +39,7 @@
                            Foreground="{DynamicResource TextColor}"/>
                 <TextBox Text="{Binding Nombre, UpdateSourceTrigger=PropertyChanged}" 
                          Height="35" 
+                         MaxLength="100"
                          FontSize="14"
                          FontFamily="Cascadia Code"
                          Background="#f7f2f5" 
@@ -53,6 +54,8 @@
                            Foreground="{DynamicResource TextColor}"/>
                 <TextBox Text="{Binding Descripcion, UpdateSourceTrigger=PropertyChanged}" 
                          Height="80" 
+                         MaxLength="200"
+                         TextWrapping="Wrap"
                          FontSize="14"
                          FontFamily="Cascadia Code"
                          AcceptsReturn="True"

@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              xmlns:local="clr-namespace:Proyecto_DAM.View" 
              xmlns:viewmodel="clr-namespace:Proyecto_DAM.ViewModel" 
              d:DataContext="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:BienestarView}}}"
@@ -11,38 +12,78 @@
              d:DesignHeight="750" d:DesignWidth="1400"
              Background="{DynamicResource WindowBackgroundColor}">
 
-    <StackPanel Margin="20" >
+    <StackPanel Margin="20">
         <!-- Título -->
         <TextBlock Text="Bienestar" FontSize="24" FontWeight="Bold" Margin="0,0,0,20" Foreground="{DynamicResource TextColor}"/>
 
-        <StackPanel Orientation="Vertical" Margin="0,0,0,20">
-            <!-- Título del historial -->
-            <TextBlock Text="Historial de Estado de Ánimo y Estrés en los Últimos 30 Días" FontSize="18" FontWeight="Bold" Margin="0,0,0,10" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}"/>
+        <!-- Historial de Estado de Ánimo y Estrés -->
+        <TextBlock Text="Historial de Estado de Ánimo y Estrés en los Últimos 30 Días" FontSize="18" FontWeight="Bold" Margin="0,0,0,10" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}"/>
 
-            <!-- Estado de ánimo (Feliz, Neutral, Triste) -->
-            <TextBlock Text="Estado de ánimo en los últimos 30 días:" FontSize="14" Margin="0,10,0,5" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}"/>
-            <StackPanel>
-                <TextBlock Text="{Binding EstadoAnimoFeliz}" FontSize="14" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}"/>
-                <TextBlock Text="{Binding EstadoAnimoNeutral}" FontSize="14" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}"/>
-                <TextBlock Text="{Binding EstadoAnimoTriste}" FontSize="14" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Contenido de historial de estado de ánimo -->
+            <StackPanel Grid.Column="0" Margin="0,0,20,0">
+                <TextBlock Text="Estado de ánimo en los últimos 30 días:" FontSize="14" Margin="0,10,0,5" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}"/>
+                <StackPanel>
+                    <TextBlock Text="{Binding EstadoAnimoFeliz}" FontSize="14" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}"/>
+                    <TextBlock Text="{Binding EstadoAnimoNeutral}" FontSize="14" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}"/>
+                    <TextBlock Text="{Binding EstadoAnimoTriste}" FontSize="14" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}"/>
+                </StackPanel>
+
+                <TextBlock Text="Nivel de estrés en los últimos 30 días:" FontSize="14" Margin="0,10,0,5" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}"/>
+                <StackPanel>
+                    <TextBlock Text="{Binding EstresBajo}" FontSize="14" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}"/>
+                    <TextBlock Text="{Binding EstresMedio}" FontSize="14" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}"/>
+                    <TextBlock Text="{Binding EstresAlto}" FontSize="14" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}"/>
+                </StackPanel>
             </StackPanel>
 
-            <!-- Estrés (Bajo, Medio, Alto) -->
-            <TextBlock Text="Nivel de estrés en los últimos 30 días:" FontSize="14" Margin="0,10,0,5" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}"/>
-            <StackPanel>
-                <TextBlock Text="{Binding EstresBajo}" FontSize="14" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}"/>
-                <TextBlock Text="{Binding EstresMedio}" FontSize="14" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}"/>
-                <TextBlock Text="{Binding EstresAlto}" FontSize="14" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}"/>
-            </StackPanel>
-        </StackPanel>
+            <!-- Gráfico de líneas -->
+            <lvc:CartesianChart Grid.Column="1" Series="{Binding Series}" 
+                        LegendLocation="Right"
+                        Height="200" Width="550" 
+                        Foreground="Black" Margin="0,0,0,0">
 
+                <lvc:CartesianChart.AxisX>
+
+                    <lvc:Axis Labels="{Binding XLabels}"
+                      FontSize="12"
+                      Foreground="Black"
+                      FontFamily="Cascadia Code"/>
+                </lvc:CartesianChart.AxisX>
+
+                <lvc:CartesianChart.AxisY>
+                    <lvc:Axis Title="Nivel"
+                      LabelFormatter="{Binding YFormatter}"
+                      FontSize="11"
+                      Foreground="Black"
+                      FontFamily="Cascadia Code"
+                      MinValue="0"/>
+                </lvc:CartesianChart.AxisY>
+            </lvc:CartesianChart>
+
+        </Grid>
+
+        <!-- Otros elementos como el estado de ánimo y nivel de estrés actuales, sugerencia y botón guardar -->
         <StackPanel Margin="0,0,0,20">
+
+
+            <!-- Leyenda del gráfico -->
+            <StackPanel Grid.Column="1" Margin="0,0,50,0" HorizontalAlignment="Right">
+                <TextBlock Text="Leyenda:" FontWeight="Bold" FontSize="12" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}"/>
+                <TextBlock Text="• Estado de ánimo: 0 = Triste, 5 = Neutral, 10 = Feliz" FontSize="12" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}"/>
+                <TextBlock Text="• Nivel de estrés: 1 = Bajo, 10 = Alto" FontSize="12" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}"/>
+            </StackPanel>
+
             <TextBlock Text="¿Cómo te sientes hoy?" FontSize="24" FontWeight="Bold" Margin="0,0,0,20" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}"/>
 
             <!-- Estado de ánimo -->
             <TextBlock Text="Estado de ánimo" FontSize="14" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}"/>
 
-            <!-- Slider con etiquetas arriba -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock Text="Feliz" FontSize="12" Margin="10,0" VerticalAlignment="Bottom" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}"/>
                 <Slider Minimum="1" Maximum="3" Value="{Binding EstadoAnimo, Mode=TwoWay}" TickFrequency="1" IsSnapToTickEnabled="True" Width="200" />
@@ -54,7 +95,6 @@
             <!-- Nivel de estrés -->
             <TextBlock Text="Nivel de estrés (1-10)" FontSize="14" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}"/>
 
-            <!-- Slider con etiquetas arriba -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock Text="1" FontSize="12" Margin="10,0" VerticalAlignment="Bottom" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}"/>
                 <Slider Minimum="1" Maximum="10" Value="{Binding NivelEstres, Mode=TwoWay}" TickFrequency="1" IsSnapToTickEnabled="True" Width="200" />
