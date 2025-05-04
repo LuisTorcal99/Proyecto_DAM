@@ -6,16 +6,22 @@ using System.Windows.Media;
 using ClosedXML.Excel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using DocumentFormat.OpenXml.Drawing.Diagrams;
+using DocumentFormat.OpenXml.ExtendedProperties;
+using DocumentFormat.OpenXml.Office2010.Excel;
+using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using Proyecto_DAM.DTO;
 using Proyecto_DAM.Interfaces;
+using Proyecto_DAM.Models;
 using Proyecto_DAM.Service;
 using Proyecto_DAM.Utils;
 using Proyecto_DAM.View;
 using static Proyecto_DAM.Models.ExportJsonModel;
+using Color = System.Windows.Media.Color;
 
 namespace Proyecto_DAM.ViewModel
 {
@@ -167,7 +173,24 @@ namespace Proyecto_DAM.ViewModel
         }
 
         [RelayCommand]
-        public async void ExportarExcel()
+        public async Task CerrarSesion()
+        {
+            App.Current.Services.GetService<LoginDTO>().Email = string.Empty;
+            App.Current.Services.GetService<LoginDTO>().Password = string.Empty;
+            App.Current.Services.GetService<LoginDTO>().Id = 0;
+            App.Current.Services.GetService<LoginDTO>().Token = string.Empty;
+
+            if (LoginViewModel == null)
+            {
+                MessageBox.Show("No se pudo cargar el ViewModel.");
+                return;
+            }
+
+            SelectedViewModel = LoginViewModel;
+        }
+
+        [RelayCommand]
+        public async Task ExportarExcel()
         {
             var saveFileDialog = new SaveFileDialog
             {
@@ -278,7 +301,7 @@ namespace Proyecto_DAM.ViewModel
         }
 
         [RelayCommand]
-        public async void ExportarPDF()
+        public async Task ExportarPDF()
         {
             var saveFileDialog = new SaveFileDialog
             {
@@ -407,52 +430,79 @@ namespace Proyecto_DAM.ViewModel
         }
 
         [RelayCommand]
-        public async void ExportarJSON()
+        public async Task ExportarJSON()
         {
             var saveFileDialog = new SaveFileDialog
             {
                 Filter = Constantes.JSON_FILTER,
-                FileName = "resumen_estudio.json"
+                FileName = "asignaturas.json"
             };
 
             if (saveFileDialog.ShowDialog() == true)
             {
                 string rutaArchivo = saveFileDialog.FileName;
 
-                var (asignaturas, eventos, notas) = await ObtenerAsignaturasEventosNotasAsync();
+                var asignaturas = await _asignaturaService.GetAsignatura();
 
-                // Crear lista de asignaturas para exportar
-                var asignaturasExportar = new List<Asignatura>();
-
-                foreach (var asignatura in asignaturas)
+                var asignaturasExportar = asignaturas.Select(a => new AsignaturaDTO
                 {
-                    // Crear objeto Asignatura con eventos
-                    var eventosAsignatura = eventos.Where(e => e.IdAsignatura == asignatura.Id).ToList();
-                    var eventosExportar = eventosAsignatura.Select(e => new Evento
-                    {
-                        Nombre = e.Nombre,
-                        Descripcion = e.Descripcion,
-                        Fecha = e.Fecha,
-                        Porcentaje = e.Porcentaje,
-                        Tipo = e.Tipo,
-                        Estado = e.Estado,
-                        Nota = notas.FirstOrDefault(n => n.IdEvento == e.Id)?.NotaValor
-                    }).ToList();
+                    Id = a.Id,
+                    Nombre = a.Nombre,
+                    Descripcion = a.Descripcion,
+                    Creditos = a.Creditos,
+                    Horas = a.Horas,
+                    PorcentajeFaltas = a.PorcentajeFaltas,
+                    Faltas = a.Faltas,
+                    IdUsuario = a.IdUsuario
+                }).ToList();
 
-                    asignaturasExportar.Add(new Asignatura
-                    {
-                        Nombre = asignatura.Nombre,
-                        Descripcion = asignatura.Descripcion,
-                        Creditos = asignatura.Creditos,
-                        Eventos = eventosExportar
-                    });
-                }
-
-                // Crear instancia de FileService para exportar los datos a JSON
-                var fileService = new FileService<Asignatura>();
+                var fileService = new FileService<AsignaturaDTO>();
                 fileService.Save(rutaArchivo, asignaturasExportar);
 
-                MessageBox.Show("JSON exportado correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Asignaturas exportadas correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
+        [RelayCommand]
+        public async Task CargarJSON()
+        {
+            var openFileDialog = new OpenFileDialog
+            {
+                Filter = Constantes.JSON_FILTER,
+                Title = "Selecciona un archivo JSON para cargar"
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                string rutaArchivo = openFileDialog.FileName;
+
+                try
+                {
+                    var fileService = new FileService<AsignaturaDTO>();
+                    var asignaturas = fileService.Load(rutaArchivo);
+
+                    foreach (var a in asignaturas)
+                    {
+                        var asignatura = new AsignaturaDTO
+                        {
+                            Nombre = a.Nombre,
+                            Descripcion = a.Descripcion,
+                            Creditos = a.Creditos,
+                            Horas = a.Horas,
+                            PorcentajeFaltas = a.PorcentajeFaltas,
+                            Faltas = a.Faltas,
+                            IdUsuario = App.Current.Services.GetService<LoginDTO>().Id
+                        };
+
+                        await _asignaturaService.PostAsignatura(asignatura);
+                    }
+
+                    MessageBox.Show("Asignaturas importadas y guardadas correctamente en la API.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error al cargar el archivo: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 
@@ -488,7 +538,7 @@ namespace Proyecto_DAM.ViewModel
         // Método para cambiar los colores del tema
         private void ApplyTheme(string theme)
         {
-            var resources = Application.Current.Resources;
+            var resources = System.Windows.Application.Current.Resources;
 
             if (theme == "Claro")
             {

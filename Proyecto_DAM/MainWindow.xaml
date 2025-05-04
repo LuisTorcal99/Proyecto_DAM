@@ -82,8 +82,10 @@
                         <MenuItem Header="PDF" Command="{Binding ExportarPDFCommand}" FontFamily="Cascadia Code" Foreground="Black"/>
                         <MenuItem Header="JSON" Command="{Binding ExportarJSONCommand}" FontFamily="Cascadia Code" Foreground="Black"/>
                     </MenuItem>
-                    <MenuItem Header="_Cargar" Foreground="{DynamicResource TextColor}" FontFamily="Cascadia Code"
-                              Command="{Binding CargarCommand}"/>
+                    <MenuItem Header="_Cargar" Foreground="{DynamicResource TextColor}" FontFamily="Cascadia Code">
+                        <MenuItem Header="Lista de asignaturas" Command="{Binding CargarCommand}" FontFamily="Cascadia Code" Foreground="Black"/>
+                        <MenuItem Header="Cargar desde JSON" Command="{Binding CargarJSONCommand}" FontFamily="Cascadia Code" Foreground="Black"/>
+                    </MenuItem>
                 </Menu>
 
                <Menu FontSize="15" Background="Transparent"
@@ -102,8 +104,7 @@
                     <MenuItem Header="👤" Foreground="{DynamicResource TextColor}" FontFamily="Cascadia Code">
                         <MenuItem Header="Perfil" Command="{Binding SelectViewModelCommand}" FontFamily="Cascadia Code" Foreground="Black"
                                     CommandParameter="{Binding DataContext.PerfilViewModel, RelativeSource={RelativeSource AncestorType=Window}}" />
-                        <MenuItem Header="Cerrar Sesión" Command="{Binding SelectViewModelCommand}" FontFamily="Cascadia Code" Foreground="Red"
-                                    CommandParameter="{Binding DataContext.LoginViewModel, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                        <MenuItem Header="Cerrar Sesión"  FontFamily="Cascadia Code" Foreground="Red" Command="{Binding CerrarSesionCommand}" />
                     </MenuItem>
                </Menu>
            </Grid>

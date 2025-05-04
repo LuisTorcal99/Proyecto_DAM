@@ -130,7 +130,7 @@ namespace Proyecto_DAM.ViewModel
                 }
                 else
                 {
-                    MessageBox.Show(Constantes.MSG_ERROR);
+                    MessageBox.Show(Constantes.ERROR_NO_DATOS);
                 }
             }
             catch (HttpRequestException ex)

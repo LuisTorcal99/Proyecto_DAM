@@ -125,7 +125,14 @@ namespace Proyecto_DAM.ViewModel
             EstresMedio = $"Estrés medio: {EstresMedioCount}";
             EstresAlto = $"Estrés alto: {EstresAltoCount}";
 
-            Sugerencia = $"Sugerencia reciente: {registroMasReciente.Sugerencia}";
+            if (registroMasReciente != null)
+            {
+                Sugerencia = $"Sugerencia reciente: {registroMasReciente.Sugerencia}";
+            }
+            else
+            {
+                Sugerencia = "";
+            }
         }
 
         [RelayCommand]

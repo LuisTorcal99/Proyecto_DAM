@@ -9,6 +9,6 @@ namespace Proyecto_DAM.Interfaces
     public interface IFileProvider<T> where T : class
     {
         IEnumerable<T> Load(string filePath);
-        void Save(string filePath, IEnumerable<T> contacts);
+        void Save(string filePath, IEnumerable<T> data);
     }
 }

@@ -126,7 +126,6 @@
                 FontSize="14"
                 FontFamily="Cascadia Code"
                 Background="#f7f2f5"
-                BorderThickness="0"
                 Padding="5"/>
 
                 <!-- Label para hora -->
@@ -142,7 +141,6 @@
              FontSize="14"
              FontFamily="Cascadia Code"
              Background="#f7f2f5"
-             BorderThickness="0"
              Padding="5"/>
             </StackPanel>
         </StackPanel>
