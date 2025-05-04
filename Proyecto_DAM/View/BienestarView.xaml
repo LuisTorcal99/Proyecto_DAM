@@ -111,7 +111,7 @@
             <TextBlock Text="{Binding Sugerencia}" FontSize="14" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}" Width="auto" Height="50" HorizontalAlignment="Center"/>
 
             <!-- Botón guardar -->
-            <Button Content="Guardar" Command="{Binding GuardarBienestarCommand}" Width="150" Height="35" HorizontalAlignment="Center"
+            <Button Content="Guardar" Command="{Binding GuardarBienestarCommand}" Width="125" Height="25" HorizontalAlignment="Center"
                     Background="{DynamicResource BackgroundColor}" Foreground="{DynamicResource TextColor}"/>
         </StackPanel>
     </StackPanel>
