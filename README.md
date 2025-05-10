@@ -37,7 +37,7 @@ El proyecto es una aplicación de escritorio diseñada para estudiantes, permiti
 
 1. **Clonar el repositorio**:
     ```bash
-        git clone https://github.com/LuisTorcal99/Proyecto_DAM.git
+    git clone https://github.com/LuisTorcal99/Proyecto_DAM.git
     ```
     
 2. **Configurar Docker**:
@@ -51,7 +51,7 @@ El proyecto es una aplicación de escritorio diseñada para estudiantes, permiti
     - Abre la solución en Visual Studio o Visual Studio Code.
     - Lanza primero la API con:
       ```bash
-        dotnet run
+      dotnet run
       ```
     - Luego ejecuta la aplicación WPF desde Visual Studio.
 
