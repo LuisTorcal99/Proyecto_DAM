@@ -9,7 +9,7 @@ El proyecto es una aplicación de escritorio diseñada para estudiantes, permiti
 - **Cálculo automático de calificación**: El sistema calcula la calificación final en función de las notas obtenidas y los porcentajes asignados a cada tarea.
 - **Etiquetas personalizables**: Los estudiantes pueden etiquetar sus actividades como "Examen", "Tarea" o "Nota" para una mejor organización.
 - **Seguimiento del progreso**: Cada actividad tiene un estado de progreso que puede ser "Pendiente", "EnProceso" o "Completado", permitiendo a los estudiantes realizar un seguimiento del avance de sus tareas y exámenes.
-- **Notificaciones con RabbitMQ**: El sistema envía notificaciones sobre eventos próximos.
+- **Notificaciones con RabbitMQ**: El sistema envía notificaciones por gmail sobre eventos próximos.
 - **Carga de cursos y asignaturas**: Existen presets para cargar asignaturas y cursos de forma rápida.
 - **Gestión de faltas de asistencia**: Los estudiantes pueden registrar las faltas de asistencia, y la aplicación calcula cuántos días faltan para llegar al límite de faltas permitidas.
 - **Modo claro y oscuro**: Los usuarios pueden cambiar entre el modo claro y oscuro.
@@ -19,6 +19,10 @@ El proyecto es una aplicación de escritorio diseñada para estudiantes, permiti
 - **Actividades**: Visualiza las actividades de las proximas tareas y exámenes y la fecha en la que se realiza, cuenta con colores para hacer mas visual los eventos que estan por suceder.
 - **Temporizador Pomodoro**: Organiza sesiones de estudio usando el método Pomodoro con intervalos de trabajo y descanso.
 - **Filtrar eventos**: Se pueden filtrar los eventos por **tipo** (tarea, examen, nota), **progreso** (Pendiente, EnProceso, Completado) y **asignatura**.
+- **Sistema de logros: Los estudiantes desbloquean logros al completar tareas, estudiar durante cierto tiempo o alcanzar metas.**
+- **Ranking de logros: Se muestra un ranking con los usuarios que han conseguido más logros en la aplicación.**
+- **Pestaña de bienestar estudiantil: Los estudiantes pueden registrar su estado de ánimo y nivel de estrés diario, con un gráfico que visualiza la evolución a lo largo del tiempo.**
+- **Perfil del usuario: Pestaña donde cada estudiante puede ver estadísticas y gráficos personalizados sobre su progreso y rendimiento académico, así como editar su información personal.**
 
 ## Tecnologías Utilizadas
 
@@ -33,23 +37,24 @@ El proyecto es una aplicación de escritorio diseñada para estudiantes, permiti
 
 1. **Clonar el repositorio**:
     ```bash
-    git clone https://github.com/LuisTorcal99/Proyecto_DAM.git
+        git clone https://github.com/LuisTorcal99/Proyecto_DAM.git
     ```
     
 2. **Configurar Docker**:
     Asegúrate de tener Docker Desktop instalado y configurado en tu máquina. Los contenedores de Docker se crearán, levantarán y cerrarán automáticamente.
-
-3. **Base de Datos**:
-    El archivo `BBDD.sql` contiene los scripts necesarios para crear la base de datos y los usuarios. Si estás utilizando SQL Server localmente, ejecuta este script para crear la base de datos y conceder los permisos necesarios al usuario.
    
-5. **ApiRest**:
-   - Crear la migración con Entity Framework en la consola de desarrollador de paquetes (add-migration InitialCreate, update-database).
-   - **Lanzamiento de la API** con `dotnet run`.
-
-6. **Ejecutar la aplicación**:
+3. **ApiRest**:
+    - Al lanzar la API (dotnet run), se crean automáticamente la base de datos, el login, las migraciones y los permisos necesarios.
+    - No es necesario ejecutar manualmente ningún script SQL ni comandos de migración.
+     
+4. **Ejecutar la aplicación**:
     - Abre la solución en Visual Studio o Visual Studio Code.
-    - Compila y ejecuta la aplicación.
+    - Lanza primero la API con:
+      ```bash
+        dotnet run
+      ```
+    - Luego ejecuta la aplicación WPF desde Visual Studio.
 
-7. **Acceso a la aplicación**:
+5. **Acceso a la aplicación**:
     Al iniciar la aplicación, los estudiantes pueden registrarse, iniciar sesión y comenzar a gestionar sus tareas, exámenes y otras actividades académicas.
    
