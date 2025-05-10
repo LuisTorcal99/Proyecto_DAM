@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using RestAPI.Models.Entity;
 using System.Text;
+using RestAPI;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -117,5 +118,17 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
+
+    // Crear base de datos, login y usuario si no existen
+    DatabaseInitializer.EnsureDatabaseSetup(configuration);
+
+    // Aplicar migraciones de EF Core
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.Migrate();
+}
 
 app.Run();

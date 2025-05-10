@@ -32,8 +32,8 @@ namespace Proyecto_DAM.ViewModel
             _UsuarioService = userApi;
             _rabbitMQProducer = rabbitMQProducer;
             //CrearAdmin();
-            Email = Constantes.EMAIL;
-            Password = Constantes.PASSWORD;
+            //Email = Constantes.EMAIL;
+            //Password = Constantes.PASSWORD;
         }
 
         [RelayCommand]
