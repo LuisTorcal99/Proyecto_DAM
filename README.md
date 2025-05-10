@@ -48,13 +48,9 @@ El proyecto es una aplicación de escritorio diseñada para estudiantes, permiti
     - No es necesario ejecutar manualmente ningún script SQL ni comandos de migración.
      
 4. **Ejecutar la aplicación**:
-    - Abre la solución en Visual Studio o Visual Studio Code.
-    - Lanza primero la API con:
-      ```bash
-      dotnet run
-      ```
-    - Luego ejecuta la aplicación WPF desde Visual Studio.
+    - Abre la carpeta raíz del proyecto.
+    - Ejecuta el archivo lanzador.bat o lanzadorConsola.bat (dependiendo de si deseas ver la consola o no).
+    - El script iniciará automáticamente tanto la API como la aplicación WPF.
 
 5. **Acceso a la aplicación**:
     Al iniciar la aplicación, los estudiantes pueden registrarse, iniciar sesión y comenzar a gestionar sus tareas, exámenes y otras actividades académicas.
-   
