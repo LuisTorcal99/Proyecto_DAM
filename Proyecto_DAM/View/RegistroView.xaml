@@ -22,27 +22,50 @@
 
         <!-- Parte izquierda: Título -->
         <StackPanel Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <TextBlock Text="Gestión"
-                       FontSize="48"
-                       FontWeight="Bold"
-                       Foreground="Black"
-                       FontFamily="Cascadia Code"
-                       TextAlignment="Center"
-                       Margin="0,0,0,10"/>
-            <TextBlock Text="de"
-                       FontSize="48"
-                       FontWeight="Bold"
-                       Foreground="Black"
-                       FontFamily="Cascadia Code"
-                       TextAlignment="Center"
-                       Margin="0,0,0,10"/>
-            <TextBlock Text="estudio"
-                       FontSize="48"
-                       FontWeight="Bold"
-                       Foreground="Black"
-                       FontFamily="Cascadia Code"
-                       TextAlignment="Center"/>
+            <Grid>
+                <TextBlock Text="Gestión" 
+                   FontSize="48" FontWeight="Bold"
+                   FontFamily="Cascadia Code"
+                   Foreground="Gray"
+                   Margin="3,3,0,0"
+                   TextAlignment="Center"/>
+
+                <TextBlock Text="Gestión" 
+                   FontSize="48" FontWeight="Bold"
+                   FontFamily="Cascadia Code"
+                   Foreground="Black"
+                   TextAlignment="Center"/>
+            </Grid>
+
+            <Grid>
+                <TextBlock Text="de" 
+                   FontSize="48" FontWeight="Bold"
+                   FontFamily="Cascadia Code"
+                   Foreground="Gray"
+                   Margin="3,3,0,0"
+                   TextAlignment="Center"/>
+                <TextBlock Text="de" 
+                   FontSize="48" FontWeight="Bold"
+                   FontFamily="Cascadia Code"
+                   Foreground="Black"
+                   TextAlignment="Center"/>
+            </Grid>
+
+            <Grid>
+                <TextBlock Text="estudio" 
+                   FontSize="48" FontWeight="Bold"
+                   FontFamily="Cascadia Code"
+                   Foreground="Gray"
+                   Margin="3,3,0,0"
+                   TextAlignment="Center"/>
+                <TextBlock Text="estudio" 
+                   FontSize="48" FontWeight="Bold"
+                   FontFamily="Cascadia Code"
+                   Foreground="Black"
+                   TextAlignment="Center"/>
+            </Grid>
         </StackPanel>
+
 
         <!-- Parte derecha: Formulario de registro -->
         <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="300">

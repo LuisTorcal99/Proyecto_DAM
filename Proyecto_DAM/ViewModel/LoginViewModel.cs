@@ -27,9 +27,10 @@ namespace Proyecto_DAM.ViewModel
 
         private readonly IHttpsJsonClientProvider<UserDTO> _httpJsonProvider;
         private readonly IUserApiProvider _UsuarioService;
+        private readonly IAspNetUserApiProvider _aspNetUserApiProvider;
         private readonly IRabbitMQProducer _rabbitMQProducer;
 
-        public LoginViewModel(IHttpsJsonClientProvider<UserDTO> httpJsonProvider, IUserApiProvider userApi, IRabbitMQProducer rabbitMQProducer)
+        public LoginViewModel(IHttpsJsonClientProvider<UserDTO> httpJsonProvider, IUserApiProvider userApi, IRabbitMQProducer rabbitMQProducer, IAspNetUserApiProvider aspNetUserApiProvider)
         {
             if (Properties.Settings.Default.RememberMe)
             {
@@ -39,6 +40,7 @@ namespace Proyecto_DAM.ViewModel
             }
 
             _httpJsonProvider = httpJsonProvider;
+            _aspNetUserApiProvider = aspNetUserApiProvider;
             _UsuarioService = userApi;
             _rabbitMQProducer = rabbitMQProducer;
             //CrearAdmin();
@@ -82,13 +84,16 @@ namespace Proyecto_DAM.ViewModel
                     App.Current.Services.GetService<LoginDTO>().Token = user.Result.Token;
 
                     // Guardar el Id del usuario en el servicio de LoginDTO
-                    IEnumerable<UsuarioDTO> Users = await _UsuarioService.GetUser();
+                    IEnumerable<UsuarioDTO> Usuarios = await _UsuarioService.GetUser();
+                    var Users = await _aspNetUserApiProvider.GetUsers();
 
-                    var usuario = Users.FirstOrDefault(u => u.Email.Equals(Email, StringComparison.OrdinalIgnoreCase));
+                    var usuario = Usuarios.FirstOrDefault(u => u.Email.Equals(Email, StringComparison.OrdinalIgnoreCase));
+                    var userOne = Users.FirstOrDefault(u => u.Email.Equals(Email, StringComparison.OrdinalIgnoreCase));
 
-                    if (usuario != null)
+                    if (usuario != null && user != null)
                     {
                         App.Current.Services.GetService<LoginDTO>().Id = usuario.Id;
+                        App.Current.Services.GetService<LoginDTO>().UserName = userOne.UserName;
                     }
 
                     // Enviar mensaje a RabbitMQ

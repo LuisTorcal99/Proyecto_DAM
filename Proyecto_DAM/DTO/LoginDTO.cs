@@ -18,6 +18,7 @@ namespace Proyecto_DAM.DTO
         public string Password { get; set; }
         public string Token { get; set; }
         public int Id { get; set; }
+        public string UserName { get; set; }
 
         public LoginDTO(string user, string password)
         {

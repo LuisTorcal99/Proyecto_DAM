@@ -34,6 +34,10 @@ namespace Proyecto_DAM.ViewModel
         private readonly INotaApiProvider _notaService;
 
         private bool _mostrarAcciones;
+
+        [ObservableProperty]
+        public string _UserName;
+
         public bool MostrarAcciones
         {
             get => _mostrarAcciones;
@@ -94,6 +98,10 @@ namespace Proyecto_DAM.ViewModel
 
         public async override Task LoadAsync()
         {
+            var loginDTO = App.Current.Services.GetService<LoginDTO>();
+            if (loginDTO != null)
+                UserName = loginDTO.UserName;
+
             if (SelectedViewModel is not null)
                 await SelectedViewModel.LoadAsync();
         }
