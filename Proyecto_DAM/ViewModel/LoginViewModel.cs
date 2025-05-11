@@ -22,12 +22,22 @@ namespace Proyecto_DAM.ViewModel
         [ObservableProperty]
         public string _Password;
 
+        [ObservableProperty]
+        private bool _RememberMe;
+
         private readonly IHttpsJsonClientProvider<UserDTO> _httpJsonProvider;
         private readonly IUserApiProvider _UsuarioService;
         private readonly IRabbitMQProducer _rabbitMQProducer;
 
         public LoginViewModel(IHttpsJsonClientProvider<UserDTO> httpJsonProvider, IUserApiProvider userApi, IRabbitMQProducer rabbitMQProducer)
         {
+            if (Properties.Settings.Default.RememberMe)
+            {
+                Email = Properties.Settings.Default.SavedEmail;
+                Password = Properties.Settings.Default.SavedPassword;
+                RememberMe = true;
+            }
+
             _httpJsonProvider = httpJsonProvider;
             _UsuarioService = userApi;
             _rabbitMQProducer = rabbitMQProducer;
@@ -39,6 +49,12 @@ namespace Proyecto_DAM.ViewModel
         [RelayCommand]
         private async Task Login()
         {
+            if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
+            {
+                MessageBox.Show("Por favor, introduzca su email y contraseña.");
+                return;
+            }
+
             App.Current.Services.GetService<LoginDTO>().Email = Email;
             App.Current.Services.GetService<LoginDTO>().Password = Password;
 
@@ -48,6 +64,20 @@ namespace Proyecto_DAM.ViewModel
 
                 if (user != null && user.Result != null && !string.IsNullOrEmpty(user.Result.Token))
                 {
+                    if (RememberMe)
+                    {
+                        Properties.Settings.Default.SavedEmail = Email;
+                        Properties.Settings.Default.SavedPassword = Password;
+                        Properties.Settings.Default.RememberMe = true;
+                    }
+                    else
+                    {
+                        Properties.Settings.Default.SavedEmail = string.Empty;
+                        Properties.Settings.Default.SavedPassword = string.Empty;
+                        Properties.Settings.Default.RememberMe = false;
+                    }
+                    Properties.Settings.Default.Save();
+
                     // Guardar el token en el servicio de LoginDTO
                     App.Current.Services.GetService<LoginDTO>().Token = user.Result.Token;
 

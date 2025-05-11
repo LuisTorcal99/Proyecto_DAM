@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
@@ -12,6 +13,7 @@ using LiveCharts.Wpf;
 using Microsoft.Extensions.DependencyInjection;
 using Proyecto_DAM.DTO;
 using Proyecto_DAM.Interfaces;
+using Proyecto_DAM.RabbitMQ;
 using static Proyecto_DAM.Models.ExportJsonModel;
 
 namespace Proyecto_DAM.ViewModel
@@ -22,6 +24,7 @@ namespace Proyecto_DAM.ViewModel
         private readonly IAsignaturaApiProvider _asignaturaApiService;
         private readonly INotaApiProvider _notaApiService;
         private readonly IEventoApiProvider _eventoApiService;
+        private readonly IRabbitMQProducer _rabbitMQProducer;
 
         [ObservableProperty]
         public SeriesCollection _Series;
@@ -71,12 +74,14 @@ namespace Proyecto_DAM.ViewModel
         public PerfilViewModel(IActualizarPerfilProvider actualizarPerfilProvider,
                                 IAsignaturaApiProvider asignaturaApiProvider,
                                 IEventoApiProvider eventoApiProvider,
-                                INotaApiProvider notaApiProvider)
+                                INotaApiProvider notaApiProvider,
+                                IRabbitMQProducer rabbitMQProducer)
         {
             _actualizarPerfilService = actualizarPerfilProvider;
             _asignaturaApiService = asignaturaApiProvider;
             _eventoApiService = eventoApiProvider;
             _notaApiService = notaApiProvider;
+            _rabbitMQProducer = rabbitMQProducer;
         }
 
         [RelayCommand]
@@ -125,6 +130,12 @@ namespace Proyecto_DAM.ViewModel
             if (actualizado)
             {
                 MessageBox.Show("Perfil actualizado correctamente.");
+                var mensaje = new MensajeRabbit
+                {
+                    Tipo = "Evento",
+                    Contenido = $"Perfil actualizado con exito"
+                };
+                await _rabbitMQProducer.EnviarMensaje(JsonSerializer.Serialize(mensaje));
             }
             else
             {

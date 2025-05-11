@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Text.Json;
+using System.Windows;
 using System.Windows.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -7,6 +8,7 @@ using LiveCharts.Wpf;
 using Microsoft.Extensions.DependencyInjection;
 using Proyecto_DAM.DTO;
 using Proyecto_DAM.Interfaces;
+using Proyecto_DAM.RabbitMQ;
 using Proyecto_DAM.Utils;
 
 namespace Proyecto_DAM.ViewModel
@@ -79,10 +81,12 @@ namespace Proyecto_DAM.ViewModel
         private string _Sugerencia;
 
         public List<int> EstresData { get; set; }
+        private readonly IRabbitMQProducer _rabbitMQProducer;
 
-        public BienestarViewModel(IBienestarApiProvider bienestarApiService)
+        public BienestarViewModel(IBienestarApiProvider bienestarApiService, IRabbitMQProducer rabbitMQProducer)
         {
             _bienestarApiService = bienestarApiService;
+            _rabbitMQProducer = rabbitMQProducer;
         }
 
         public override async Task LoadAsync()
@@ -256,6 +260,13 @@ namespace Proyecto_DAM.ViewModel
             };
 
             await _bienestarApiService.PostBienestar(bienestar);
+
+            var mensaje = new MensajeRabbit
+            {
+                Tipo = "Evento",
+                Contenido = $"Bienestar registrada con exito"
+            };
+            await _rabbitMQProducer.EnviarMensaje(JsonSerializer.Serialize(mensaje));
 
             await LoadAsync();
 
