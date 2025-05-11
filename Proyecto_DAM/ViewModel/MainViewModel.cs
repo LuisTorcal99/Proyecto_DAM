@@ -2,6 +2,7 @@
 using System.Security.Cryptography.Xml;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using ClosedXML.Excel;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -32,6 +33,15 @@ namespace Proyecto_DAM.ViewModel
         private readonly IEventoApiProvider _eventoService;
         private readonly INotaApiProvider _notaService;
 
+        private bool _mostrarAcciones;
+        public bool MostrarAcciones
+        {
+            get => _mostrarAcciones;
+            set => SetProperty(ref _mostrarAcciones, value);
+        }
+
+        public ICommand ToggleAccionesCommand { get; }
+
         public MainViewModel(LoginViewModel login, RegistroViewModel registro,
             PrincipalViewModel principal, EventosViewModel eventos,
             PomodoroViewModel pomodoro, IAsignaturaApiProvider asignaturaService, 
@@ -53,6 +63,10 @@ namespace Proyecto_DAM.ViewModel
             var settings = SettingsManager.LoadSettings();
             SelectedTheme = settings.SelectedTheme;
 
+            ToggleAccionesCommand = new RelayCommand(() =>
+            {
+                MostrarAcciones = !MostrarAcciones;
+            });
 
             _asignaturaService = asignaturaService;
             _eventoService = eventoService;
