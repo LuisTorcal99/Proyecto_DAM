@@ -7,6 +7,7 @@ namespace Proyecto_DAM.Interfaces
     public interface IAsignaturaApiProvider
     {
         Task<IEnumerable<AsignaturaDTO>> GetAsignatura();
+        Task<IEnumerable<AsignaturaDTO>> GetAsignaturaIdUserPrueba(int userID);
         Task<AsignaturaDTO> GetOneAsignatura(string id);
         Task PostAsignatura(AsignaturaDTO asignatura);
         Task PatchAsignatura(AsignaturaDTO asignatura);

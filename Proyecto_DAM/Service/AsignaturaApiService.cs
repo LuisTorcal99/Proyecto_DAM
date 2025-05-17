@@ -29,6 +29,13 @@ namespace Proyecto_DAM.Service
             return todas.Where(a => a.IdUsuario == App.Current.Services.GetService<LoginDTO>().Id);
         }
 
+        public async Task<IEnumerable<AsignaturaDTO>> GetAsignaturaIdUserPrueba(int userID)
+        {
+            var todas = await _httpsJsonClientProvider.GetAsync(Constantes.ASIGNATURA_PATH);
+
+            return todas.Where(a => a.IdUsuario == userID);
+        }
+
         public async Task<AsignaturaDTO> GetOneAsignatura(string id)
         {
             return await _httpsJsonClientProvider.GetByIdAsync(Constantes.ASIGNATURA_PATH, id);

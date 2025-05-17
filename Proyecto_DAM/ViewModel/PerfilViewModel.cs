@@ -181,7 +181,7 @@ namespace Proyecto_DAM.ViewModel
 
                 // Pendientes
                 TotalPendientes = TotalEventos - (TotalAprobadas + TotalSuspendidas);
-                TotalExamenesPendientes = TotalExamenes - (TotalExamenesAprobados + TotalExamenesSuspendidos);
+                TotalExamenesPendientes = eventosExamen.Count() - (TotalExamenesAprobados + TotalExamenesSuspendidos);
 
                 if (TotalPendientes < 0) TotalPendientes = 0;
                 if (TotalExamenesPendientes < 0) TotalExamenesPendientes = 0;
