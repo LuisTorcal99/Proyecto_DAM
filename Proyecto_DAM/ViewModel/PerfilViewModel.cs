@@ -168,6 +168,7 @@ namespace Proyecto_DAM.ViewModel
 
                 // Filtrar los eventos de tipo "Examen"
                 var eventosExamen = eventos?.Where(e => e.Tipo == "Examen").ToList();
+                TotalExamenes = eventosExamen?.Count() ?? 0;
 
                 var notas = await _notaApiService.GetNota();
 

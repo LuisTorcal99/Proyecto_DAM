@@ -129,8 +129,8 @@
                 <Separator Margin="5"/>
                 <TextBlock Text="Exportar datos" FontWeight="Bold" Margin="0 0 0 8"/>
                 <Button Content="Exportar a Excel" Command="{Binding ExportarExcelCommand}" Margin="0 4" Background="#4CAF50" Foreground="White"/>
-                <Button Content="Exportar a PDF" Command="{Binding ExportarPdfCommand}" Margin="0 4" Background="#F44336" Foreground="White"/>
-                <Button Content="Exportar a JSON" Command="{Binding ExportarJsonCommand}" Margin="0 4" Background="#9C27B0" Foreground="White"/>
+                <Button Content="Exportar a PDF" Command="{Binding ExportarPDFCommand}" Margin="0 4" Background="#F44336" Foreground="White"/>
+                <Button Content="Exportar a JSON" Command="{Binding ExportarJSONCommand}" Margin="0 4" Background="#9C27B0" Foreground="White"/>
 
                 <Separator Margin="5"/>
                 <TextBlock Text="Cargar Asignaturas" FontWeight="Bold" Margin="0 0 0 8"/>

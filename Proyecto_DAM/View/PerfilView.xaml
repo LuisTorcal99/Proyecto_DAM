@@ -163,7 +163,7 @@
                            Margin="5" 
                            FontWeight="Bold"/>
                     <TextBlock Grid.Row="2" Grid.Column="0" 
-                        Text="Total Eventos:" 
+                        Text="Total Examenes:" 
                         FontFamily="Cascadia Code" 
                                Foreground="{DynamicResource TextColor}"
                         Margin="5"/>
