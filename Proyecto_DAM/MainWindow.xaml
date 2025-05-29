@@ -84,7 +84,7 @@
             <!-- Controles a la derecha -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top"
                         Margin="0 10">
-                <ComboBox Width="120" Margin="0 5 20 0" Height="25"
+                <ComboBox Width="120" Margin="0 5 20 0" Height="25" FontFamily="Cascadia Code"
                           ItemsSource="{Binding Themes}"
                           SelectedItem="{Binding SelectedTheme, Mode=TwoWay}"
                           Background="White" Foreground="Black"/>
@@ -94,7 +94,7 @@
                         <MenuItem.Header>
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                 <TextBlock FontSize="20" VerticalAlignment="Center">👤</TextBlock>
-                                <TextBlock VerticalAlignment="Center" Margin="5,0,0,0" FontSize="20" Text="{Binding UserName}"/>
+                                <TextBlock VerticalAlignment="Center" Margin="5,0,0,0" FontSize="20" FontFamily="Cascadia Code" Text="{Binding UserName}"/>
                             </StackPanel>
                         </MenuItem.Header>
                         <MenuItem Header="Mi perfil" Command="{Binding SelectViewModelCommand}" Foreground="Black"

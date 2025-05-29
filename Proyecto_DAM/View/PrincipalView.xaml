@@ -89,7 +89,7 @@
                                     <StackPanel Width="550" Margin="5">
                                         <StackPanel Orientation="Horizontal" Margin="5">
                                             <TextBlock Text="📘" FontSize="18" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="{DynamicResource TextColor}"/>
-                                            <TextBlock Text="{Binding Nombre}" FontSize="22" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" Margin="10,0"/>
+                                            <TextBlock Text="{Binding Nombre}" FontSize="22" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" Margin="10,0" FontWeight="Bold"/>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="5">
                                             <TextBlock Text="🎓" FontSize="18" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="{DynamicResource TextColor}"/>
