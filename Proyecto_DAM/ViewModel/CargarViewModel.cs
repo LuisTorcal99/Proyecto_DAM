@@ -10,6 +10,7 @@ using Proyecto_DAM.Cursos;
 using Proyecto_DAM.DTO;
 using Proyecto_DAM.Interfaces;
 using Proyecto_DAM.RabbitMQ;
+using Proyecto_DAM.View;
 using static Proyecto_DAM.Models.ExportJsonModel;
 
 namespace Proyecto_DAM.ViewModel
@@ -450,10 +451,13 @@ namespace Proyecto_DAM.ViewModel
                             Contenido = $"Asignatura creada: {asignatura.Nombre} (Creditos: {asignatura.Creditos})"
                         };
                         await _rabbitMQProducer.EnviarMensaje(JsonSerializer.Serialize(mensaje));
+
                         App.Current.Services.GetService<MainViewModel>().SelectViewModelCommand.Execute(App.Current.Services.GetService<PrincipalViewModel>());
+
+                        Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is CargarView)?.Close();
                     }
                 }
-                MessageBox.Show($"Curso añadido correctamente.");
+                MessageBox.Show($"Cursos añadidos correctamente.");
             }
             else
             {

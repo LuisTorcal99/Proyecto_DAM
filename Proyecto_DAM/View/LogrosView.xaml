@@ -102,5 +102,34 @@
             <TextBlock FontSize="16" FontWeight="Bold" Text="{Binding LogrosRestantes}" Foreground="{DynamicResource TextColor}" FontFamily="Cascadia Code"/>
             <TextBlock FontSize="16" Text=" logros." Foreground="{DynamicResource TextColor}" FontFamily="Cascadia Code"/>
         </StackPanel>
+
+        <Expander Grid.Row="2" Grid.Column="0" Background="{DynamicResource WindowBackgroundColor}" Header="¿Cómo se consiguen los logros?" Margin="0,60,0,0" FontFamily="Cascadia Code" Foreground="{DynamicResource TextColor}">
+            <StackPanel Background="#2C2C2C">
+                <TextBlock Text="🎓 Logros de Estudio:" FontWeight="Bold" Foreground="#D0A1D6"/>
+                <TextBlock Text="• 1h: ¡Primer paso!" TextWrapping="Wrap" Foreground="#D0A1D6"/>
+                <TextBlock Text="• 10h: ¡Constante!" TextWrapping="Wrap" Foreground="#D0A1D6"/>
+                <TextBlock Text="• 50h: ¡Dedicado!" TextWrapping="Wrap" Foreground="#D0A1D6"/>
+                <TextBlock Text="• 100h: ¡Impresionante!" TextWrapping="Wrap" Foreground="#D0A1D6"/>
+                <TextBlock Text="• 200h: ¡Maestro del estudio!" TextWrapping="Wrap" Foreground="#D0A1D6"/>
+
+                <TextBlock Text="📘 Logros de Aprobados:" FontWeight="Bold" Margin="0,10,0,0" Foreground="#66C266"/>
+                <TextBlock Text="• 1 nota: ¡Primera victoria!" TextWrapping="Wrap" Foreground="#66C266"/>
+                <TextBlock Text="• 5 notas: ¡Buen comienzo!" TextWrapping="Wrap" Foreground="#66C266"/>
+                <TextBlock Text="• 10 notas: ¡Vas en serio!" TextWrapping="Wrap" Foreground="#66C266"/>
+                <TextBlock Text="• 15 notas: ¡Excelente!" TextWrapping="Wrap" Foreground="#66C266"/>
+                <TextBlock Text="• 20 notas: ¡Crack académico!" TextWrapping="Wrap" Foreground="#66C266"/>
+
+                <TextBlock Text="⭐ Logros por puntos:" FontWeight="Bold" Margin="0,10,0,0" Foreground="#F1A0A0"/>
+                <TextBlock Text="• 100 puntos: ¡Ya llevas 100 puntos!" TextWrapping="Wrap" Foreground="#F1A0A0"/>
+                <TextBlock Text="• 300 puntos: ¡Maestro en camino!" TextWrapping="Wrap" Foreground="#F1A0A0"/>
+                <TextBlock Text="• 500 puntos: ¡Leyenda!" TextWrapping="Wrap" Foreground="#F1A0A0"/>
+
+                <TextBlock Text="🏅 Logros especiales:" FontWeight="Bold" Margin="0,10,0,0" Foreground="#FF9F00"/>
+                <TextBlock Text="• Todos los de estudio: ¡Has conseguido todos los logros de estudio!" TextWrapping="Wrap" Foreground="#FF9F00"/>
+                <TextBlock Text="• Todos los de aprobados: ¡Todos los logros de aprobados desbloqueados!" TextWrapping="Wrap" Foreground="#FF9F00"/>
+                <TextBlock Text="• Todos los logros: ¡Conseguiste todos los logros!" TextWrapping="Wrap" Foreground="#00B5E2"/>
+            </StackPanel>
+        </Expander>
+
     </Grid>
 </UserControl>

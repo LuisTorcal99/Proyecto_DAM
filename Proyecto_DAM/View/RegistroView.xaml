@@ -83,7 +83,7 @@
             <ui:TextBlock Text="Confirmar contraseña:" Margin="0,10,0,5" FontFamily="Cascadia Code"/>
             <ui:PasswordBox PlaceholderText="Confirmar Contraseña" Height="30" Password="{Binding ConfirmPassword, Mode=TwoWay}" />
 
-            <ui:Button Content="Login" Height="40" Margin="0,10,0,0" Command="{Binding RegistroCommand}" FontFamily="Cascadia Code">
+            <ui:Button Content="Registrar" Height="40" Margin="0,10,0,0" Command="{Binding RegistroCommand}" FontFamily="Cascadia Code">
                 <ui:Button.Style>
                     <Style TargetType="ui:Button">
                         <Setter Property="BorderBrush" Value="#4CAF50"/>
@@ -111,7 +111,7 @@
                 </ui:Button.Template>
             </ui:Button>
 
-            <ui:Button Content="Go to Register" Height="40" Margin="0,10,0,0" Command="{Binding LoginCommand}" FontFamily="Cascadia Code">
+            <ui:Button Content="Ir al Inicio de sesión" Height="40" Margin="0,10,0,0" Command="{Binding LoginCommand}" FontFamily="Cascadia Code">
                 <ui:Button.Style>
                     <Style TargetType="ui:Button">
                         <Setter Property="BorderBrush" Value="#4CAF50"/>

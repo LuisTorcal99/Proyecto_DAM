@@ -123,22 +123,18 @@
                 Padding="10"
                 Width="250">
             <StackPanel>
-                <TextBlock Text="Acciones rápidas" FontWeight="Bold" Margin="0 0 0 8"/>
-                <Button Content="Crear asignatura" Command="{Binding AddAsignaturaCommand}" Margin="0 4" Background="#2196F3" Foreground="White"/>
-                <Button Content="Crear evento" Command="{Binding AddEventoCommand}" Margin="0 4" Background="#FFC107" Foreground="White"/>
-                <Separator Margin="5"/>
-                <TextBlock Text="Exportar datos" FontWeight="Bold" Margin="0 0 0 8"/>
-                <Button Content="Exportar a Excel" Command="{Binding ExportarExcelCommand}" Margin="0 4" Background="#4CAF50" Foreground="White"/>
-                <Button Content="Exportar a PDF" Command="{Binding ExportarPDFCommand}" Margin="0 4" Background="#F44336" Foreground="White"/>
-                <Button Content="Exportar a JSON" Command="{Binding ExportarJSONCommand}" Margin="0 4" Background="#9C27B0" Foreground="White"/>
+                <TextBlock Text="Exportar datos" FontWeight="Bold" Margin="0 0 0 8" FontFamily="Cascadia Code"/>
+                <Button Content="Exportar a Excel" Command="{Binding ExportarExcelCommand}" Margin="0 4" Background="{DynamicResource BackgroundColor}" Foreground="{DynamicResource TextColor}" FontFamily="Cascadia Code"/>
+                <Button Content="Exportar a PDF" Command="{Binding ExportarPDFCommand}" Margin="0 4" Background="{DynamicResource BackgroundColor}" Foreground="{DynamicResource TextColor}" FontFamily="Cascadia Code"/>
+                <Button Content="Exportar a JSON" Command="{Binding ExportarJSONCommand}" Margin="0 4" Background="{DynamicResource BackgroundColor}" Foreground="{DynamicResource TextColor}" FontFamily="Cascadia Code"/>
 
                 <Separator Margin="5"/>
-                <TextBlock Text="Cargar Asignaturas" FontWeight="Bold" Margin="0 0 0 8"/>
-                <Button Content="Presets" Command="{Binding CargarCommand}" Margin="0 4" Background="#8BC34A" Foreground="White"/>
-                <Button Content="Cargar JSON" Command="{Binding CargarJSONCommand}" Margin="0 4" Background="#FF9800" Foreground="White"/>
+                <TextBlock Text="Cargar Asignaturas" FontWeight="Bold" Margin="0 0 0 8" FontFamily="Cascadia Code"/>
+                <Button Content="Presets" Command="{Binding CargarCommand}" Margin="0 4" Background="{DynamicResource BackgroundColor}" Foreground="{DynamicResource TextColor}" FontFamily="Cascadia Code"/>
+                <Button Content="Cargar JSON" Command="{Binding CargarJSONCommand}" Margin="0 4" Background="{DynamicResource BackgroundColor}" Foreground="{DynamicResource TextColor}" FontFamily="Cascadia Code"/>
 
                 <Separator Margin="5"/>
-                <Button Content="Cerrar" Command="{Binding ToggleAccionesCommand}" Margin="0 4" Background="LightGray" Foreground="{DynamicResource TextColor}"/>
+                <Button Content="Cerrar" Command="{Binding ToggleAccionesCommand}" Margin="0 4" Background="#FF4444" Foreground="White" FontFamily="Cascadia Code"/>
             </StackPanel>
 
         </Border>

@@ -137,45 +137,6 @@ namespace Proyecto_DAM.ViewModel
         }
 
         [RelayCommand]
-        public async Task AddAsignatura()
-        {
-            var viewModel = App.Current.Services.GetService<AddAsignaturaViewModel>();
-
-            if (viewModel is null)
-            {
-                MessageBox.Show("No se pudo cargar el ViewModel.");
-                return;
-            }
-
-            var view = new AddAsignaturaView
-            {
-                DataContext = viewModel
-            };
-
-            view.ShowDialog();
-        }
-
-
-        [RelayCommand]
-        public async Task AddEvento()
-        {
-            var viewModel = App.Current.Services.GetService<AddEventoViewModel>();
-
-            if (viewModel is null)
-            {
-                MessageBox.Show("No se pudo cargar el ViewModel.");
-                return;
-            }
-
-            var view = new AddEventoView
-            {
-                DataContext = viewModel
-            };
-
-            view.ShowDialog();
-        }
-
-        [RelayCommand]
         public async Task Cargar()
         {
             var viewModel = App.Current.Services.GetService<CargarViewModel>();
@@ -201,6 +162,9 @@ namespace Proyecto_DAM.ViewModel
             App.Current.Services.GetService<LoginDTO>().Password = string.Empty;
             App.Current.Services.GetService<LoginDTO>().Id = 0;
             App.Current.Services.GetService<LoginDTO>().Token = string.Empty;
+
+            var pomodoroVM = App.Current.Services.GetService<PomodoroViewModel>();
+            pomodoroVM?.Limpiar();
 
             if (LoginViewModel == null)
             {
@@ -247,14 +211,19 @@ namespace Proyecto_DAM.ViewModel
                     hoja.Cell(fila, 2).Value = asignatura.Nombre;
                     fila++;
 
-                    hoja.Cell(fila, 1).Value = "Descripción:";
+                    hoja.Cell(fila, 1).Value = "Horas:";
                     hoja.Cell(fila, 1).Style.Font.Bold = true;
-                    hoja.Cell(fila, 2).Value = asignatura.Descripcion;
+                    hoja.Cell(fila, 2).Value = asignatura.Horas;
                     fila++;
 
-                    hoja.Cell(fila, 1).Value = "Créditos/Horas:";
+                    hoja.Cell(fila, 1).Value = "Créditos:";
                     hoja.Cell(fila, 1).Style.Font.Bold = true;
                     hoja.Cell(fila, 2).Value = asignatura.Creditos;
+                    fila++;
+
+                    hoja.Cell(fila, 1).Value = "Faltas:";
+                    hoja.Cell(fila, 1).Style.Font.Bold = true;
+                    hoja.Cell(fila, 2).Value = asignatura.Faltas;
                     fila++;
 
                     // Dejar un espacio entre créditos y eventos
@@ -273,29 +242,26 @@ namespace Proyecto_DAM.ViewModel
 
                         hoja.Cell(fila, 1).Value = "Nombre";
                         hoja.Cell(fila, 1).Style.Font.Bold = true;
-                        hoja.Cell(fila, 2).Value = "Descripción";
+                        hoja.Cell(fila, 2).Value = "Fecha";
                         hoja.Cell(fila, 2).Style.Font.Bold = true;
-                        hoja.Cell(fila, 3).Value = "Fecha";
+                        hoja.Cell(fila, 3).Value = "Porcentaje";
                         hoja.Cell(fila, 3).Style.Font.Bold = true;
-                        hoja.Cell(fila, 4).Value = "Porcentaje";
+                        hoja.Cell(fila, 4).Value = "Tipo";
                         hoja.Cell(fila, 4).Style.Font.Bold = true;
-                        hoja.Cell(fila, 5).Value = "Tipo";
+                        hoja.Cell(fila, 5).Value = "Estado";
                         hoja.Cell(fila, 5).Style.Font.Bold = true;
-                        hoja.Cell(fila, 6).Value = "Estado";
+                        hoja.Cell(fila, 6).Value = "Nota";
                         hoja.Cell(fila, 6).Style.Font.Bold = true;
-                        hoja.Cell(fila, 7).Value = "Nota";
-                        hoja.Cell(fila, 7).Style.Font.Bold = true;
                         fila++;
 
                         // Escribir los eventos de la asignatura
                         foreach (var evento in eventosAsignatura)
                         {
                             hoja.Cell(fila, 1).Value = evento.Nombre;
-                            hoja.Cell(fila, 2).Value = evento.Descripcion;
-                            hoja.Cell(fila, 3).Value = evento.Fecha.ToString("dd/MM/yyyy");
-                            hoja.Cell(fila, 4).Value = evento.Porcentaje;
-                            hoja.Cell(fila, 5).Value = evento.Tipo;
-                            hoja.Cell(fila, 6).Value = evento.Estado;
+                            hoja.Cell(fila, 2).Value = evento.Fecha.ToString("dd/MM/yyyy");
+                            hoja.Cell(fila, 3).Value = evento.Porcentaje;
+                            hoja.Cell(fila, 4).Value = evento.Tipo;
+                            hoja.Cell(fila, 5).Value = evento.Estado;
 
                             // Buscar la nota asociada al evento
                             var notaEvento = notas.FirstOrDefault(n => n.IdEvento == evento.Id);
@@ -360,9 +326,11 @@ namespace Proyecto_DAM.ViewModel
 
                     gfx.DrawString($"Nombre: {asignatura.Nombre}", font, XBrushes.Black, x, y);
                     y += lineHeight;
-                    gfx.DrawString($"Descripción: {asignatura.Descripcion}", font, XBrushes.Black, x, y);
+                    gfx.DrawString($"Horas: {asignatura.Horas}", font, XBrushes.Black, x, y);
                     y += lineHeight;
                     gfx.DrawString($"Créditos: {asignatura.Creditos}", font, XBrushes.Black, x, y);
+                    y += lineHeight;
+                    gfx.DrawString($"Faltas: {asignatura.Faltas}", font, XBrushes.Black, x, y);
                     y += lineHeight;
 
                     y += lineHeight;
@@ -377,44 +345,42 @@ namespace Proyecto_DAM.ViewModel
                         y += lineHeight;
 
                         // Ajustar el ancho de las columnas
-                        double columnWidth1 = 100;  // Espacio para "Nombre"
-                        double columnWidth2 = 120;  // Espacio para "Descripción"
-                        double columnWidth3 = 80;   // Espacio para "Fecha"
-                        double columnWidth4 = 80;   // Espacio para "Porcentaje"
-                        double columnWidth5 = 60;   // Espacio para "Tipo"
-                        double columnWidth6 = 60;   // Espacio para "Estado"
-                        double columnWidth7 = 60;   // Espacio para "Nota"
+                        double columnWidth1 = 175;  // Espacio para "Nombre"
+                        double columnWidth2 = 80;   // Espacio para "Fecha"
+                        double columnWidth3 = 80;   // Espacio para "Porcentaje"
+                        double columnWidth4 = 60;   // Espacio para "Tipo"
+                        double columnWidth5 = 60;   // Espacio para "Estado"
+                        double columnWidth6 = 60;   // Espacio para "Nota"
 
                         gfx.DrawString("Nombre", font, XBrushes.Black, x, y);
-                        gfx.DrawString("Descripción", font, XBrushes.Black, x + columnWidth1, y);
-                        gfx.DrawString("Fecha", font, XBrushes.Black, x + columnWidth1 + columnWidth2, y);
-                        gfx.DrawString("Porcentaje", font, XBrushes.Black, x + columnWidth1 + columnWidth2 + columnWidth3, y);
-                        gfx.DrawString("Tipo", font, XBrushes.Black, x + columnWidth1 + columnWidth2 + columnWidth3 + columnWidth4, y);
-                        gfx.DrawString("Estado", font, XBrushes.Black, x + columnWidth1 + columnWidth2 + columnWidth3 + columnWidth4 + columnWidth5, y);
-                        gfx.DrawString("Nota", font, XBrushes.Black, x + columnWidth1 + columnWidth2 + columnWidth3 + columnWidth4 + columnWidth5 + columnWidth6, y);
+                        gfx.DrawString("Fecha", font, XBrushes.Black, x + columnWidth1, y);
+                        gfx.DrawString("Porcentaje", font, XBrushes.Black, x + columnWidth1 + columnWidth2, y);
+                        gfx.DrawString("Tipo", font, XBrushes.Black, x + columnWidth1 + columnWidth2 + columnWidth3, y);
+                        gfx.DrawString("Estado", font, XBrushes.Black, x + columnWidth1 + columnWidth2 + columnWidth3 + columnWidth4, y);
+                        gfx.DrawString("Nota", font, XBrushes.Black, x + columnWidth1 + columnWidth2 + columnWidth3 + columnWidth4 + columnWidth5, y);
+
                         y += lineHeight;
+
                         // Subrayar los títulos
                         gfx.DrawLine(XPens.Black, x, y - lineHeight + 5, x + columnWidth1, y - lineHeight + 5); // Nombre
-                        gfx.DrawLine(XPens.Black, x + columnWidth1, y - lineHeight + 5, x + columnWidth1 + columnWidth2, y - lineHeight + 5); // Descripción
-                        gfx.DrawLine(XPens.Black, x + columnWidth1 + columnWidth2, y - lineHeight + 5, x + columnWidth1 + columnWidth2 + columnWidth3, y - lineHeight + 5); // Fecha
-                        gfx.DrawLine(XPens.Black, x + columnWidth1 + columnWidth2 + columnWidth3, y - lineHeight + 5, x + columnWidth1 + columnWidth2 + columnWidth3 + columnWidth4, y - lineHeight + 5); // Porcentaje
-                        gfx.DrawLine(XPens.Black, x + columnWidth1 + columnWidth2 + columnWidth3 + columnWidth4, y - lineHeight + 5, x + columnWidth1 + columnWidth2 + columnWidth3 + columnWidth4 + columnWidth5, y - lineHeight + 5); // Tipo
-                        gfx.DrawLine(XPens.Black, x + columnWidth1 + columnWidth2 + columnWidth3 + columnWidth4 + columnWidth5, y - lineHeight + 5, x + columnWidth1 + columnWidth2 + columnWidth3 + columnWidth4 + columnWidth5 + columnWidth6, y - lineHeight + 5); // Estado
-                        gfx.DrawLine(XPens.Black, x + columnWidth1 + columnWidth2 + columnWidth3 + columnWidth4 + columnWidth5 + columnWidth6, y - lineHeight + 5, x + columnWidth1 + columnWidth2 + columnWidth3 + columnWidth4 + columnWidth5 + columnWidth6 + 60, y - lineHeight + 5); // Nota
+                        gfx.DrawLine(XPens.Black, x + columnWidth1, y - lineHeight + 5, x + columnWidth1 + columnWidth2, y - lineHeight + 5); // Fecha
+                        gfx.DrawLine(XPens.Black, x + columnWidth1 + columnWidth2, y - lineHeight + 5, x + columnWidth1 + columnWidth2 + columnWidth3, y - lineHeight + 5); // Porcentaje
+                        gfx.DrawLine(XPens.Black, x + columnWidth1 + columnWidth2 + columnWidth3, y - lineHeight + 5, x + columnWidth1 + columnWidth2 + columnWidth3 + columnWidth4, y - lineHeight + 5); // Tipo
+                        gfx.DrawLine(XPens.Black, x + columnWidth1 + columnWidth2 + columnWidth3 + columnWidth4, y - lineHeight + 5, x + columnWidth1 + columnWidth2 + columnWidth3 + columnWidth4 + columnWidth5, y - lineHeight + 5); // Estado
+                        gfx.DrawLine(XPens.Black, x + columnWidth1 + columnWidth2 + columnWidth3 + columnWidth4 + columnWidth5, y - lineHeight + 5, x + columnWidth1 + columnWidth2 + columnWidth3 + columnWidth4 + columnWidth5 + columnWidth6, y - lineHeight + 5); // Nota
 
                         // Añadir las filas de eventos
                         foreach (var evento in eventosAsignatura)
                         {
                             gfx.DrawString(evento.Nombre, font, XBrushes.Black, x, y);
-                            gfx.DrawString(evento.Descripcion, font, XBrushes.Black, x + columnWidth1, y);
-                            gfx.DrawString(evento.Fecha.ToString("dd/MM/yyyy"), font, XBrushes.Black, x + columnWidth1 + columnWidth2, y);
-                            gfx.DrawString(evento.Porcentaje.ToString(), font, XBrushes.Black, x + columnWidth1 + columnWidth2 + columnWidth3, y);
-                            gfx.DrawString(evento.Tipo, font, XBrushes.Black, x + columnWidth1 + columnWidth2 + columnWidth3 + columnWidth4, y);
-                            gfx.DrawString(evento.Estado, font, XBrushes.Black, x + columnWidth1 + columnWidth2 + columnWidth3 + columnWidth4 + columnWidth5, y);
+                            gfx.DrawString(evento.Fecha.ToString("dd/MM/yyyy"), font, XBrushes.Black, x + columnWidth1, y);
+                            gfx.DrawString(evento.Porcentaje.ToString(), font, XBrushes.Black, x + columnWidth1 + columnWidth2, y);
+                            gfx.DrawString(evento.Tipo, font, XBrushes.Black, x + columnWidth1 + columnWidth2 + columnWidth3, y);
+                            gfx.DrawString(evento.Estado, font, XBrushes.Black, x + columnWidth1 + columnWidth2 + columnWidth3 + columnWidth4, y);
 
                             // Buscar la nota asociada al evento
                             var notaEvento = notas.FirstOrDefault(n => n.IdEvento == evento.Id);
-                            gfx.DrawString(notaEvento?.NotaValor.ToString() ?? "Sin nota", font, XBrushes.Black, x + columnWidth1 + columnWidth2 + columnWidth3 + columnWidth4 + columnWidth5 + columnWidth6, y);
+                            gfx.DrawString(notaEvento?.NotaValor.ToString() ?? "Sin nota", font, XBrushes.Black, x + columnWidth1 + columnWidth2 + columnWidth3 + columnWidth4 + columnWidth5, y);
                             y += lineHeight;
 
                             // Comprobar si necesitamos una nueva página

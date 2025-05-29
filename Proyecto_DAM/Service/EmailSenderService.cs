@@ -38,11 +38,11 @@ namespace Proyecto_DAM.Services
                 };
 
                 await smtp.SendMailAsync(message);
-                Console.WriteLine($"[✓] Correo enviado a: {email.To}");
+                Console.WriteLine($"Correo enviado a: {email.To}");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[✗] Error al enviar correo: {ex.Message}");
+                Console.WriteLine($"Error al enviar correo: {ex.Message}");
             }
         }
     }

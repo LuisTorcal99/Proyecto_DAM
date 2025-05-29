@@ -40,7 +40,7 @@ namespace Proyecto_DAM
             var consumidor = Services.GetService<IRabbitMQConsumer>();
             consumidor?.DetenerConsumo();
 
-            await DockerHelper.StopDockerAsync();
+            //await DockerHelper.StopDockerAsync();
 
             base.OnExit(e);
         }
@@ -72,6 +72,7 @@ namespace Proyecto_DAM
 
             //Services 
             services.AddSingleton<MainViewModel>();
+            services.AddSingleton<PomodoroViewModel>();
             services.AddSingleton<LoginDTO>();
             services.AddSingleton<IEventoNotificacionProvider, EventoNotificacionService>();
             services.AddSingleton<ILogrosApiProvider, LogrosApiService>();

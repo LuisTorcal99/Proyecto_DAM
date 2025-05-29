@@ -26,7 +26,6 @@ namespace Proyecto_DAM.ViewModel
         [ObservableProperty]
         public Func<double, string> _YFormatter;
 
-        // Las propiedades que cuentan los estados de ánimo y niveles de estrés deben ser de tipo int
         [ObservableProperty]
         private int _EstadoAnimoFelizCount;
 
@@ -235,18 +234,45 @@ namespace Proyecto_DAM.ViewModel
         {
             if (EstadoAnimo == 0)
             {
-                EstadoAnimo = 1 ;
+                EstadoAnimo = 1;
             }
             if (NivelEstres == 0)
             {
                 NivelEstres = 1;
             }
 
+            var loginDto = App.Current.Services.GetService<LoginDTO>();
+            if (loginDto == null) return;
+
+            var registros = await _bienestarApiService.GetBienestar();
+            var hoy = DateTime.Today;
+
+            var existenteHoy = registros.FirstOrDefault(b =>
+                b.UsuarioId == loginDto.Id && b.Fecha.Date == hoy);
+
+            if (existenteHoy != null)
+            {
+                var resultado = MessageBox.Show(
+                    "Ya existe un registro de bienestar para hoy. ¿Deseas sobrescribirlo?",
+                    "Confirmar actualización",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question
+                );
+
+                if (resultado != MessageBoxResult.Yes)
+                {
+                    MessageBox.Show("Operación cancelada.");
+                    return;
+                }
+
+                await _bienestarApiService.DeleteBienestar(existenteHoy.Id.ToString());
+            }
+
             Sugerencia = ObtenerSugerencia(EstadoAnimo, NivelEstres);
 
-            var bienestar = new BienestarDTO
+            var nuevoBienestar = new BienestarDTO
             {
-                UsuarioId = App.Current.Services.GetService<LoginDTO>().Id,
+                UsuarioId = loginDto.Id,
                 Fecha = DateTime.Now,
                 EstadoDeAnimo = EstadoAnimo switch
                 {
@@ -256,24 +282,22 @@ namespace Proyecto_DAM.ViewModel
                     _ => "Desconocido"
                 },
                 NivelDeEstres = NivelEstres,
-                Sugerencia = Sugerencia 
+                Sugerencia = Sugerencia
             };
 
-            await _bienestarApiService.PostBienestar(bienestar);
+            await _bienestarApiService.PostBienestar(nuevoBienestar);
 
             var mensaje = new MensajeRabbit
             {
                 Tipo = "Evento",
-                Contenido = $"Bienestar registrada con exito"
+                Contenido = "Bienestar registrado con éxito"
             };
             await _rabbitMQProducer.EnviarMensaje(JsonSerializer.Serialize(mensaje));
 
             await LoadAsync();
 
-            MessageBox.Show("Estado actualizado");
+            MessageBox.Show("Estado actualizado correctamente.");
         }
-
-
         private string ObtenerSugerencia(int estadoAnimo, int nivelEstres)
         {
             if (estadoAnimo == 3) // Triste

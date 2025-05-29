@@ -16,6 +16,7 @@ using Proyecto_DAM.RabbitMQ;
 using Proyecto_DAM.Service;
 using Proyecto_DAM.Utils;
 using Proyecto_DAM.View;
+using static Proyecto_DAM.Models.ExportJsonModel;
 
 namespace Proyecto_DAM.ViewModel
 {
@@ -64,6 +65,7 @@ namespace Proyecto_DAM.ViewModel
         public override async Task LoadAsync()
         {
             AsignaturaItem.Clear();
+            NumeroAsignaturas = $"Asignaturas(0):";
             try
             {
                 var asignaturas = await _asignaturaService.GetAsignatura();
@@ -98,6 +100,25 @@ namespace Proyecto_DAM.ViewModel
             {
                 MessageBox.Show($"Error al cargar asignaturas: {ex.Message}");
             }
+        }
+
+        [RelayCommand]
+        public async Task AddAsignatura()
+        {
+            var viewModel = App.Current.Services.GetService<AddAsignaturaViewModel>();
+
+            if (viewModel is null)
+            {
+                MessageBox.Show("No se pudo cargar el ViewModel.");
+                return;
+            }
+
+            var view = new AddAsignaturaView
+            {
+                DataContext = viewModel
+            };
+
+            view.ShowDialog();
         }
     }
 }

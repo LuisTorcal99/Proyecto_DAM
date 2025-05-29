@@ -12,6 +12,7 @@ using Proyecto_DAM.DTO;
 using Proyecto_DAM.Interfaces;
 using Proyecto_DAM.RabbitMQ;
 using Proyecto_DAM.Utils;
+using Proyecto_DAM.View;
 
 namespace Proyecto_DAM.ViewModel
 {
@@ -79,7 +80,7 @@ namespace Proyecto_DAM.ViewModel
                 Descripcion = Descripcion,
                 Creditos = creditos,
                 Horas = horas,
-                PorcentajeFaltas = 0,
+                PorcentajeFaltas = 10,
                 Faltas = 0,
                 IdUsuario = App.Current.Services.GetService<LoginDTO>().Id
             };
@@ -95,9 +96,11 @@ namespace Proyecto_DAM.ViewModel
                 };
                 await _rabbitMQProducer.EnviarMensaje(JsonSerializer.Serialize(mensaje));
 
-                MessageBox.Show(Constantes.MSG_PERFECT);
+                MessageBox.Show("Añadido con exito");
 
                 App.Current.Services.GetService<MainViewModel>().SelectViewModelCommand.Execute(App.Current.Services.GetService<PrincipalViewModel>());
+
+                Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is AddAsignaturaView)?.Close();
             }
             catch (Exception ex)
             {

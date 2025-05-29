@@ -202,7 +202,7 @@ namespace Proyecto_DAM.ViewModel
                 var asignaturaCreada1 = asignaturasUsuario.ElementAtOrDefault(0);
                 var asignaturaCreada2 = asignaturasUsuario.ElementAtOrDefault(1);
                 var tipos = new[] { "Nota", "Tarea", "Examen" };
-                var estados = new[] { "Pendiente", "EnProceso", "Realizado" };
+                var estados = new[] { "Pendiente", "EnProceso", "Completado" };
                 int i = 1;
                 int tipoNum1 = 0;
                 int estadoNum1 = 0;

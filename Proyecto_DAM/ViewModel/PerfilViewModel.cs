@@ -160,71 +160,70 @@ namespace Proyecto_DAM.ViewModel
 
             try
             {
-                var asignaturas = await _asignaturaApiService.GetAsignatura();
-                TotalAsignaturas = asignaturas?.ToList().Count ?? 0;
+                var asignaturas = (await _asignaturaApiService.GetAsignatura())?.ToList() ?? new List<AsignaturaDTO>();
+                var eventos = (await _eventoApiService.GetEvento())?.ToList() ?? new List<EventoDTO>();
+                var notas = (await _notaApiService.GetNota())?.ToList() ?? new List<NotaDTO>();
 
-                var eventos = await _eventoApiService.GetEvento();
-                TotalEventos = eventos?.ToList().Count ?? 0;
+                TotalAsignaturas = asignaturas.Count;
+                TotalEventos = eventos.Count;
 
-                // Filtrar los eventos de tipo "Examen"
-                var eventosExamen = eventos?.Where(e => e.Tipo == "Examen").ToList();
-                TotalExamenes = eventosExamen?.Count() ?? 0;
-
-                var notas = await _notaApiService.GetNota();
+                var eventosExamen = eventos.Where(e => e.Tipo == "Examen").ToList();
+                TotalExamenes = eventosExamen.Count;
 
                 // Aprobadas
-                TotalAprobadas = notas?.Count(n => n.NotaValor >= 5) ?? 0;
-                TotalExamenesAprobados = notas?.Count(n => n.NotaValor >= 5 && eventosExamen.Any(e => e.Id == n.IdEvento)) ?? 0;
+                TotalAprobadas = notas.Count(n => n.NotaValor >= 5);
+                TotalExamenesAprobados = notas.Count(n =>
+                    n.NotaValor >= 5 && eventosExamen.Any(e => e.Id == n.IdEvento));
 
                 // Suspendidas
-                TotalSuspendidas = notas?.Count(n => n.NotaValor >= 0 && n.NotaValor < 5) ?? 0;
-                TotalExamenesSuspendidos = notas?.Count(n => n.NotaValor >= 0 && n.NotaValor < 5 && eventosExamen.Any(e => e.Id == n.IdEvento)) ?? 0;
+                TotalSuspendidas = notas.Count(n => n.NotaValor >= 0 && n.NotaValor < 5);
+                TotalExamenesSuspendidos = notas.Count(n =>
+                    n.NotaValor >= 0 && n.NotaValor < 5 && eventosExamen.Any(e => e.Id == n.IdEvento));
 
                 // Pendientes
                 TotalPendientes = TotalEventos - (TotalAprobadas + TotalSuspendidas);
-                TotalExamenesPendientes = eventosExamen.Count() - (TotalExamenesAprobados + TotalExamenesSuspendidos);
+                TotalExamenesPendientes = TotalExamenes - (TotalExamenesAprobados + TotalExamenesSuspendidos);
 
                 if (TotalPendientes < 0) TotalPendientes = 0;
                 if (TotalExamenesPendientes < 0) TotalExamenesPendientes = 0;
 
-
                 XLabels = new List<string> { "Aprobadas", "Suspendidas", "Pendientes" };
 
                 Series = new SeriesCollection
-                {
-                    // Columnas para las Notas Generales
-                    new ColumnSeries
-                    {
-                        Title = "Notas",
-                        Values = new ChartValues<double> { TotalAprobadas, TotalSuspendidas, TotalPendientes },
-                        Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F1CAE4")),
-                        Stroke = Brushes.Black,
-                        StrokeThickness = 1,
-                        MaxColumnWidth = 60,
-                        DataLabels = true,
-                        LabelPoint = point => point.Y.ToString("N0")
-                    },
-                    // Columnas para las Notas de Examen
-                    new ColumnSeries
-                    {
-                        Title = "Notas Examen",
-                        Values = new ChartValues<double> { TotalExamenesAprobados, TotalExamenesSuspendidos, TotalExamenesPendientes },
-                        Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#0E351B")),
-                        Stroke = Brushes.Black,
-                        StrokeThickness = 1,
-                        MaxColumnWidth = 60,
-                        DataLabels = true,
-                        LabelPoint = point => point.Y.ToString("N0")
-                    }
-                };
+        {
+            new ColumnSeries
+            {
+                Title = "Notas",
+                Values = new ChartValues<double> { TotalAprobadas, TotalSuspendidas, TotalPendientes },
+                Fill = new SolidColorBrush((Color)(ColorConverter.ConvertFromString("#F1CAE4") ?? Colors.LightPink)),
+                Stroke = Brushes.Black,
+                StrokeThickness = 1,
+                MaxColumnWidth = 60,
+                DataLabels = true,
+                LabelPoint = point => point.Y.ToString("N0")
+            },
+            new ColumnSeries
+            {
+                Title = "Notas Examen",
+                Values = new ChartValues<double> { TotalExamenesAprobados, TotalExamenesSuspendidos, TotalExamenesPendientes },
+                Fill = new SolidColorBrush((Color)(ColorConverter.ConvertFromString("#0E351B") ?? Colors.DarkGreen)),
+                Stroke = Brushes.Black,
+                StrokeThickness = 1,
+                MaxColumnWidth = 60,
+                DataLabels = true,
+                LabelPoint = point => point.Y.ToString("N0")
+            }
+        };
 
                 YFormatter = value => value.ToString("N0");
-
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error cargando datos del perfil: {ex.Message}");
+                MessageBox.Show("Se produjo un error al cargar el perfil. Intenta de nuevo más tarde.");
             }
         }
+
+
     }
 }

@@ -46,11 +46,11 @@ namespace Proyecto_DAM.RabbitMQ
                 var body = Encoding.UTF8.GetBytes(message);
                 channel.BasicPublish(exchange: "", routingKey: _queueName, basicProperties: null, body: body);
 
-                Console.WriteLine($" [✓] Mensaje enviado: {message}");
+                Console.WriteLine($"Mensaje enviado: {message}");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[✗] Error al enviar mensaje: {ex.Message}");
+                Console.WriteLine($"Error al enviar mensaje: {ex.Message}");
             }
         }
     }

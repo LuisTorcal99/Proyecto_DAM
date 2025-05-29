@@ -342,6 +342,27 @@ namespace Proyecto_DAM.ViewModel
             }
         }
 
+        [RelayCommand]
+        public async Task AddEvento()
+        {
+            var viewModel = App.Current.Services.GetService<AddEventoViewModel>();
+
+            if (viewModel is null)
+            {
+                MessageBox.Show("No se pudo cargar el ViewModel.");
+                return;
+            }
+
+            viewModel.Asignatura = this.Asignatura;
+
+            var view = new AddEventoView
+            {
+                DataContext = viewModel
+            };
+
+            view.ShowDialog();
+        }
+
         public override Task LoadAsync()
         {
             return base.LoadAsync();

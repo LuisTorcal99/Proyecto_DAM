@@ -59,6 +59,11 @@ namespace Proyecto_DAM.ViewModel
             TiempoRestante = "00:00";
             FondoColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#E6F0F1"));
             _asignaturaApiService = asignaturaApiService;
+
+            if(string.IsNullOrEmpty(App.Current.Services.GetService<LoginDTO>().Email))
+            {
+                Limpiar();
+            }
         }
 
         public override async Task LoadAsync()
@@ -200,6 +205,40 @@ namespace Proyecto_DAM.ViewModel
         public void Descanso()
         {
             IniciarTemporizador(5, Colors.SkyBlue);
+        }
+
+        [RelayCommand]
+        public void Stop()
+        {
+            _temporizador?.Stop();
+        }
+
+        public void Limpiar()
+        {
+            _temporizador?.Stop();
+            _temporizador = null;
+
+            MinutosIntroducidos = string.Empty;
+            TiempoRestante = "00:00";
+            FondoColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#E6F0F1"));
+            AsignaturaSeleccionada = null;
+            TiempoEstudiadoActual = string.Empty;
+            UltimaFechaEstudio = default;
+            _duracion = TimeSpan.Zero;
+            _tiempoEstudioActual = null;
+        }
+
+
+        [RelayCommand]
+        public void Reanudar()
+        {
+            if (_duracion.TotalSeconds > 0)
+            {
+                _temporizador = new DispatcherTimer();
+                _temporizador.Interval = TimeSpan.FromSeconds(1);
+                _temporizador.Tick += Temporizador_Tick;
+                _temporizador.Start();
+            }
         }
 
     }

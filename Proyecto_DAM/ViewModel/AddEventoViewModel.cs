@@ -14,11 +14,15 @@ using Proyecto_DAM.Interfaces;
 using Proyecto_DAM.Models;
 using Proyecto_DAM.RabbitMQ;
 using Proyecto_DAM.Utils;
+using Proyecto_DAM.View;
+using static Proyecto_DAM.Models.ExportJsonModel;
 
 namespace Proyecto_DAM.ViewModel
 {
     public partial class AddEventoViewModel : ViewModelBase
     {
+        public AsignaturaDTO? Asignatura { get; set; }
+
         [ObservableProperty]
         public string _Nombre;
 
@@ -109,7 +113,8 @@ namespace Proyecto_DAM.ViewModel
                 await _eventoApiService.PostEvento(evento);
 
                 App.Current.Services.GetService<MainViewModel>().SelectViewModelCommand.Execute(App.Current.Services.GetService<EventosViewModel>());
-                MessageBox.Show(Constantes.MSG_PERFECT);
+
+                MessageBox.Show("Añadido con exito");
 
                 var mensaje = new MensajeRabbit
                 {
@@ -117,6 +122,8 @@ namespace Proyecto_DAM.ViewModel
                     Contenido = $"Evento creado: {evento.Nombre} (Tipo: {evento.Tipo}, Asignatura: {evento.IdAsignatura}, Fecha: {evento.Fecha})"
                 };
                 await _rabbitMQProducer.EnviarMensaje(JsonSerializer.Serialize(mensaje));
+
+                Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is AddEventoView)?.Close();
             }
             catch (Exception ex)
             {
@@ -141,6 +148,14 @@ namespace Proyecto_DAM.ViewModel
                 foreach (var a in asignaturasUsuario)
                 {
                     Asignaturas.Add(a);
+                }
+
+                HoraTexto = DateTime.Now.ToString("HH:mm");
+                Fecha = DateTime.Now;
+
+                if (Asignatura != null)
+                {
+                    AsignaturaSeleccionada = Asignaturas.FirstOrDefault(a => a.Id == Asignatura.Id);
                 }
 
             }

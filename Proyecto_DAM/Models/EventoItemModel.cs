@@ -6,6 +6,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using Proyecto_DAM.DTO;
+using static Proyecto_DAM.Models.ExportJsonModel;
 
 namespace Proyecto_DAM.Models
 {
@@ -17,6 +18,7 @@ namespace Proyecto_DAM.Models
         public DateTime Fecha { get; set; }
         public double Porcentaje { get; set; }
         public int IdAsignatura { get; set; }
+        public string AsignaturaNombre { get; set; }
 
         public Brush BackgroundColor
         {
@@ -29,8 +31,11 @@ namespace Proyecto_DAM.Models
             }
         } 
 
-        public static EventoItemModel CreateModelFromDTO(EventoDTO eventoDTO)
+        public static EventoItemModel CreateModelFromDTO(EventoDTO eventoDTO, IEnumerable<AsignaturaDTO> asignaturas)
         {
+            string asignaturaNombre = asignaturas
+                .FirstOrDefault(a => a.Id == eventoDTO.IdAsignatura)?.Nombre ?? "Sin asignatura";
+
             return new EventoItemModel
             {
                 Nombre = eventoDTO.Nombre,
@@ -38,7 +43,8 @@ namespace Proyecto_DAM.Models
                 Estado = eventoDTO.Estado,
                 Fecha = eventoDTO.Fecha,
                 Porcentaje = eventoDTO.Porcentaje,
-                IdAsignatura = eventoDTO.IdAsignatura
+                IdAsignatura = eventoDTO.IdAsignatura,
+                AsignaturaNombre = asignaturaNombre
             };
         }
     }

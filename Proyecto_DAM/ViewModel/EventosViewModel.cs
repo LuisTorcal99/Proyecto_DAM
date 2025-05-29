@@ -10,6 +10,7 @@ using Proyecto_DAM.DTO;
 using Proyecto_DAM.Interfaces;
 using Proyecto_DAM.Models;
 using Proyecto_DAM.Utils;
+using Proyecto_DAM.View;
 
 namespace Proyecto_DAM.ViewModel
 {
@@ -99,7 +100,9 @@ namespace Proyecto_DAM.ViewModel
         public override async Task LoadAsync()
         {
             DatosGridItem.Clear();
+            PaginatedItems.Clear();
             Asignaturas.Clear();
+            NumeroEventos = $"Eventos(0):";
 
             try
             {
@@ -110,7 +113,7 @@ namespace Proyecto_DAM.ViewModel
                 {
                     var eventosFiltrados = eventos
                         .Where(e => e.Fecha > DateTime.Now)
-                        .Select(e => EventoItemModel.CreateModelFromDTO(e))
+                        .Select(e => EventoItemModel.CreateModelFromDTO(e, asignaturas))
                         .OrderBy(e => e.Fecha)
                         .ToList();
 
@@ -173,6 +176,25 @@ namespace Proyecto_DAM.ViewModel
             {
                 PaginatedItems.Add(evento);
             }
+        }
+
+        [RelayCommand]
+        public async Task AddEvento()
+        {
+            var viewModel = App.Current.Services.GetService<AddEventoViewModel>();
+
+            if (viewModel is null)
+            {
+                MessageBox.Show("No se pudo cargar el ViewModel.");
+                return;
+            }
+
+            var view = new AddEventoView
+            {
+                DataContext = viewModel
+            };
+
+            view.ShowDialog();
         }
     }
 }
