@@ -13,7 +13,7 @@ El proyecto es una aplicación de escritorio diseñada para estudiantes, permiti
 - **Carga de cursos y asignaturas**: Existen presets para cargar asignaturas y cursos de forma rápida.
 - **Gestión de faltas de asistencia**: Los estudiantes pueden registrar las faltas de asistencia, y la aplicación calcula cuántos días faltan para llegar al límite de faltas permitidas.
 - **Modo claro y oscuro**: Los usuarios pueden cambiar entre el modo claro y oscuro.
-- **Exportación de datos**: Los estudiantes pueden exportar sus datos a Excel y PowerPoint.
+- **Exportación de datos**: Los estudiantes pueden exportar sus datos a Excel y PDF.
 - **Autenticación y Autorización**: Cada usuario tiene su propio perfil y sus datos son privados.
 - **Historial de Actividades**: Visualiza el historial de tareas entregadas, exámenes realizados y las calificaciones obtenidas.
 - **Actividades**: Visualiza las actividades de las proximas tareas y exámenes y la fecha en la que se realiza, cuenta con colores para hacer mas visual los eventos que estan por suceder.
