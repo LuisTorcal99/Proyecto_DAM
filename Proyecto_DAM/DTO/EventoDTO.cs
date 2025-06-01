@@ -29,7 +29,7 @@ namespace Proyecto_DAM.DTO
         public int IdAsignatura { get; set; }
 
         [JsonPropertyName("nota")]
-        public NotaDTO? Nota { get; set; }
+        public double? Nota { get; set; }
 
         [JsonPropertyName("tipo")]
         public string Tipo { get; set; }   // "Tarea" o "Examen"

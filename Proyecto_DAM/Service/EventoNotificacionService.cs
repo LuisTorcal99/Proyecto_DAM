@@ -28,17 +28,11 @@ namespace Proyecto_DAM.Service
 
                 if (nota != null)
                 {
-                    evento.Nota = nota; 
+                    evento.Nota = nota.NotaValor; 
                 }
                 else
                 {
-                    evento.Nota = new NotaDTO
-                    {
-                        NotaValor = -1, 
-                        IdEvento = evento.Id,
-                        IdAsignatura = evento.IdAsignatura, 
-                        IdUsuario = idUsuario
-                    };
+                    evento.Nota = -1;
                 }
 
                 if (evento.EmailEnviado || evento.Estado.Equals("Completado"))

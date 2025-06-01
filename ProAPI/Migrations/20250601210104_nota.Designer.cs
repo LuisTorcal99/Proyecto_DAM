@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RestAPI.Data;
 
@@ -11,9 +12,11 @@ using RestAPI.Data;
 namespace RestAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250601210104_nota")]
+    partial class nota
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -301,9 +304,6 @@ namespace RestAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("AsignaturaEntityId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -331,9 +331,6 @@ namespace RestAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double?>("Nota")
-                        .HasColumnType("float");
-
                     b.Property<double>("Porcentaje")
                         .HasColumnType("float");
 
@@ -343,7 +340,7 @@ namespace RestAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AsignaturaEntityId");
+                    b.HasIndex("IdAsignatura");
 
                     b.HasIndex("IdUsuario");
 
@@ -388,7 +385,7 @@ namespace RestAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("AsignaturaEntityId")
+                    b.Property<int>("AsignaturaId")
                         .HasColumnType("int");
 
                     b.Property<int>("IdAsignatura")
@@ -405,7 +402,10 @@ namespace RestAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AsignaturaEntityId");
+                    b.HasIndex("AsignaturaId");
+
+                    b.HasIndex("IdEvento")
+                        .IsUnique();
 
                     b.HasIndex("IdUsuario");
 
@@ -537,30 +537,46 @@ namespace RestAPI.Migrations
 
             modelBuilder.Entity("RestAPI.Models.Entity.EventoEntity", b =>
                 {
-                    b.HasOne("RestAPI.Models.Entity.AsignaturaEntity", null)
+                    b.HasOne("RestAPI.Models.Entity.AsignaturaEntity", "Asignatura")
                         .WithMany("Eventos")
-                        .HasForeignKey("AsignaturaEntityId");
+                        .HasForeignKey("IdAsignatura")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("RestAPI.Models.Entity.User", "Usuario")
                         .WithMany("Eventos")
                         .HasForeignKey("IdUsuario")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Asignatura");
 
                     b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("RestAPI.Models.Entity.NotaEntity", b =>
                 {
-                    b.HasOne("RestAPI.Models.Entity.AsignaturaEntity", null)
+                    b.HasOne("RestAPI.Models.Entity.AsignaturaEntity", "Asignatura")
                         .WithMany("Notas")
-                        .HasForeignKey("AsignaturaEntityId");
+                        .HasForeignKey("AsignaturaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RestAPI.Models.Entity.EventoEntity", "Evento")
+                        .WithOne("Nota")
+                        .HasForeignKey("RestAPI.Models.Entity.NotaEntity", "IdEvento")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("RestAPI.Models.Entity.User", "Usuario")
                         .WithMany("Notas")
                         .HasForeignKey("IdUsuario")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Asignatura");
+
+                    b.Navigation("Evento");
 
                     b.Navigation("Usuario");
                 });
@@ -581,6 +597,12 @@ namespace RestAPI.Migrations
                     b.Navigation("Eventos");
 
                     b.Navigation("Notas");
+                });
+
+            modelBuilder.Entity("RestAPI.Models.Entity.EventoEntity", b =>
+                {
+                    b.Navigation("Nota")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("RestAPI.Models.Entity.User", b =>

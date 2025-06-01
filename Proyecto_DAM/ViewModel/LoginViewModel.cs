@@ -142,14 +142,19 @@ namespace Proyecto_DAM.ViewModel
 
         public override async Task LoadAsync()
         {
-            InicializarDatosAsync();
+            await InicializarDatosAsync();
         }
 
         public async Task InicializarDatosAsync()
         {
+            App.Current.Services.GetService<LoginDTO>().Email = Constantes.EMAIL_GESTOR;
+            App.Current.Services.GetService<LoginDTO>().Password = Constantes.PASSWORD;
+            UserDTO userLogin = await _httpJsonProvider.LoginPostAsync(Constantes.LOGIN_PATH, App.Current.Services.GetService<LoginDTO>());
+            App.Current.Services.GetService<LoginDTO>().Token = userLogin.Result.Token;
+
             // 1. Comprobar si el admin ya está creado
             var usuarios = await _UsuarioService.GetUser();
-            if (!usuarios.Any(u => u.Email == Constantes.EMAIL_GESTOR))
+            if (usuarios == null)
             {
                 var gestor = new RegistroDTO(
                     Constantes.USERNAME_GESTOR,

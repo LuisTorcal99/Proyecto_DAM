@@ -16,18 +16,18 @@ namespace RestAPI.Data
             base.OnModelCreating(modelBuilder);
 
             // Relación entre Asignatura y Eventos (uno a muchos)
-            modelBuilder.Entity<AsignaturaEntity>()
-                .HasMany(a => a.Eventos)
-                .WithOne(e => e.Asignatura)
-                .HasForeignKey(e => e.IdAsignatura)
-                .OnDelete(DeleteBehavior.Cascade);
+            //modelBuilder.Entity<AsignaturaEntity>()
+            //    .HasMany(a => a.Eventos)
+            //    .WithOne(e => e.Asignatura)
+            //    .HasForeignKey(e => e.IdAsignatura)
+            //    .OnDelete(DeleteBehavior.Cascade);
 
             // Relación entre Evento y Nota (uno a uno)
-            modelBuilder.Entity<EventoEntity>()
-                .HasOne(e => e.Nota)
-                .WithOne(n => n.Evento)
-                .HasForeignKey<NotaEntity>(n => n.IdEvento)
-                .OnDelete(DeleteBehavior.Restrict); 
+            //modelBuilder.Entity<EventoEntity>()
+            //    .HasOne(e => e.Nota)
+            //    .WithOne(n => n.Evento)
+            //    .HasForeignKey<NotaEntity>(n => n.IdEvento)
+            //    .OnDelete(DeleteBehavior.Cascade); 
 
             // Relación entre Usuario y Asignatura (uno a muchos)
             modelBuilder.Entity<User>()
@@ -41,14 +41,14 @@ namespace RestAPI.Data
                 .HasMany(u => u.Eventos)
                 .WithOne(e => e.Usuario)
                 .HasForeignKey(e => e.IdUsuario)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Relación entre Usuario y Nota (uno a muchos)
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Notas)
                 .WithOne(n => n.Usuario)
                 .HasForeignKey(n => n.IdUsuario)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Relación entre Usuario y AppUser (uno a uno)
             modelBuilder.Entity<User>()

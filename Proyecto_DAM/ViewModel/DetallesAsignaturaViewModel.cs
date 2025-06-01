@@ -69,12 +69,18 @@ namespace Proyecto_DAM.ViewModel
         {
             if (evento == null || evento.Nota == null) return;
 
+            // Obtener las notas asociadas a los eventos
+            var notas = await _notaService.GetNota();
+
+            // Buscar si existe una nota asociada al evento con el idEvento
+            var notaExistente = notas.FirstOrDefault(n => n.IdEvento == evento.Id);
+
             try
             {
-                var notaValor = evento.Nota.NotaValor;
+                var notaValor = evento.Nota;
 
-                // Si la nota es -1, significa que no se ha asignado una nota
-                if (notaValor == -1)
+                // Si la nota es null, significa que no se ha asignado una nota
+                if (evento.Nota == null || evento.Nota == notaExistente.NotaValor)
                 {
                     await _eventoService.PatchEvento(evento);
                     MessageBox.Show("Estado o Tipo guardados correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -94,19 +100,13 @@ namespace Proyecto_DAM.ViewModel
                     return;
                 }
 
-                // Obtener las notas asociadas a los eventos
-                var notas = await _notaService.GetNota();
-
-                // Buscar si existe una nota asociada al evento con el idEvento
-                var notaExistente = notas.FirstOrDefault(n => n.IdEvento == evento.Id);
-
                 // Verificamos si la nota actual no coincide con la que está en el objeto evento
                 if (notaExistente == null)
                 {
                     // Si la nota es NULL, se crea una nueva y se hace un POST
                     var newNota = new NotaDTO
                     {
-                        NotaValor = evento.Nota.NotaValor,
+                        NotaValor = (double) evento.Nota,
                         IdAsignatura = evento.IdAsignatura,
                         IdEvento = evento.Id,
                         IdUsuario = App.Current.Services.GetService<LoginDTO>().Id
@@ -114,14 +114,14 @@ namespace Proyecto_DAM.ViewModel
 
                     // Realizamos el POST para guardar la nueva nota
                     await _notaService.PostNota(newNota);
-                    evento.Nota = newNota;
+                    evento.Nota = newNota.NotaValor;
                     await _eventoService.PatchEvento(evento);
                     MediaResultado = await _calcularMediaService.CalcularMedia(StringUtils.ConvertToNumberNoPanic(Asignatura.Id.ToString()));
 
                     var mensaje = new MensajeRabbit
                     {
                         Tipo = "Evento",
-                        Contenido = $"Evento actualizado: {evento.Nombre} Nota: {evento.Nota.NotaValor})"
+                        Contenido = $"Evento actualizado: {evento.Nombre} Nota: {evento.Nota})"
                     };
                     await _rabbitMQProducer.EnviarMensaje(JsonSerializer.Serialize(mensaje));
                     App.Current.Services.GetService<MainViewModel>().SelectViewModelCommand.Execute(App.Current.Services.GetService<PrincipalViewModel>());
@@ -132,7 +132,7 @@ namespace Proyecto_DAM.ViewModel
                     var updatedNota = new NotaDTO
                     {
                         Id = notaExistente.Id,
-                        NotaValor = evento.Nota.NotaValor,
+                        NotaValor = (double)evento.Nota,
                         IdAsignatura = evento.IdAsignatura,
                         IdEvento = evento.Id,
                         IdUsuario = App.Current.Services.GetService<LoginDTO>().Id
@@ -140,14 +140,14 @@ namespace Proyecto_DAM.ViewModel
 
                     // Realizamos el PATCH para actualizar la nota
                     await _notaService.PatchNota(updatedNota);
-                    evento.Nota = updatedNota;
+                    evento.Nota = updatedNota.NotaValor;
                     await _eventoService.PatchEvento(evento);
                     MediaResultado = await _calcularMediaService.CalcularMedia(StringUtils.ConvertToNumberNoPanic(Asignatura.Id.ToString()));
 
                     var mensaje = new MensajeRabbit
                     {
                         Tipo = "Evento",
-                        Contenido = $"Evento actualizado: {evento.Nombre} Nota: {evento.Nota.NotaValor})"
+                        Contenido = $"Evento actualizado: {evento.Nombre} Nota: {evento.Nota})"
                     };
                     await _rabbitMQProducer.EnviarMensaje(JsonSerializer.Serialize(mensaje));
                     App.Current.Services.GetService<MainViewModel>().SelectViewModelCommand.Execute(App.Current.Services.GetService<PrincipalViewModel>());
@@ -176,11 +176,12 @@ namespace Proyecto_DAM.ViewModel
                     var notas = await _notaService.GetNota();
                     var notaAsociada = notas.FirstOrDefault(n => n.IdEvento == evento.Id);
 
+                    evento.Nota = null;
+                    await _eventoService.PatchEvento(evento);
+
                     if (notaAsociada != null)
                     {
                         await _notaService.DeleteNota(notaAsociada.Id.ToString());
-                        evento.Nota = null;
-                        await _eventoService.PatchEvento(evento);
                     }
 
                     await _eventoService.DeleteEvento(evento.Id.ToString());
@@ -206,8 +207,6 @@ namespace Proyecto_DAM.ViewModel
 
                     var view = new DetallesAsignaturaView { DataContext = viewModel };
                     view.ShowDialog();
-
-                   
                 }
                 catch (Exception ex)
                 {
@@ -277,17 +276,11 @@ namespace Proyecto_DAM.ViewModel
 
                         if (nota != null)
                         {
-                            evento.Nota = nota;
+                            evento.Nota = nota.NotaValor;
                         }
                         else
                         {
-                            evento.Nota = new NotaDTO
-                            {
-                                NotaValor = -1,
-                                IdEvento = evento.Id,
-                                IdAsignatura = Asignatura.Id,
-                                IdUsuario = idUsuario
-                            };
+                            evento.Nota = null;
                         }
                     }
 
@@ -345,22 +338,37 @@ namespace Proyecto_DAM.ViewModel
         [RelayCommand]
         public async Task AddEvento()
         {
-            var viewModel = App.Current.Services.GetService<AddEventoViewModel>();
+            var addEventoViewModel = App.Current.Services.GetService<AddEventoViewModel>();
 
-            if (viewModel is null)
+            if (addEventoViewModel == null)
             {
                 MessageBox.Show("No se pudo cargar el ViewModel.");
                 return;
             }
 
-            viewModel.Asignatura = this.Asignatura;
+            addEventoViewModel.Asignatura = this.Asignatura;
 
-            var view = new AddEventoView
+            // Cierra la ventana actual (activa)
+            var currentWindow = Application.Current.Windows.OfType<Window>()
+                                 .SingleOrDefault(x => x.IsActive);
+            currentWindow?.Close();
+
+            // Abre ventana modal de agregar evento
+            var addEventoView = new AddEventoView
             {
-                DataContext = viewModel
+                DataContext = addEventoViewModel
             };
+            bool? dialogResult = addEventoView.ShowDialog();
 
-            view.ShowDialog();
+            // Después de cerrar AddEventoView, abre la vista de detalles
+            var detallesViewModel = App.Current.Services.GetRequiredService<DetallesAsignaturaViewModel>();
+            await detallesViewModel.SetIdAsignatura(Asignatura.Id);
+
+            var detallesView = new DetallesAsignaturaView
+            {
+                DataContext = detallesViewModel
+            };
+            detallesView.ShowDialog();
         }
 
         public override Task LoadAsync()

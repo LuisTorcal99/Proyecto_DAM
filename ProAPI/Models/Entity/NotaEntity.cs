@@ -10,11 +10,7 @@ namespace RestAPI.Models.Entity
         [Required]
         public double NotaValor { get; set; }
         public int IdAsignatura { get; set; }
-        public AsignaturaEntity Asignatura { get; set; }
-
         public int IdEvento { get; set; }
-        public EventoEntity Evento { get; set; }
-
         public int IdUsuario { get; set; }
         public User Usuario { get; set; }
     }

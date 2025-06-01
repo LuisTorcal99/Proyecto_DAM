@@ -124,6 +124,7 @@ namespace Proyecto_DAM.ViewModel
                 await _rabbitMQProducer.EnviarMensaje(JsonSerializer.Serialize(mensaje));
 
                 Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is AddEventoView)?.Close();
+
             }
             catch (Exception ex)
             {
@@ -151,7 +152,7 @@ namespace Proyecto_DAM.ViewModel
                 }
 
                 HoraTexto = DateTime.Now.ToString("HH:mm");
-                Fecha = DateTime.Now;
+                Fecha = DateTime.Now.AddDays(1);
 
                 if (Asignatura != null)
                 {

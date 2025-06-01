@@ -13,6 +13,7 @@ namespace RestAPI.Models.Entity
         public DateTime FechaInicio { get; set; }
         public string Tipo { get; set; }   // "Tarea" o "Examen"
         public string Estado { get; set; } // "Pendiente", "EnProceso", "Realizado"
+        public double? Nota { get; set; } // Nullable para permitir que no tenga nota al principio
 
         // Relación con el usuario
         public int IdUsuario { get; set; }
@@ -20,10 +21,6 @@ namespace RestAPI.Models.Entity
 
         // Relación con la asignatura
         public int IdAsignatura { get; set; }
-        public AsignaturaEntity Asignatura { get; set; }
-
-        // Relación uno a uno con Nota
-        public NotaEntity Nota { get; set; }
 
         public bool EmailEnviado { get; set; }
     }
