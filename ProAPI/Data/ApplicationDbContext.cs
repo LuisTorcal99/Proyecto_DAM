@@ -15,13 +15,6 @@ namespace RestAPI.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // Relación entre Asignatura y Notas (uno a muchos)
-            modelBuilder.Entity<AsignaturaEntity>()
-                .HasMany(a => a.Notas)
-                .WithOne(n => n.Asignatura)
-                .HasForeignKey(n => n.IdAsignatura)
-                .OnDelete(DeleteBehavior.Cascade);
-
             // Relación entre Asignatura y Eventos (uno a muchos)
             modelBuilder.Entity<AsignaturaEntity>()
                 .HasMany(a => a.Eventos)
