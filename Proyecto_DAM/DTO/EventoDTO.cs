@@ -32,7 +32,7 @@ namespace Proyecto_DAM.DTO
         public double? Nota { get; set; }
 
         [JsonPropertyName("tipo")]
-        public string Tipo { get; set; }   // "Tarea" o "Examen"
+        public string Tipo { get; set; }   // "Nota", "Tarea" o "Examen"
 
         [JsonPropertyName("estado")]
         public string Estado { get; set; } // "Pendiente", "EnProceso", "Completado"

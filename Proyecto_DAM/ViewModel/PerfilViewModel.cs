@@ -223,7 +223,5 @@ namespace Proyecto_DAM.ViewModel
                 MessageBox.Show("Se produjo un error al cargar el perfil. Intenta de nuevo más tarde.");
             }
         }
-
-
     }
 }

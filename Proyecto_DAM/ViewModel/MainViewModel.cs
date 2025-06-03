@@ -486,6 +486,8 @@ namespace Proyecto_DAM.ViewModel
                     }
 
                     MessageBox.Show("Asignaturas importadas y guardadas correctamente en la API.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    App.Current.Services.GetService<MainViewModel>().SelectViewModelCommand.Execute(App.Current.Services.GetService<PrincipalViewModel>());
                 }
                 catch (Exception ex)
                 {

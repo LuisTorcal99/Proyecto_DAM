@@ -67,8 +67,6 @@ namespace Proyecto_DAM.ViewModel
         [RelayCommand]
         public async Task Guardar(EventoDTO evento)
         {
-            if (evento == null || evento.Nota == null) return;
-
             // Obtener las notas asociadas a los eventos
             var notas = await _notaService.GetNota();
 
@@ -80,7 +78,7 @@ namespace Proyecto_DAM.ViewModel
                 var notaValor = evento.Nota;
 
                 // Si la nota es null, significa que no se ha asignado una nota
-                if (evento.Nota == null || evento.Nota == notaExistente.NotaValor)
+                if (evento.Nota == null && (notaExistente == null || notaExistente.NotaValor == null))
                 {
                     await _eventoService.PatchEvento(evento);
                     MessageBox.Show("Estado o Tipo guardados correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -97,6 +95,7 @@ namespace Proyecto_DAM.ViewModel
                 // Si la nota no está en el rango de 0 a 10, se ignora
                 if (notaValor < 0 || notaValor > 10)
                 {
+                    MessageBox.Show("La nota debe estar entre 0 y 10.", "Valor inválido", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
 
@@ -147,7 +146,7 @@ namespace Proyecto_DAM.ViewModel
                     var mensaje = new MensajeRabbit
                     {
                         Tipo = "Evento",
-                        Contenido = $"Evento actualizado: {evento.Nombre} Nota: {evento.Nota})"
+                        Contenido = $"Evento actualizado: {evento.Nombre} Nota: {evento.Nota}"
                     };
                     await _rabbitMQProducer.EnviarMensaje(JsonSerializer.Serialize(mensaje));
                     App.Current.Services.GetService<MainViewModel>().SelectViewModelCommand.Execute(App.Current.Services.GetService<PrincipalViewModel>());

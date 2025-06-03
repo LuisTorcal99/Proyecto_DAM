@@ -105,27 +105,37 @@
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBox Width="80"
-                                                     Margin="5"
-                                                     Padding="4"
-                                                     Background="#f5f5f5"
-                                                     BorderBrush="#ccc"
-                                                     FontFamily="Cascadia Code"
-                                                     BorderThickness="1"
-                                                     VerticalContentAlignment="Center">
+         Margin="5"
+         Padding="4"
+         Background="#f5f5f5"
+         BorderBrush="#ccc"
+         FontFamily="Cascadia Code"
+         BorderThickness="1"
+         VerticalContentAlignment="Center"
+         ToolTipService.InitialShowDelay="100"
+         ToolTipService.ShowDuration="6000"
+         ToolTipService.BetweenShowDelay="100">
                                             <TextBox.ToolTip>
-                                                <ToolTip Background="Yellow" Foreground="#f44336" FontWeight="Bold"
-                                                             Content="Introduce una nota entre 0 y 10. El valor -1 indica que la nota no está puesta y no cuenta para el cálculo de la media" />
+                                                <ToolTip Background="Yellow" Foreground="#f44336" FontWeight="Bold">
+                                                    <TextBlock TextWrapping="Wrap">
+            <Run Text="Escribe una nota entre 0.00 y 10.00" />
+            <LineBreak/>
+            <Run Text="- '0' indica que la nota no está puesta (no cuenta para la media)" />
+            <LineBreak/>
+            <Run Text="- '0.00' es una nota real de cero (sí cuenta)" />
+                                                    </TextBlock>
+                                                </ToolTip>
                                             </TextBox.ToolTip>
                                             <TextBox.Text>
                                                 <Binding Path="Nota"
-                                                             UpdateSourceTrigger="PropertyChanged"
-                                                             Mode="TwoWay"
-                                                             StringFormat="F2">
-                                                    <Binding.TargetNullValue>0</Binding.TargetNullValue>
-                                                    <Binding.FallbackValue>0</Binding.FallbackValue>
-                                                </Binding>
+                 UpdateSourceTrigger="PropertyChanged"
+                 Mode="TwoWay"
+                 TargetNullValue="0"
+                 FallbackValue="0"
+                 StringFormat="F2"/>
                                             </TextBox.Text>
                                         </TextBox>
+
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>

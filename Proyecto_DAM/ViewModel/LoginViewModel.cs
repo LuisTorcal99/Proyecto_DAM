@@ -150,11 +150,10 @@ namespace Proyecto_DAM.ViewModel
             App.Current.Services.GetService<LoginDTO>().Email = Constantes.EMAIL_GESTOR;
             App.Current.Services.GetService<LoginDTO>().Password = Constantes.PASSWORD;
             UserDTO userLogin = await _httpJsonProvider.LoginPostAsync(Constantes.LOGIN_PATH, App.Current.Services.GetService<LoginDTO>());
-            App.Current.Services.GetService<LoginDTO>().Token = userLogin.Result.Token;
 
             // 1. Comprobar si el admin ya está creado
-            var usuarios = await _UsuarioService.GetUser();
-            if (usuarios == null)
+
+            if (userLogin.Result == null)
             {
                 var gestor = new RegistroDTO(
                     Constantes.USERNAME_GESTOR,
@@ -178,6 +177,11 @@ namespace Proyecto_DAM.ViewModel
             {
                 return;
             }
+            App.Current.Services.GetService<LoginDTO>().Email = Constantes.EMAIL_GESTOR;
+            App.Current.Services.GetService<LoginDTO>().Password = Constantes.PASSWORD;
+            userLogin = await _httpJsonProvider.LoginPostAsync(Constantes.LOGIN_PATH, App.Current.Services.GetService<LoginDTO>());
+            App.Current.Services.GetService<LoginDTO>().Token = userLogin.Result.Token;
+            var usuarios = await _UsuarioService.GetUser();
 
             var user = await _UsuarioService.GetUser();
             var usuario = user.FirstOrDefault(u => u.Email.Equals(Constantes.EMAIL_GESTOR, StringComparison.OrdinalIgnoreCase));
